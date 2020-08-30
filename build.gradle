@@ -1,22 +1,29 @@
 plugins {
     id 'idea'
-    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'com.github.johnrengelman.shadow' version '5.2.0' apply false
 }
 
 allprojects {
-    group "ru.otus"
+    group 'ru.otus'
 
     repositories {
         mavenCentral()
     }
 
-    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         dependencies {
             imports {
-                mavenBom("org.springframework.boot:spring-boot-dependencies:2.2.6.RELEASE")
+                mavenBom('org.springframework.boot:spring-boot-dependencies:2.2.6.RELEASE')
             }
+            dependency("com.opencsv:opencsv:${Versions.openCSV}")
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            failOnVersionConflict()
         }
     }
 }
