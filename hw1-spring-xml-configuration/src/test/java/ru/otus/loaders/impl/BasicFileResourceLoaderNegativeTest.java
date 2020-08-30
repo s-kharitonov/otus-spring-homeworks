@@ -1,15 +1,13 @@
 package ru.otus.loaders.impl;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BasicFileResourceLoaderNegativeTest {
 
-	@ParameterizedTest
-	@NullSource
-	void shouldThrownExceptionForEmptyPath(final String path) {
-		assertThrows(IllegalArgumentException.class, () -> new BasicFileResourceLoader(path).loadResource());
+	@Test
+	void shouldThrownExceptionForEmptyPath() {
+		assertThrows(IllegalArgumentException.class, () -> new BasicFileResourceLoader(null).loadResource());
 	}
 }
