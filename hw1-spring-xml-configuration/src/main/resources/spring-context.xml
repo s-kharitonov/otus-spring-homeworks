@@ -10,4 +10,8 @@
     <bean id="questionsService" class="ru.otus.services.impl.QuestionsServiceImpl">
         <constructor-arg name="resourceLoader" ref="fileResourceLoader"/>
     </bean>
+
+    <bean id="runner" class="ru.otus.runners.impl.BasicRunner">
+        <constructor-arg name="questionsService" ref="questionsService"/>
+    </bean>
 </beans>
