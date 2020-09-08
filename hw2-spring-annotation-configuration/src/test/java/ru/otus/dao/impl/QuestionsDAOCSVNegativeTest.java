@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class QuestionsDAOImplNegativeTest {
+class QuestionsDAOCSVNegativeTest {
 
 	private FileResourceLoader resourceLoader;
 
@@ -20,6 +20,6 @@ class QuestionsDAOImplNegativeTest {
 	@Test
 	public void shouldThrownExceptionWhenResourceIsNull() {
 		when(resourceLoader.loadResource()).thenReturn(null);
-		assertThrows(IllegalArgumentException.class, () -> new QuestionsDAOImpl(resourceLoader).findQuestions());
+		assertThrows(IllegalArgumentException.class, () -> new QuestionsDAOCSV(resourceLoader).findQuestions());
 	}
 }

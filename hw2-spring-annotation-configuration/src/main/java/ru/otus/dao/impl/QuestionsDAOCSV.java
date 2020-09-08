@@ -13,22 +13,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class QuestionsDAOImpl implements QuestionsDAO {
+public class QuestionsDAOCSV implements QuestionsDAO {
 
 	private static final char SEPARATOR = ';';
-	private static final Logger logger = LoggerFactory.getLogger(QuestionsDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(QuestionsDAOCSV.class);
 
 	private final FileResourceLoader resourceLoader;
 
-	public QuestionsDAOImpl(final FileResourceLoader resourceLoader) {
+	public QuestionsDAOCSV(final FileResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
 	@Override
-	public List<Question> findQuestions() {
+	public Optional<List<Question>> findQuestions() {
 		final InputStream stream = resourceLoader.loadResource();
 
 		if (stream == null) {
@@ -36,16 +36,16 @@ public class QuestionsDAOImpl implements QuestionsDAO {
 		}
 
 		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))){
-			final CsvToBean<Question> beanBuilder = new CsvToBeanBuilder<Question>(reader)
+			final CsvToBean<Question> csvToBean = new CsvToBeanBuilder<Question>(reader)
 					.withType(Question.class)
 					.withIgnoreEmptyLine(true)
 					.withSeparator(SEPARATOR)
 					.build();
 
-			return beanBuilder.parse();
+			return Optional.ofNullable(csvToBean.parse());
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-			return new ArrayList<>();
+			return Optional.empty();
 		}
 	}
 }

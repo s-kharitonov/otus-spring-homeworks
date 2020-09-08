@@ -7,6 +7,7 @@ import ru.otus.domain.Question;
 import ru.otus.services.QuestionsService;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -25,7 +26,7 @@ class QuestionsServiceImplPositiveTest {
 
 	@Test
 	void shouldReturnNotEmptyList() {
-		when(questionsDAO.findQuestions()).thenReturn(List.of(new Question()));
+		when(questionsDAO.findQuestions()).thenReturn(Optional.of(List.of(new Question())));
 		assertEquals(questionsService.getQuestions().size(), 1);
 	}
 }

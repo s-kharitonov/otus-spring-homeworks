@@ -3,7 +3,8 @@ package ru.otus.dao;
 import ru.otus.domain.Question;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface QuestionsDAO {
-	List<Question> findQuestions();
+	Optional<List<Question>> findQuestions();
 }

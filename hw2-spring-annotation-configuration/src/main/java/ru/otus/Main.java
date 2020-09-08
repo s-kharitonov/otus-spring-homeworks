@@ -1,13 +1,13 @@
 package ru.otus;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.otus.configs.AppConfig;
 import ru.otus.runners.Runner;
 
 public class Main {
-	private final static String CONTEXT_PATH = "/spring-context.xml";
 
 	public static void main(String[] args) {
-		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(CONTEXT_PATH);
+		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 		final Runner runner = context.getBean(Runner.class);
 
 		runner.run();
