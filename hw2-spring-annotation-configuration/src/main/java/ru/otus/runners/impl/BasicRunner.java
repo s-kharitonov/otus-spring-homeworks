@@ -30,7 +30,7 @@ public class BasicRunner implements Runner {
 			final List<Answer> answers = question.getAnswers();
 			logger.info("QUESTION: {}", question.getText());
 
-			answers.forEach((answer -> logger.info("ANSWER: {}", answer.getText())));
+			answers.forEach((answer -> logger.info("ANSWER: {}", answer.getNumber() + " :" + answer.getText())));
 		});
 	}
 }

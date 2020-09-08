@@ -1,10 +1,16 @@
 package ru.otus.domain;
 
 public class Answer {
+	private final int number;
 	private final String text;
 
-	public Answer(final String text) {
+	public Answer(final int number, final String text) {
+		this.number = number;
 		this.text = text;
+	}
+
+	public int getNumber() {
+		return number;
 	}
 
 	public String getText() {
@@ -14,7 +20,8 @@ public class Answer {
 	@Override
 	public String toString() {
 		return "Answer{" +
-				"text='" + text + '\'' +
+				"number=" + number +
+				", text='" + text + '\'' +
 				'}';
 	}
 }
