@@ -18,6 +18,6 @@ public class TextToAnswerConverter extends AbstractCsvConverter {
 		final int number = Integer.parseInt(parameters[0]);
 		final String text = parameters[1];
 
-		return new Answer(number, text);
+		return new Answer(number, text.trim());
 	}
 }
