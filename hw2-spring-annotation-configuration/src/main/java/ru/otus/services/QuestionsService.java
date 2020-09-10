@@ -1,9 +1,9 @@
 package ru.otus.services;
 
-import ru.otus.domain.Question;
+import ru.otus.domain.QuestionDTO;
 
 import java.util.List;
 
 public interface QuestionsService {
-	List<Question> getQuestions();
+	List<QuestionDTO> getQuestions();
 }
