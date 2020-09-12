@@ -5,6 +5,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import ru.otus.annotations.Loggable;
 import ru.otus.dao.QuestionsDAO;
 import ru.otus.domain.Question;
 import ru.otus.loaders.FileResourceLoader;
@@ -29,6 +30,7 @@ public class QuestionsDAOCSV implements QuestionsDAO {
 		this.resourceLoader = resourceLoader;
 	}
 
+	@Loggable
 	@Override
 	public Optional<List<Question>> findQuestions() {
 		final InputStream stream = resourceLoader.loadResource();
