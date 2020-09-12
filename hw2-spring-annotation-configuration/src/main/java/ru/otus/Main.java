@@ -7,8 +7,8 @@ import ru.otus.runners.Runner;
 public class Main {
 
 	public static void main(String[] args) {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-		final Runner runner = context.getBean(Runner.class);
+		final var context = new AnnotationConfigApplicationContext(AppConfig.class);
+		final var runner = context.getBean(Runner.class);
 
 		runner.run();
 	}
