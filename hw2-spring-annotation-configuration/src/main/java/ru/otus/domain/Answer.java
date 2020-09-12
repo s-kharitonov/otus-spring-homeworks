@@ -1,6 +1,6 @@
 package ru.otus.domain;
 
-public class Answer {
+public class Answer implements Comparable<Answer> {
 	private final int number;
 	private final String text;
 
@@ -23,5 +23,10 @@ public class Answer {
 				"number=" + number +
 				", text='" + text + '\'' +
 				'}';
+	}
+
+	@Override
+	public int compareTo(final Answer that) {
+		return this.getNumber() - that.getNumber();
 	}
 }
