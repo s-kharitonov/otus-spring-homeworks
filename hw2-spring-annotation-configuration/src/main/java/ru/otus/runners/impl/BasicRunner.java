@@ -23,17 +23,11 @@ public class BasicRunner implements Runner {
 	@Override
 	public void run() {
 		final User user = createUser();
-		printGreeting(user);
 		printTestResult(testService.test(user));
 	}
 
 	private void printTestResult(final int scores) {
 		ioService.writeMessage(String.format("number of correct answers: %s", scores));
-	}
-
-	private void printGreeting(final User user) {
-		ioService.writeMessage(">>>>> ENGLISH LANGUAGE TEST <<<<<");
-		ioService.writeMessage(String.format("%s %s, good luck!", user.getName(), user.getSurname()));
 	}
 
 	private User createUser() {
