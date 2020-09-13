@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class BasicFileResourceLoaderPositiveTest {
+class BasicFileResourceLoaderPositiveUnitTest {
 
 	private final static String PATH_TO_TEST_FILE = "/questions.csv";
 
