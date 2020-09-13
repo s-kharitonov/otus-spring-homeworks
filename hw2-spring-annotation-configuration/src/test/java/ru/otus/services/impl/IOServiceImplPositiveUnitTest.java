@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 class IOServiceImplPositiveUnitTest {
 
 	private static final String LINE_SEPARATOR = System.lineSeparator();
-	public static final String TEST_MESSAGE = "hello world!";
+	private static final String TEST_MESSAGE = "hello world!";
 
 	private ByteArrayOutputStream arrayOutputStream;
 	private IOService ioService;
