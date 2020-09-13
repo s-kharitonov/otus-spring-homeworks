@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class QuestionsDAOCSVNegativeTest {
+class QuestionsDAOCSVNegativeUnitTest {
 
 	private FileResourceLoader resourceLoader;
 
