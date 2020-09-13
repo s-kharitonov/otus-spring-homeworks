@@ -23,8 +23,15 @@ public class BasicScoreCalculator implements ScoreCalculator {
 	}
 
 	private boolean isCorrectAnswer(final Map.Entry<QuestionDTO, Answer> answerByQuestionEntry) {
-		final int correctAnswer = answerByQuestionEntry.getKey().getCorrectAnswer();
-		final int answerNumber = answerByQuestionEntry.getValue().getNumber();
+		final QuestionDTO question = answerByQuestionEntry.getKey();
+		final Answer answer = answerByQuestionEntry.getValue();
+
+		if (question == null || answer == null) {
+			return false;
+		}
+
+		final int correctAnswer = question.getCorrectAnswer();
+		final int answerNumber = answer.getNumber();
 
 		return correctAnswer == answerNumber;
 	}
