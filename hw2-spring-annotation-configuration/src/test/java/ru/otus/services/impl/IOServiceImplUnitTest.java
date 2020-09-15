@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class IOServiceImplPositiveUnitTest {
+class IOServiceImplUnitTest {
 
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 	private static final String TEST_MESSAGE = "hello world!";
@@ -39,5 +39,13 @@ class IOServiceImplPositiveUnitTest {
 		ioService.writeMessage(TEST_MESSAGE);
 		Thread.sleep(1000);
 		assertThat(arrayOutputStream.toString()).isEqualTo(TEST_MESSAGE + LINE_SEPARATOR);
+	}
+	
+	@Test
+	@DisplayName("should print message \"null\" with null param")
+	public void shouldPrintMessageWithNullParam() throws InterruptedException {
+		ioService.writeMessage(null);
+		Thread.sleep(1000);
+		assertThat(arrayOutputStream.toString()).isEqualTo("null" + LINE_SEPARATOR);
 	}
 }

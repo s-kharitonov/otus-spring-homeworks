@@ -6,23 +6,52 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
+import org.mockito.InOrder;
 import ru.otus.dao.UserDAO;
 import ru.otus.services.UserService;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
+import java.util.Optional;
 
-class UserServiceImplNegativeUnitTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+
+class UserServiceImplUnitTest {
 
 	private static final String SURNAME = "kharitonov";
 	private static final String NAME = "sergey";
 
+	private InOrder inOrder;
+	private UserDAO userDAO;
 	private UserService userService;
 
 	@BeforeEach
 	void setUp() {
-		userService = new UserServiceImpl(mock(UserDAO.class));
+		userDAO = mock(UserDAO.class);
+		userService = new UserServiceImpl(userDAO);
+		inOrder = inOrder(userDAO);
+	}
+
+	@Test
+	@DisplayName("should call DAO for saving user when user will be created")
+	public void shouldSaveUserWhenUserWillCreated() {
+		var user = userService.createUser(NAME, SURNAME);
+		inOrder.verify(userDAO, times(1)).saveUser(user);
+	}
+
+	@Test
+	@DisplayName("should return created user")
+	public void shouldCreateUser() {
+		assertNotNull(userService.createUser(NAME, SURNAME));
+	}
+
+	@Test
+	@DisplayName("should return user by name")
+	public void shouldReturnUserByName() {
+		var user = userService.createUser(NAME, SURNAME);
+
+		given(userDAO.findByName(NAME)).willReturn(Optional.of(user));
+		assertEquals(user, userService.getUserByName(NAME));
 	}
 
 	@ParameterizedTest

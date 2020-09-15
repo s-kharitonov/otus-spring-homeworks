@@ -12,7 +12,20 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class BasicScoreCalculatorNegativeUnitTest {
+class BasicScoreCalculatorUnitTest {
+
+	@Test
+	@DisplayName("should calculate correct user answers")
+	public void shouldCalculateCorrectUserAnswers() {
+		final Map<QuestionDTO, Answer> userAnswers = new HashMap<>();
+		final var question = new Question();
+		final var answer = new Answer(1, "");
+
+		question.setCorrectAnswer(1);
+		userAnswers.put(new QuestionDTO(question), answer);
+
+		assertEquals(1, new BasicScoreCalculator(userAnswers).calculate());
+	}
 
 	@Test
 	@DisplayName("should throw NPE when user answers is null")
@@ -33,7 +46,7 @@ class BasicScoreCalculatorNegativeUnitTest {
 
 		userAnswers.put(null, new Answer(1, ""));
 
-		assertEquals(0,  new BasicScoreCalculator(userAnswers).calculate());
+		assertEquals(0, new BasicScoreCalculator(userAnswers).calculate());
 	}
 
 	@Test
@@ -43,6 +56,6 @@ class BasicScoreCalculatorNegativeUnitTest {
 
 		userAnswers.put(new QuestionDTO(new Question()), null);
 
-		assertEquals(0,  new BasicScoreCalculator(userAnswers).calculate());
+		assertEquals(0, new BasicScoreCalculator(userAnswers).calculate());
 	}
 }
