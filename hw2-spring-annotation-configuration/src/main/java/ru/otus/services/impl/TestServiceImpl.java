@@ -10,7 +10,10 @@ import ru.otus.services.IOService;
 import ru.otus.services.QuestionsService;
 import ru.otus.services.TestService;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +45,7 @@ public class TestServiceImpl implements TestService {
 
 		for (QuestionDTO question : questions) {
 			final Map<Integer, Answer> answerByNumber = buildAnswerByNumber(question.getAnswers());
-			final List<Answer> answers = sortAnswersByNumber(question.getAnswers());
+			final List<Answer> answers = question.getAnswers();
 
 			if (answers.isEmpty()) {
 				throw new TestServiceException(
@@ -90,12 +93,6 @@ public class TestServiceImpl implements TestService {
 		for (Answer answer : answers) {
 			ioService.writeMessage(answer.getNumber() + " : " + answer.getText());
 		}
-	}
-
-	private List<Answer> sortAnswersByNumber(final List<Answer> answers) {
-		return answers.stream()
-				.sorted(Comparator.comparing(Answer::getNumber))
-				.collect(Collectors.toList());
 	}
 
 	private Map<Integer, Answer> buildAnswerByNumber(final List<Answer> answers) {

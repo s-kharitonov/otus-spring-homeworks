@@ -7,6 +7,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import ru.otus.annotations.Loggable;
 import ru.otus.dao.QuestionsDao;
+import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 import ru.otus.exceptions.QuestionsDaoException;
 
@@ -14,7 +15,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class QuestionsDaoCsv implements QuestionsDao {
@@ -38,7 +41,17 @@ public class QuestionsDaoCsv implements QuestionsDao {
 					.withSeparator(SEPARATOR)
 					.build();
 
-			return csvToBean.parse();
+			final List<Question> questions = csvToBean.parse();
+
+			questions.forEach(question -> {
+				var answers = question.getAnswers().stream()
+						.sorted(Comparator.comparing(Answer::getNumber))
+						.collect(Collectors.toList());
+
+				question.setAnswers(answers);
+			});
+
+			return questions;
 		} catch (IOException e) {
 			throw new QuestionsDaoException(e);
 		}
