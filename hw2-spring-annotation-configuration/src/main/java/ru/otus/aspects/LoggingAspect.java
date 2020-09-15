@@ -14,11 +14,11 @@ import java.util.Arrays;
 public class LoggingAspect {
 
 	private static final String BENCHMARK_PATTERN = "BENCHMARK: method name: {}, args: {}, execution time(ms): {}";
-	private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 	@Around(value = "@annotation(ru.otus.annotations.Loggable)")
 	public Object logTimeLoadingResources(final ProceedingJoinPoint pjp) throws Throwable {
-		final String methodName = extractFullMethodName(pjp);
+		final Logger logger = LoggerFactory.getLogger(pjp.getTarget().getClass());
+		final String methodName = pjp.getSignature().getName();
 		final String args = Arrays.toString(pjp.getArgs());
 		final long currentTime = System.currentTimeMillis();
 		final Object result = pjp.proceed();
@@ -27,11 +27,5 @@ public class LoggingAspect {
 		logger.debug(BENCHMARK_PATTERN, methodName, args, methodExecutionTime);
 
 		return result;
-	}
-
-	private String extractFullMethodName(final ProceedingJoinPoint pjp) {
-		final String className = pjp.getSignature().getDeclaringType().getCanonicalName();
-		final String methodName = pjp.getSignature().getName();
-		return className + "." + methodName;
 	}
 }
