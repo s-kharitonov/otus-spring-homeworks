@@ -23,7 +23,7 @@ public class QuestionsDaoCsv implements QuestionsDao {
 
 	private final String path;
 
-	public QuestionsDaoCsv(@Value("questions.file.path") final String path) {
+	public QuestionsDaoCsv(@Value("${questions.file.path}")final String path) {
 		this.path = path;
 	}
 
