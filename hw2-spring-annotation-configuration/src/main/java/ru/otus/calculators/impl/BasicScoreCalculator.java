@@ -3,28 +3,22 @@ package ru.otus.calculators.impl;
 import ru.otus.calculators.ScoreCalculator;
 import ru.otus.domain.Answer;
 import ru.otus.domain.QuestionDTO;
+import ru.otus.domain.UserAnswer;
 
-import java.util.Map;
+import java.util.List;
 
 public class BasicScoreCalculator implements ScoreCalculator {
 
-	private final Map<QuestionDTO, Answer> userAnswers;
-
-	public BasicScoreCalculator(final Map<QuestionDTO, Answer> userAnswers) {
-		this.userAnswers = userAnswers;
-	}
-
 	@Override
-	public int calculate() {
-		return (int) userAnswers.entrySet()
-				.stream()
+	public int calculate(final List<UserAnswer> userAnswers) {
+		return (int) userAnswers.stream()
 				.filter(this::isCorrectAnswer)
 				.count();
 	}
 
-	private boolean isCorrectAnswer(final Map.Entry<QuestionDTO, Answer> answerByQuestionEntry) {
-		final QuestionDTO question = answerByQuestionEntry.getKey();
-		final Answer answer = answerByQuestionEntry.getValue();
+	private boolean isCorrectAnswer(final UserAnswer userAnswer) {
+		final QuestionDTO question = userAnswer.getQuestion();
+		final Answer answer = userAnswer.getAnswer();
 
 		if (question == null || answer == null) {
 			return false;

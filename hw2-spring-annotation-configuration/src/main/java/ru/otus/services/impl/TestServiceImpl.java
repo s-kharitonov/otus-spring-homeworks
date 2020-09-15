@@ -5,12 +5,13 @@ import ru.otus.calculators.impl.BasicScoreCalculator;
 import ru.otus.domain.Answer;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.User;
+import ru.otus.domain.UserAnswer;
 import ru.otus.exceptions.TestServiceException;
 import ru.otus.services.IOService;
 import ru.otus.services.QuestionsService;
 import ru.otus.services.TestService;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,7 +38,7 @@ public class TestServiceImpl implements TestService {
 		printGreeting(user);
 
 		final List<QuestionDTO> questions = questionsService.getQuestions();
-		final Map<QuestionDTO, Answer> userAnswers = new HashMap<>();
+		final List<UserAnswer> userAnswers = new ArrayList<>();
 
 		if (questions.isEmpty()) {
 			throw new TestServiceException("questions not found!");
@@ -66,19 +67,15 @@ public class TestServiceImpl implements TestService {
 				throw new IllegalArgumentException("non-existent answer number!");
 			}
 
-			userAnswers.put(question, answerByNumber.get(answerNumber));
+			userAnswers.add(new UserAnswer(question, answerByNumber.get(answerNumber)));
 		}
 
-		return calculateScores(userAnswers);
+		return new BasicScoreCalculator().calculate(userAnswers);
 	}
 
 	private void printGreeting(final User user) {
 		ioService.writeMessage(">>>>> ENGLISH LANGUAGE TEST <<<<<");
 		ioService.writeMessage(String.format("%s %s, good luck!", user.getName(), user.getSurname()));
-	}
-
-	private int calculateScores(final Map<QuestionDTO, Answer> userAnswers) {
-		return new BasicScoreCalculator(userAnswers).calculate();
 	}
 
 	private int parseAnswerNumberOrThrow(final String answerNumber) {
