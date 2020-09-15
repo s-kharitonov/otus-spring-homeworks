@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class QuestionsDAOCSV implements QuestionsDAO {
@@ -32,7 +32,7 @@ public class QuestionsDAOCSV implements QuestionsDAO {
 
 	@Loggable
 	@Override
-	public Optional<List<Question>> findQuestions() {
+	public List<Question> findQuestions() {
 		final InputStream stream = resourceLoader.loadResource();
 
 		if (stream == null) {
@@ -46,10 +46,10 @@ public class QuestionsDAOCSV implements QuestionsDAO {
 					.withSeparator(SEPARATOR)
 					.build();
 
-			return Optional.ofNullable(csvToBean.parse());
+			return csvToBean.parse();
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-			return Optional.empty();
+			return new ArrayList<>();
 		}
 	}
 }

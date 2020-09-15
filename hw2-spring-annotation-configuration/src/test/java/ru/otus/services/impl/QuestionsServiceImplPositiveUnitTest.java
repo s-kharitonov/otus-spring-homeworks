@@ -8,7 +8,6 @@ import ru.otus.domain.Question;
 import ru.otus.services.QuestionsService;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.BDDMockito.given;
@@ -28,7 +27,7 @@ class QuestionsServiceImplPositiveUnitTest {
 	@Test
 	@DisplayName("should return questions")
 	void shouldReturnQuestions() {
-		given(questionsDAO.findQuestions()).willReturn(Optional.of(List.of(new Question())));
+		given(questionsDAO.findQuestions()).willReturn(List.of(new Question()));
 		assertFalse(questionsService.getQuestions().isEmpty());
 	}
 }

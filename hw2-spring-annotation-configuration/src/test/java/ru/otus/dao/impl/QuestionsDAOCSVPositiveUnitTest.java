@@ -6,7 +6,7 @@ import ru.otus.dao.QuestionsDAO;
 import ru.otus.loaders.FileResourceLoader;
 import ru.otus.loaders.impl.BasicFileResourceLoader;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class QuestionsDAOCSVPositiveUnitTest {
 
@@ -18,6 +18,6 @@ class QuestionsDAOCSVPositiveUnitTest {
 		final FileResourceLoader resourceLoader = new BasicFileResourceLoader(PATH_TO_TEST_FILE);
 		final QuestionsDAO questionsDAO = new QuestionsDAOCSV(resourceLoader);
 
-		assertTrue(questionsDAO.findQuestions().isPresent());
+		assertFalse(questionsDAO.findQuestions().isEmpty());
 	}
 }
