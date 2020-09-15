@@ -2,17 +2,17 @@ package ru.otus.services.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import ru.otus.dao.UserDAO;
+import ru.otus.dao.UserDao;
 import ru.otus.domain.User;
 import ru.otus.services.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-	private final UserDAO userDAO;
+	private final UserDao userDao;
 
-	public UserServiceImpl(final UserDAO userDAO) {
-		this.userDAO = userDAO;
+	public UserServiceImpl(final UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 	@Override
@@ -24,14 +24,14 @@ public class UserServiceImpl implements UserService {
 
 		final User user = new User(name, surname);
 
-		userDAO.saveUser(user);
+		userDao.saveUser(user);
 
 		return user;
 	}
 
 	@Override
 	public User getUserByName(final String name) {
-		return userDAO.findByName(name)
+		return userDao.findByName(name)
 				.orElse(null);
 	}
 }

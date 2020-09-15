@@ -4,9 +4,9 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.otus.annotations.Loggable;
-import ru.otus.dao.QuestionsDAO;
+import ru.otus.dao.QuestionsDao;
 import ru.otus.domain.Question;
 import ru.otus.loaders.FileResourceLoader;
 
@@ -18,15 +18,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class QuestionsDAOCSV implements QuestionsDAO {
+@Repository
+public class QuestionsDaoCsv implements QuestionsDao {
 
 	private static final char SEPARATOR = ';';
-	private static final Logger logger = LoggerFactory.getLogger(QuestionsDAOCSV.class);
+	private static final Logger logger = LoggerFactory.getLogger(QuestionsDaoCsv.class);
 
 	private final FileResourceLoader resourceLoader;
 
-	public QuestionsDAOCSV(final FileResourceLoader resourceLoader) {
+	public QuestionsDaoCsv(final FileResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 

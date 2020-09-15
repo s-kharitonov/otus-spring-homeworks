@@ -1,7 +1,7 @@
 package ru.otus.services.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.dao.QuestionsDAO;
+import ru.otus.dao.QuestionsDao;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.services.QuestionsService;
 
@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionsServiceImpl implements QuestionsService {
 
-	private final QuestionsDAO questionsDAO;
+	private final QuestionsDao questionsDao;
 
-	public QuestionsServiceImpl(final QuestionsDAO questionsDAO) {
-		this.questionsDAO = questionsDAO;
+	public QuestionsServiceImpl(final QuestionsDao questionsDao) {
+		this.questionsDao = questionsDao;
 	}
 
 	@Override
 	public List<QuestionDTO> getQuestions() {
-		return questionsDAO
+		return questionsDao
 				.findQuestions()
 				.stream()
 				.map(QuestionDTO::new)

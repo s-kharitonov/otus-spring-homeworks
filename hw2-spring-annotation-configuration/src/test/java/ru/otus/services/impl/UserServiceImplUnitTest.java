@@ -7,7 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.InOrder;
-import ru.otus.dao.UserDAO;
+import ru.otus.dao.UserDao;
 import ru.otus.services.UserService;
 
 import java.util.Optional;
@@ -22,21 +22,21 @@ class UserServiceImplUnitTest {
 	private static final String NAME = "sergey";
 
 	private InOrder inOrder;
-	private UserDAO userDAO;
+	private UserDao userDao;
 	private UserService userService;
 
 	@BeforeEach
 	void setUp() {
-		userDAO = mock(UserDAO.class);
-		userService = new UserServiceImpl(userDAO);
-		inOrder = inOrder(userDAO);
+		userDao = mock(UserDao.class);
+		userService = new UserServiceImpl(userDao);
+		inOrder = inOrder(userDao);
 	}
 
 	@Test
 	@DisplayName("should call DAO for saving user when user will be created")
 	public void shouldSaveUserWhenUserWillCreated() {
 		var user = userService.createUser(NAME, SURNAME);
-		inOrder.verify(userDAO, times(1)).saveUser(user);
+		inOrder.verify(userDao, times(1)).saveUser(user);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ class UserServiceImplUnitTest {
 	public void shouldReturnUserByName() {
 		var user = userService.createUser(NAME, SURNAME);
 
-		given(userDAO.findByName(NAME)).willReturn(Optional.of(user));
+		given(userDao.findByName(NAME)).willReturn(Optional.of(user));
 		assertEquals(user, userService.getUserByName(NAME));
 	}
 

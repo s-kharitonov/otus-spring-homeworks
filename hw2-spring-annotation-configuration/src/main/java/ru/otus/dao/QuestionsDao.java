@@ -4,6 +4,6 @@ import ru.otus.domain.Question;
 
 import java.util.List;
 
-public interface QuestionsDAO {
+public interface QuestionsDao {
 	List<Question> findQuestions();
 }
