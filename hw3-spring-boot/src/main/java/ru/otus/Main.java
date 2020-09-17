@@ -1,18 +1,20 @@
 package ru.otus;
 
-import org.springframework.context.annotation.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.PropertySource;
 import ru.otus.services.TestService;
 
-@ComponentScan
 @PropertySource("classpath:application.properties")
 @EnableAspectJAutoProxy
-@Configuration
+@SpringBootApplication
 public class Main {
 
 	public static void main(String[] args) {
-		final var context = new AnnotationConfigApplicationContext(Main.class);
-		final var runner = context.getBean(TestService.class);
+		final var context = SpringApplication.run(Main.class, args);
+		final var testService = context.getBean(TestService.class);
 
-		runner.test();
+		testService.test();
 	}
 }

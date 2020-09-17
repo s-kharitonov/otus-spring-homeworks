@@ -1,13 +1,14 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
-    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'ch.qos.logback:logback-classic'
     implementation 'com.opencsv:opencsv'
     implementation 'org.aspectj:aspectjrt'
@@ -17,6 +18,7 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
     testImplementation group: 'org.assertj', name: 'assertj-core'
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
 
 test {
