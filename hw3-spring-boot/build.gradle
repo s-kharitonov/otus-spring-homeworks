@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+dependencies {
+    implementation 'org.springframework:spring-context'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'com.opencsv:opencsv'
+    implementation 'org.aspectj:aspectjrt'
+    implementation 'org.aspectj:aspectjweaver'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
+    testImplementation group: 'org.assertj', name: 'assertj-core'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+}
+
+shadowJar {
+    archiveBaseName.set('hw3-spring-boot')
+    archiveVersion.set('0.1')
+    manifest {
+        attributes 'Main-Class': 'ru.otus.Main'
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
