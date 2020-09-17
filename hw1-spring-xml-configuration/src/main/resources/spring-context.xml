@@ -7,7 +7,7 @@
         <constructor-arg name="path" value="/questions.csv"/>
     </bean>
 
-    <bean id="questionsDAO" class="ru.otus.dao.impl.QuestionsDAOImpl">
+    <bean id="questionsDAO" class="ru.otus.dao.impl.QuestionsDAOCSV">
         <constructor-arg name="resourceLoader" ref="fileResourceLoader"/>
     </bean>
 
