@@ -1,13 +1,15 @@
-package ru.otus.calculators.impl;
+package ru.otus.services.impl;
 
-import ru.otus.calculators.ScoreCalculator;
+import org.springframework.stereotype.Service;
 import ru.otus.domain.Answer;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.UserAnswer;
+import ru.otus.services.ScoreCalculatorService;
 
 import java.util.List;
 
-public class BasicScoreCalculator implements ScoreCalculator {
+@Service
+public class ScoreCalculatorServiceImpl implements ScoreCalculatorService {
 
 	@Override
 	public int calculate(final List<UserAnswer> userAnswers) {

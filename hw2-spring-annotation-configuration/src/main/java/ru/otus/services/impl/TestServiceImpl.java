@@ -1,16 +1,12 @@
 package ru.otus.services.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.calculators.impl.BasicScoreCalculator;
 import ru.otus.domain.Answer;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.User;
 import ru.otus.domain.UserAnswer;
 import ru.otus.exceptions.TestServiceException;
-import ru.otus.services.IOService;
-import ru.otus.services.QuestionsService;
-import ru.otus.services.TestService;
-import ru.otus.services.UserService;
+import ru.otus.services.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +19,16 @@ public class TestServiceImpl implements TestService {
 	private final QuestionsService questionsService;
 	private final IOService ioService;
 	private final UserService userService;
+	private final ScoreCalculatorService scoreCalculatorService;
 
 	public TestServiceImpl(final QuestionsService questionsService,
 						   final IOService ioService,
-						   final UserService userService) {
+						   final UserService userService,
+						   final ScoreCalculatorService scoreCalculatorService) {
 		this.questionsService = questionsService;
 		this.ioService = ioService;
 		this.userService = userService;
+		this.scoreCalculatorService = scoreCalculatorService;
 	}
 
 	@Override
@@ -51,7 +50,7 @@ public class TestServiceImpl implements TestService {
 			userAnswers.add(new UserAnswer(question, answer));
 		}
 
-		printTestResult(new BasicScoreCalculator().calculate(userAnswers));
+		printTestResult(scoreCalculatorService.calculate(userAnswers));
 	}
 
 	private Answer askQuestion(final QuestionDTO question) {

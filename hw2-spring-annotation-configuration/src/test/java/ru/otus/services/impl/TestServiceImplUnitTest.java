@@ -11,10 +11,7 @@ import ru.otus.domain.Question;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.User;
 import ru.otus.exceptions.TestServiceException;
-import ru.otus.services.IOService;
-import ru.otus.services.QuestionsService;
-import ru.otus.services.TestService;
-import ru.otus.services.UserService;
+import ru.otus.services.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +38,9 @@ class TestServiceImplUnitTest {
 		this.questionsService = mock(QuestionsService.class);
 		this.ioService = mock(IOService.class);
 		this.userService = mock(UserService.class);
-		this.testService = new TestServiceImpl(questionsService, ioService, userService);
+		this.testService = new TestServiceImpl(
+				questionsService, ioService, userService, mock(ScoreCalculatorService.class)
+		);
 		inOrder = inOrder(questionsService, ioService);
 		this.user = new User(USER_ANSWER, USER_ANSWER);
 		this.questions = List.of(new QuestionDTO(buildQuestion()));

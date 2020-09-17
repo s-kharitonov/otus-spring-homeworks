@@ -1,9 +1,9 @@
-package ru.otus.calculators;
+package ru.otus.services;
 
 import ru.otus.domain.UserAnswer;
 
 import java.util.List;
 
-public interface ScoreCalculator {
+public interface ScoreCalculatorService {
 	int calculate(List<UserAnswer> userAnswers);
 }
