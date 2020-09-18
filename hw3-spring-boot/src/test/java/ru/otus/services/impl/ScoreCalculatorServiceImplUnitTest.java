@@ -1,4 +1,4 @@
-package ru.otus.calculators.impl;
+package ru.otus.services.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import ru.otus.domain.Question;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.UserAnswer;
 import ru.otus.services.ScoreCalculatorService;
-import ru.otus.services.impl.ScoreCalculatorServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
