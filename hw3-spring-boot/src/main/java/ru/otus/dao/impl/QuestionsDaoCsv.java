@@ -45,17 +45,21 @@ public class QuestionsDaoCsv implements QuestionsDao {
 
 			final List<Question> questions = csvToBean.parse();
 
-			questions.forEach(question -> {
-				var answers = question.getAnswers().stream()
-						.sorted(Comparator.comparing(Answer::getNumber))
-						.collect(Collectors.toList());
-
-				question.setAnswers(answers);
-			});
+			sortAnswersByNumber(questions);
 
 			return questions;
 		} catch (IOException e) {
 			throw new QuestionsDaoException(e);
 		}
+	}
+
+	private void sortAnswersByNumber(final List<Question> questions) {
+		questions.forEach(question -> {
+			var answers = question.getAnswers().stream()
+					.sorted(Comparator.comparing(Answer::getNumber))
+					.collect(Collectors.toList());
+
+			question.setAnswers(answers);
+		});
 	}
 }
