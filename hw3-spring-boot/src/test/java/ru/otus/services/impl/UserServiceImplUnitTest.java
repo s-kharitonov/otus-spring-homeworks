@@ -7,28 +7,50 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.InOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.dao.UserDao;
+import ru.otus.dao.impl.UserInMemoryDao;
 import ru.otus.services.UserService;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.times;
 
+@SpringBootTest
 class UserServiceImplUnitTest {
 
 	private static final String SURNAME = "kharitonov";
 	private static final String NAME = "sergey";
 
+	@Configuration
+	public static class UserServiceImplConfig{
+
+		@Bean
+		public UserDao userDao() {
+			return new UserInMemoryDao();
+		}
+
+		@Bean
+		public UserService userService(final UserDao userDao) {
+			return new UserServiceImpl(userDao);
+		}
+	}
+
 	private InOrder inOrder;
+	@MockBean
 	private UserDao userDao;
+	@Autowired
 	private UserService userService;
 
 	@BeforeEach
 	void setUp() {
-		userDao = mock(UserDao.class);
-		userService = new UserServiceImpl(userDao);
 		inOrder = inOrder(userDao);
 	}
 

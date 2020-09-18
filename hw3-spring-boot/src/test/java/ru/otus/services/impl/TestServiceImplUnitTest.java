@@ -6,41 +6,47 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.User;
 import ru.otus.exceptions.TestServiceException;
-import ru.otus.services.*;
+import ru.otus.services.IOService;
+import ru.otus.services.QuestionsService;
+import ru.otus.services.TestService;
+import ru.otus.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.times;
 
+@SpringBootTest
 class TestServiceImplUnitTest {
 
 	private static final String TEST_NAME = ">>>>> ENGLISH LANGUAGE TEST <<<<<";
 	private static final String USER_ANSWER = "1";
 
+	@MockBean
 	private QuestionsService questionsService;
+	@MockBean
 	private IOService ioService;
-	private TestService testService;
+	@MockBean
 	private UserService userService;
+	@Autowired
+	private TestService testService;
 	private InOrder inOrder;
 	private User user;
 	private List<QuestionDTO> questions;
 
 	@BeforeEach
 	void setUp() {
-		this.questionsService = mock(QuestionsService.class);
-		this.ioService = mock(IOService.class);
-		this.userService = mock(UserService.class);
-		this.testService = new TestServiceImpl(
-				questionsService, ioService, userService, mock(ScoreCalculatorService.class)
-		);
 		inOrder = inOrder(questionsService, ioService);
 		this.user = new User(USER_ANSWER, USER_ANSWER);
 		this.questions = List.of(new QuestionDTO(buildQuestion()));

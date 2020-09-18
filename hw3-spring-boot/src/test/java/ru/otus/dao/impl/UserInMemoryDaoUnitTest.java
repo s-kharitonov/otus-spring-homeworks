@@ -1,8 +1,11 @@
 package ru.otus.dao.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.dao.UserDao;
 import ru.otus.domain.User;
 
@@ -11,14 +14,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SpringBootTest
 class UserInMemoryDaoUnitTest {
 
-	private UserDao userDao;
+	@Configuration
+	public static class UserInMemoryDaoConfig {
 
-	@BeforeEach
-	void setUp() {
-		this.userDao = new UserInMemoryDao();
+		@Bean
+		public UserDao userDao() {
+			return new UserInMemoryDao();
+		}
 	}
+
+	@Autowired
+	private UserDao userDao;
 
 	@Test
 	@DisplayName("should return saved user by name")

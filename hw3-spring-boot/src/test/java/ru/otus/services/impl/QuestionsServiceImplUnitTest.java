@@ -1,9 +1,15 @@
 package ru.otus.services.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import ru.otus.configs.AppProperties;
 import ru.otus.dao.QuestionsDao;
+import ru.otus.dao.impl.QuestionsDaoCsv;
 import ru.otus.domain.Question;
 import ru.otus.services.QuestionsService;
 
@@ -11,18 +17,28 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
+@SpringBootTest
 class QuestionsServiceImplUnitTest {
 
-	private QuestionsDao questionsDao;
-	private QuestionsService questionsService;
+	@Configuration
+	public static class QuestionsServiceImplConfig{
 
-	@BeforeEach
-	void setUp() {
-		questionsDao = mock(QuestionsDao.class);
-		questionsService = new QuestionsServiceImpl(questionsDao);
+		@Bean
+		public QuestionsDao questionsDao(final AppProperties appProperties) {
+			return new QuestionsDaoCsv(appProperties);
+		}
+
+		@Bean
+		public QuestionsService questionsService(final QuestionsDao questionsDao) {
+			return new QuestionsServiceImpl(questionsDao);
+		}
 	}
+
+	@MockBean
+	private QuestionsDao questionsDao;
+	@Autowired
+	private QuestionsService questionsService;
 
 	@Test
 	@DisplayName("should return questions")

@@ -1,8 +1,11 @@
 package ru.otus.calculators.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 import ru.otus.domain.QuestionDTO;
@@ -15,14 +18,20 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 class ScoreCalculatorServiceImplUnitTest {
 
-	private ScoreCalculatorService scoreCalculatorService;
+	@Configuration
+	public static class ScoreCalculatorServiceConfig {
 
-	@BeforeEach
-	void setUp() {
-		this.scoreCalculatorService = new ScoreCalculatorServiceImpl();
+		@Bean
+		public ScoreCalculatorService scoreCalculatorService() {
+			return new ScoreCalculatorServiceImpl();
+		}
 	}
+
+	@Autowired
+	private ScoreCalculatorService scoreCalculatorService;
 
 	@Test
 	@DisplayName("should calculate correct user answers")
