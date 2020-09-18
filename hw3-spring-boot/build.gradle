@@ -1,8 +1,10 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
 }
+
+group = 'ru.otus'
+version = '0.0.1'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -19,6 +21,8 @@ dependencies {
     testImplementation group: 'org.assertj', name: 'assertj-core'
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 test {
@@ -27,13 +31,3 @@ test {
         events 'passed', 'skipped', 'failed'
     }
 }
-
-shadowJar {
-    archiveBaseName.set('hw3-spring-boot')
-    archiveVersion.set('0.1')
-    manifest {
-        attributes 'Main-Class': 'ru.otus.Main'
-    }
-}
-
-tasks.build.dependsOn tasks.shadowJar

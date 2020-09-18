@@ -2,10 +2,10 @@ package ru.otus.dao.impl;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import ru.otus.annotations.Loggable;
+import ru.otus.configs.AppProperties;
 import ru.otus.dao.QuestionsDao;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
@@ -24,16 +24,18 @@ public class QuestionsDaoCsv implements QuestionsDao {
 
 	private static final char SEPARATOR = ';';
 
-	private final String path;
+	private final AppProperties appProperties;
 
-	public QuestionsDaoCsv(@Value("${questions.file.path}")final String path) {
-		this.path = path;
+	public QuestionsDaoCsv(final AppProperties properties) {
+		this.appProperties = properties;
 	}
 
 	@Loggable
 	@Override
 	public List<Question> findQuestions() {
-		try (var stream = new ClassPathResource(path).getInputStream();
+		final String filePath = appProperties.getQuestionsPath();
+
+		try (var stream = new ClassPathResource(filePath).getInputStream();
 			 var reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
 			final CsvToBean<Question> csvToBean = new CsvToBeanBuilder<Question>(reader)
 					.withType(Question.class)
