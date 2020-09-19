@@ -3,15 +3,12 @@ package ru.otus.services.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.contexts.StreamContext;
 import ru.otus.services.IoService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 class IoServiceImplUnitTest {
 
@@ -23,14 +20,8 @@ class IoServiceImplUnitTest {
 
 	@BeforeEach
 	void setUp() {
-		final StreamContext context = mock(StreamContext.class);
-
 		arrayOutputStream = new ByteArrayOutputStream();
-
-		given(context.getPrintStream()).willReturn(new PrintStream(arrayOutputStream));
-		given(context.getInputStream()).willReturn(System.in);
-
-		ioService = new IoServiceImpl(context);
+		ioService = new IoServiceImpl(System.in, new PrintStream(arrayOutputStream));
 	}
 
 	@Test

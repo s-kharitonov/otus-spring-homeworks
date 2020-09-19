@@ -2,15 +2,12 @@ package ru.otus.services.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.otus.contexts.StreamContext;
 import ru.otus.exceptions.IOServiceException;
 import ru.otus.services.IoService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 @Service
@@ -21,11 +18,12 @@ public class IoServiceImpl implements IoService {
 	private final BufferedReader reader;
 	private final PrintStream writer;
 
-	public IoServiceImpl(final StreamContext streamContext) {
+	public IoServiceImpl(@Value("#{T(java.lang.System).in}") final InputStream inputStream,
+						 @Value("#{T(java.lang.System).out}") final PrintStream printStream) {
 		this.reader = new BufferedReader(
-				new InputStreamReader(streamContext.getInputStream(), StandardCharsets.UTF_8)
+				new InputStreamReader(inputStream, StandardCharsets.UTF_8)
 		);
-		this.writer = streamContext.getPrintStream();
+		this.writer = printStream;
 	}
 
 	@Override
