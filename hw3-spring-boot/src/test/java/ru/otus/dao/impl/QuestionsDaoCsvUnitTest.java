@@ -16,7 +16,7 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 class QuestionsDaoCsvUnitTest {
 
-	private final static String PATH_TO_TEST_FILE = "/questions.csv";
+	private final static String PATH_TO_TEST_FILE = "/questions-test.csv";
 
 	@Configuration
 	public static class QuestionsDaoCsvConfig {
