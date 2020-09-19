@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.contexts.StreamContext;
-import ru.otus.services.IOService;
+import ru.otus.services.IoService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -13,13 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class IOServiceImplUnitTest {
+class IoServiceImplUnitTest {
 
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 	private static final String TEST_MESSAGE = "hello world!";
 
 	private ByteArrayOutputStream arrayOutputStream;
-	private IOService ioService;
+	private IoService ioService;
 
 	@BeforeEach
 	void setUp() {
@@ -30,7 +30,7 @@ class IOServiceImplUnitTest {
 		given(context.getPrintStream()).willReturn(new PrintStream(arrayOutputStream));
 		given(context.getInputStream()).willReturn(System.in);
 
-		ioService = new IOServiceImpl(context);
+		ioService = new IoServiceImpl(context);
 	}
 
 	@Test

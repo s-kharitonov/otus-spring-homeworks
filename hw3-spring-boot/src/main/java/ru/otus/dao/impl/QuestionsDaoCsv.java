@@ -48,7 +48,7 @@ public class QuestionsDaoCsv implements QuestionsDao {
 			sortAnswersByNumber(questions);
 
 			return questions;
-		} catch (IOException e) {
+		} catch (IOException | IllegalStateException e) {
 			throw new QuestionsDaoException(e);
 		}
 	}

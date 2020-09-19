@@ -7,6 +7,7 @@ import ru.otus.domain.User;
 import ru.otus.domain.UserAnswer;
 import ru.otus.exceptions.TestServiceException;
 import ru.otus.services.*;
+import ru.otus.services.facades.IoFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +18,21 @@ import java.util.stream.Collectors;
 public class TestServiceImpl implements TestService {
 
 	private final QuestionsService questionsService;
-	private final IOService ioService;
+	private final IoService ioService;
 	private final UserService userService;
 	private final ScoreCalculatorService scoreCalculatorService;
+	private final IoFacade ioFacade;
 
 	public TestServiceImpl(final QuestionsService questionsService,
-						   final IOService ioService,
+						   final IoService ioService,
 						   final UserService userService,
-						   final ScoreCalculatorService scoreCalculatorService) {
+						   final ScoreCalculatorService scoreCalculatorService,
+						   final IoFacade ioFacade) {
 		this.questionsService = questionsService;
 		this.ioService = ioService;
 		this.userService = userService;
 		this.scoreCalculatorService = scoreCalculatorService;
+		this.ioFacade = ioFacade;
 	}
 
 	@Override
@@ -59,7 +63,7 @@ public class TestServiceImpl implements TestService {
 
 		ioService.writeMessage(question.getText());
 		printAnswers(answers);
-		ioService.writeMessage("Your answer:");
+		ioFacade.writeMessage("user.answer");
 
 		final int answerNumber = parseAnswerNumberOrThrow(ioService.readLine());
 
@@ -90,22 +94,22 @@ public class TestServiceImpl implements TestService {
 	}
 
 	private void printTestResult(final int scores) {
-		ioService.writeMessage(String.format("number of correct answers: %s", scores));
+		ioFacade.writeMessage("test.result", scores);
 	}
 
 	private User createUser() {
-		ioService.writeMessage("enter your name:");
+		ioFacade.writeMessage("user.name");
 		final String name = ioService.readLine();
 
-		ioService.writeMessage("enter your surname:");
+		ioFacade.writeMessage("user.surname");
 		final String surname = ioService.readLine();
 
 		return userService.createUser(name, surname);
 	}
 
 	private void printGreeting(final User user) {
-		ioService.writeMessage(">>>>> ENGLISH LANGUAGE TEST <<<<<");
-		ioService.writeMessage(String.format("%s %s, good luck!", user.getName(), user.getSurname()));
+		ioFacade.writeMessage("test.name");
+		ioFacade.writeMessage("user.good.luck", user.getName(), user.getSurname());
 	}
 
 	private int parseAnswerNumberOrThrow(final String answerNumber) {

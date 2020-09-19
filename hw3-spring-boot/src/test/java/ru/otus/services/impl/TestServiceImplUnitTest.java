@@ -14,10 +14,11 @@ import ru.otus.domain.Question;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.User;
 import ru.otus.exceptions.TestServiceException;
-import ru.otus.services.IOService;
+import ru.otus.services.IoService;
 import ru.otus.services.QuestionsService;
 import ru.otus.services.TestService;
 import ru.otus.services.UserService;
+import ru.otus.services.facades.IoFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +31,14 @@ import static org.mockito.Mockito.times;
 @SpringBootTest
 class TestServiceImplUnitTest {
 
-	private static final String TEST_NAME = ">>>>> ENGLISH LANGUAGE TEST <<<<<";
 	private static final String USER_ANSWER = "1";
 
 	@MockBean
 	private QuestionsService questionsService;
 	@MockBean
-	private IOService ioService;
+	private IoService ioService;
+	@MockBean
+	private IoFacade ioFacade;
 	@MockBean
 	private UserService userService;
 	@Autowired
@@ -47,7 +49,7 @@ class TestServiceImplUnitTest {
 
 	@BeforeEach
 	void setUp() {
-		inOrder = inOrder(questionsService, ioService);
+		inOrder = inOrder(questionsService, ioService, ioFacade);
 		this.user = new User(USER_ANSWER, USER_ANSWER);
 		this.questions = List.of(new QuestionDTO(buildQuestion()));
 	}
@@ -68,9 +70,7 @@ class TestServiceImplUnitTest {
 		given(questionsService.getQuestions()).willReturn(questions);
 		given(ioService.readLine()).willReturn(USER_ANSWER);
 		given(userService.createUser(USER_ANSWER, USER_ANSWER)).willReturn(user);
-
 		testService.test();
-
 		inOrder.verify(ioService, times(1)).readLine();
 	}
 
@@ -83,9 +83,10 @@ class TestServiceImplUnitTest {
 
 		testService.test();
 
-		inOrder.verify(ioService, times(1)).writeMessage(TEST_NAME);
-		inOrder.verify(ioService, times(1))
-				.writeMessage(String.format("%s %s, good luck!", user.getName(), user.getSurname()));
+		inOrder.verify(ioFacade, times(1))
+				.writeMessage("test.name");
+		inOrder.verify(ioFacade, times(1))
+				.writeMessage("user.good.luck", user.getName(), user.getSurname());
 	}
 
 	@Test

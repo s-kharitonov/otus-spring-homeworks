@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.otus.contexts.StreamContext;
 import ru.otus.exceptions.IOServiceException;
-import ru.otus.services.IOService;
+import ru.otus.services.IoService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,14 +14,14 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class IOServiceImpl implements IOService {
+public class IoServiceImpl implements IoService {
 
-	private static final Logger logger = LoggerFactory.getLogger(IOServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(IoServiceImpl.class);
 
 	private final BufferedReader reader;
 	private final PrintStream writer;
 
-	public IOServiceImpl(final StreamContext streamContext) {
+	public IoServiceImpl(final StreamContext streamContext) {
 		this.reader = new BufferedReader(
 				new InputStreamReader(streamContext.getInputStream(), StandardCharsets.UTF_8)
 		);
