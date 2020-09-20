@@ -1,3 +1,4 @@
 rootProject.name = 'otus-spring-homeworks'
 include 'hw1-spring-xml-configuration'
 include 'hw2-spring-annotation-configuration'
+include 'hw5-books-jdbc'
