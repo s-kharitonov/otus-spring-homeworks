@@ -17,7 +17,6 @@ import ru.otus.exceptions.TestServiceException;
 import ru.otus.services.IoService;
 import ru.otus.services.QuestionsService;
 import ru.otus.services.TestService;
-import ru.otus.services.UserService;
 import ru.otus.services.facades.IoFacade;
 
 import java.util.ArrayList;
@@ -39,8 +38,6 @@ class TestServiceImplUnitTest {
 	private IoService ioService;
 	@MockBean
 	private IoFacade ioFacade;
-	@MockBean
-	private UserService userService;
 	@Autowired
 	private TestService testService;
 	private InOrder inOrder;
@@ -55,12 +52,17 @@ class TestServiceImplUnitTest {
 	}
 
 	@Test
+	@DisplayName("should throw IllegalArgumentException when user is null")
+	public void shouldThrowExceptionWhenUserIsNull() {
+		assertThrows(IllegalArgumentException.class, () -> testService.test(null));
+	}
+
+	@Test
 	@DisplayName("should call questions service")
 	public void shouldGettingQuestions() {
 		given(questionsService.getQuestions()).willReturn(questions);
 		given(ioService.readLine()).willReturn(USER_ANSWER);
-		given(userService.createUser(USER_ANSWER, USER_ANSWER)).willReturn(user);
-		testService.test();
+		testService.test(user);
 		inOrder.verify(questionsService, times(1)).getQuestions();
 	}
 
@@ -69,8 +71,7 @@ class TestServiceImplUnitTest {
 	public void shouldReadingUserAnswer() {
 		given(questionsService.getQuestions()).willReturn(questions);
 		given(ioService.readLine()).willReturn(USER_ANSWER);
-		given(userService.createUser(USER_ANSWER, USER_ANSWER)).willReturn(user);
-		testService.test();
+		testService.test(user);
 		inOrder.verify(ioService, times(1)).readLine();
 	}
 
@@ -79,10 +80,7 @@ class TestServiceImplUnitTest {
 	public void shouldPrintGreeting() {
 		given(questionsService.getQuestions()).willReturn(questions);
 		given(ioService.readLine()).willReturn(USER_ANSWER);
-		given(userService.createUser(USER_ANSWER, USER_ANSWER)).willReturn(user);
-
-		testService.test();
-
+		testService.test(user);
 		inOrder.verify(ioFacade, times(1))
 				.writeMessage("test.name");
 		inOrder.verify(ioFacade, times(1))
@@ -93,9 +91,8 @@ class TestServiceImplUnitTest {
 	@DisplayName("should throw TestServiceException when questions is empty")
 	public void shouldThrowExceptionWhenQuestionsIsEmpty() {
 		given(questionsService.getQuestions()).willReturn(new ArrayList<>());
-		given(userService.createUser(USER_ANSWER, USER_ANSWER)).willReturn(user);
 		given(ioService.readLine()).willReturn(USER_ANSWER);
-		assertThrows(TestServiceException.class, () -> testService.test());
+		assertThrows(TestServiceException.class, () -> testService.test(user));
 	}
 
 	@Test
@@ -107,9 +104,8 @@ class TestServiceImplUnitTest {
 		question.setAnswers(new ArrayList<>());
 
 		given(questionsService.getQuestions()).willReturn(List.of(new QuestionDTO(question)));
-		given(userService.createUser(USER_ANSWER, USER_ANSWER)).willReturn(user);
 		given(ioService.readLine()).willReturn(USER_ANSWER);
-		assertThrows(TestServiceException.class, () -> testService.test());
+		assertThrows(TestServiceException.class, () -> testService.test(user));
 	}
 
 	@ParameterizedTest
@@ -123,8 +119,7 @@ class TestServiceImplUnitTest {
 
 		given(questionsService.getQuestions()).willReturn(List.of(new QuestionDTO(question)));
 		given(ioService.readLine()).willReturn(userAnswer);
-		given(userService.createUser(userAnswer, userAnswer)).willReturn(user);
-		assertThrows(IllegalArgumentException.class, () -> testService.test());
+		assertThrows(IllegalArgumentException.class, () -> testService.test(user));
 	}
 
 	private Question buildQuestion() {
