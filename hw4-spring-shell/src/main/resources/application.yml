@@ -1,0 +1,3 @@
+application:
+  questionsPath: /questions-en.csv
+  locale: en

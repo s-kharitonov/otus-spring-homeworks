@@ -20,6 +20,7 @@ allprojects {
             dependency("com.opencsv:opencsv:${Versions.openCSV}")
             dependency("org.aspectj:aspectjweaver:${Versions.aspectJ}")
             dependency("org.aspectj:aspectjrt:${Versions.aspectJ}")
+            dependency("org.springframework.shell:spring-shell-starter:${Versions.shell}")
         }
     }
 
