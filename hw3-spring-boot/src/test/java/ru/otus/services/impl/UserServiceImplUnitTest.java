@@ -13,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.otus.dao.UserDao;
-import ru.otus.dao.impl.UserInMemoryDao;
 import ru.otus.services.UserService;
 
 import java.util.Optional;
@@ -30,13 +29,7 @@ class UserServiceImplUnitTest {
 	private static final String NAME = "sergey";
 
 	@Configuration
-	public static class UserServiceImplConfig{
-
-		@Bean
-		public UserDao userDao() {
-			return new UserInMemoryDao();
-		}
-
+	public static class UserServiceImplConfig {
 		@Bean
 		public UserService userService(final UserDao userDao) {
 			return new UserServiceImpl(userDao);
