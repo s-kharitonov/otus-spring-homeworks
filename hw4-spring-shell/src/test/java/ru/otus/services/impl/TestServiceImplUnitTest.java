@@ -14,10 +14,9 @@ import ru.otus.domain.Question;
 import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.User;
 import ru.otus.exceptions.TestServiceException;
-import ru.otus.services.IoService;
 import ru.otus.services.QuestionsService;
 import ru.otus.services.TestService;
-import ru.otus.services.facades.IoFacade;
+import ru.otus.services.facades.LocalizationIoFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +34,7 @@ class TestServiceImplUnitTest {
 	@MockBean
 	private QuestionsService questionsService;
 	@MockBean
-	private IoService ioService;
-	@MockBean
-	private IoFacade ioFacade;
+	private LocalizationIoFacade localizationIoFacade;
 	@Autowired
 	private TestService testService;
 	private InOrder inOrder;
@@ -46,7 +43,7 @@ class TestServiceImplUnitTest {
 
 	@BeforeEach
 	void setUp() {
-		inOrder = inOrder(questionsService, ioService, ioFacade);
+		inOrder = inOrder(questionsService, localizationIoFacade);
 		this.user = new User(USER_ANSWER, USER_ANSWER);
 		this.questions = List.of(new QuestionDTO(buildQuestion()));
 	}
@@ -61,7 +58,7 @@ class TestServiceImplUnitTest {
 	@DisplayName("should call questions service")
 	public void shouldGettingQuestions() {
 		given(questionsService.getQuestions()).willReturn(questions);
-		given(ioService.readLine()).willReturn(USER_ANSWER);
+		given(localizationIoFacade.readLine()).willReturn(USER_ANSWER);
 		testService.test(user);
 		inOrder.verify(questionsService, times(1)).getQuestions();
 	}
@@ -70,28 +67,28 @@ class TestServiceImplUnitTest {
 	@DisplayName("should reading user answer")
 	public void shouldReadingUserAnswer() {
 		given(questionsService.getQuestions()).willReturn(questions);
-		given(ioService.readLine()).willReturn(USER_ANSWER);
+		given(localizationIoFacade.readLine()).willReturn(USER_ANSWER);
 		testService.test(user);
-		inOrder.verify(ioService, times(1)).readLine();
+		inOrder.verify(localizationIoFacade, times(1)).readLine();
 	}
 
 	@Test
 	@DisplayName("should print greeting")
 	public void shouldPrintGreeting() {
 		given(questionsService.getQuestions()).willReturn(questions);
-		given(ioService.readLine()).willReturn(USER_ANSWER);
+		given(localizationIoFacade.readLine()).willReturn(USER_ANSWER);
 		testService.test(user);
-		inOrder.verify(ioFacade, times(1))
-				.writeMessage("test.name");
-		inOrder.verify(ioFacade, times(1))
-				.writeMessage("user.good.luck", user.getName(), user.getSurname());
+		inOrder.verify(localizationIoFacade, times(1))
+				.writeMessageFromProps("test.name");
+		inOrder.verify(localizationIoFacade, times(1))
+				.writeMessageFromProps("user.good.luck", user.getName(), user.getSurname());
 	}
 
 	@Test
 	@DisplayName("should throw TestServiceException when questions is empty")
 	public void shouldThrowExceptionWhenQuestionsIsEmpty() {
 		given(questionsService.getQuestions()).willReturn(new ArrayList<>());
-		given(ioService.readLine()).willReturn(USER_ANSWER);
+		given(localizationIoFacade.readLine()).willReturn(USER_ANSWER);
 		assertThrows(TestServiceException.class, () -> testService.test(user));
 	}
 
@@ -104,7 +101,7 @@ class TestServiceImplUnitTest {
 		question.setAnswers(new ArrayList<>());
 
 		given(questionsService.getQuestions()).willReturn(List.of(new QuestionDTO(question)));
-		given(ioService.readLine()).willReturn(USER_ANSWER);
+		given(localizationIoFacade.readLine()).willReturn(USER_ANSWER);
 		assertThrows(TestServiceException.class, () -> testService.test(user));
 	}
 
@@ -118,7 +115,7 @@ class TestServiceImplUnitTest {
 		question.setAnswers(List.of(new Answer(1, ""), new Answer(2, "")));
 
 		given(questionsService.getQuestions()).willReturn(List.of(new QuestionDTO(question)));
-		given(ioService.readLine()).willReturn(userAnswer);
+		given(localizationIoFacade.readLine()).willReturn(userAnswer);
 		assertThrows(IllegalArgumentException.class, () -> testService.test(user));
 	}
 

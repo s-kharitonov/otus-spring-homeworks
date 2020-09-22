@@ -7,9 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.otus.configs.AppProperties;
 import ru.otus.dao.QuestionsDao;
-import ru.otus.dao.impl.QuestionsDaoCsv;
 import ru.otus.domain.Question;
 import ru.otus.services.QuestionsService;
 
@@ -23,12 +21,6 @@ class QuestionsServiceImplUnitTest {
 
 	@Configuration
 	public static class QuestionsServiceImplConfig{
-
-		@Bean
-		public QuestionsDao questionsDao(final AppProperties appProperties) {
-			return new QuestionsDaoCsv(appProperties);
-		}
-
 		@Bean
 		public QuestionsService questionsService(final QuestionsDao questionsDao) {
 			return new QuestionsServiceImpl(questionsDao);

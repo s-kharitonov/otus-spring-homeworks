@@ -6,11 +6,10 @@ import ru.otus.domain.QuestionDTO;
 import ru.otus.domain.User;
 import ru.otus.domain.UserAnswer;
 import ru.otus.exceptions.TestServiceException;
-import ru.otus.services.IoService;
 import ru.otus.services.QuestionsService;
 import ru.otus.services.ScoreCalculatorService;
 import ru.otus.services.TestService;
-import ru.otus.services.facades.IoFacade;
+import ru.otus.services.facades.LocalizationIoFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +21,15 @@ import java.util.stream.Collectors;
 public class TestServiceImpl implements TestService {
 
 	private final QuestionsService questionsService;
-	private final IoService ioService;
 	private final ScoreCalculatorService scoreCalculatorService;
-	private final IoFacade ioFacade;
+	private final LocalizationIoFacade localizationIoFacade;
 
 	public TestServiceImpl(final QuestionsService questionsService,
-						   final IoService ioService,
 						   final ScoreCalculatorService scoreCalculatorService,
-						   final IoFacade ioFacade) {
+						   final LocalizationIoFacade localizationIoFacade) {
 		this.questionsService = questionsService;
-		this.ioService = ioService;
 		this.scoreCalculatorService = scoreCalculatorService;
-		this.ioFacade = ioFacade;
+		this.localizationIoFacade = localizationIoFacade;
 	}
 
 	@Override
@@ -65,11 +61,11 @@ public class TestServiceImpl implements TestService {
 		final Map<Integer, Answer> answerByNumber = buildAnswerByNumber(question.getAnswers());
 		final List<Answer> answers = getAnswersOrThrow(question);
 
-		ioService.writeMessage(question.getText());
+		localizationIoFacade.writeMessage(question.getText());
 		printAnswers(answers);
-		ioFacade.writeMessage("user.answer");
+		localizationIoFacade.writeMessageFromProps("user.answer");
 
-		final int answerNumber = parseAnswerNumberOrThrow(ioService.readLine());
+		final int answerNumber = parseAnswerNumberOrThrow(localizationIoFacade.readLine());
 
 		checkAnswer(answerNumber, answers);
 
@@ -98,12 +94,12 @@ public class TestServiceImpl implements TestService {
 	}
 
 	private void printTestResult(final int scores) {
-		ioFacade.writeMessage("test.result", scores);
+		localizationIoFacade.writeMessageFromProps("test.result", scores);
 	}
 
 	private void printGreeting(final User user) {
-		ioFacade.writeMessage("test.name");
-		ioFacade.writeMessage("user.good.luck", user.getName(), user.getSurname());
+		localizationIoFacade.writeMessageFromProps("test.name");
+		localizationIoFacade.writeMessageFromProps("user.good.luck", user.getName(), user.getSurname());
 	}
 
 	private int parseAnswerNumberOrThrow(final String answerNumber) {
@@ -116,7 +112,7 @@ public class TestServiceImpl implements TestService {
 
 	private void printAnswers(final List<Answer> answers) {
 		for (Answer answer : answers) {
-			ioService.writeMessage(answer.getNumber() + " : " + answer.getText());
+			localizationIoFacade.writeMessage(answer.getNumber() + " : " + answer.getText());
 		}
 	}
 
