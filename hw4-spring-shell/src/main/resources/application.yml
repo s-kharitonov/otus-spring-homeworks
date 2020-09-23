@@ -1,0 +1,8 @@
+application:
+  questionsPath: /questions-${application.locale}.csv
+  locale: ru_RU
+
+spring:
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages

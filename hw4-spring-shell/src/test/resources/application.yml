@@ -1,0 +1,11 @@
+application:
+  questionsPath: /questions-${application.locale}.csv
+  locale: en
+
+spring:
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+  shell:
+    interactive:
+      enabled: false
