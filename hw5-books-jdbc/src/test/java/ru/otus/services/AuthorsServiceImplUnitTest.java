@@ -24,12 +24,12 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 class AuthorsServiceImplUnitTest {
 
-	public static final String SURNAME = "kharitonov";
-	public static final String NAME = "sergey";
-	public static final long FIRST_AUTHOR_ID = 1L;
-	public static final String EMPTY_NAME = "";
-	public static final String EMPTY_SURNAME = "";
-	public static final String EMPTY_APP_MESSAGE = "";
+	private static final String SURNAME = "kharitonov";
+	private static final String NAME = "sergey";
+	private static final long FIRST_AUTHOR_ID = 1L;
+	private static final String EMPTY_NAME = "";
+	private static final String EMPTY_SURNAME = "";
+	private static final String EMPTY_APP_MESSAGE = "";
 
 	@Configuration
 	@EnableConfigurationProperties(AppProperties.class)

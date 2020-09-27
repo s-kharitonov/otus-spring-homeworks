@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @JdbcTest
 class AuthorsDaoJdbcUnitTest {
 
-	public static final String NAME = "sergey";
-	public static final String SURNAME = "kharitonov";
-	public static final long FIRST_AUTHOR_ID = 1L;
+	private static final String NAME = "sergey";
+	private static final String SURNAME = "kharitonov";
+	private static final long FIRST_AUTHOR_ID = 1L;
 
 	@Autowired
 	private AuthorsDao authorsDao;
