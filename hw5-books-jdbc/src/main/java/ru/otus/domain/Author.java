@@ -2,14 +2,17 @@ package ru.otus.domain;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class Author {
 	private Long id;
 	@NotNull
 	@NotEmpty
+	@Size(max = 255)
 	private String name;
 	@NotNull
 	@NotEmpty
+	@Size(max = 255)
 	private String surname;
 
 	public Author(final String name, final String surname) {

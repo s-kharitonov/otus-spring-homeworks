@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.dao.AuthorsDao;
 import ru.otus.domain.Author;
+import ru.otus.domain.Constants;
 import ru.otus.exceptions.AuthorsServiceException;
 import ru.otus.validators.FieldValidator;
 
@@ -31,16 +32,10 @@ class AuthorsServiceImplUnitTest {
 	private static final String EMPTY_SURNAME = "";
 	private static final String EMPTY_APP_MESSAGE = "";
 
+	@Import(AuthorsServiceImpl.class)
 	@Configuration
 	@EnableConfigurationProperties(AppProperties.class)
 	public static class AuthorsServiceConfig {
-
-		@Bean
-		public AuthorsService authorsService(final AuthorsDao authorsDao,
-											 final LocalizationService localizationService,
-											 final FieldValidator fieldValidator) {
-			return new AuthorsServiceImpl(authorsDao, localizationService, fieldValidator);
-		}
 	}
 
 	@MockBean
@@ -69,7 +64,7 @@ class AuthorsServiceImplUnitTest {
 	@DisplayName("should throw AuthorsServiceException when author for create is null")
 	public void shouldThrowExceptionWhenAuthorForCreateIsNull() {
 		Author author = null;
-		given(localizationService.localizeMessage("invalid.author", author)).willReturn(EMPTY_APP_MESSAGE);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
 	}
 
@@ -94,7 +89,7 @@ class AuthorsServiceImplUnitTest {
 	@DisplayName("should throw AuthorsServiceException when author for update is null")
 	public void shouldThrowExceptionWhenAuthorForUpdateIsNull() {
 		Author author = null;
-		given(localizationService.localizeMessage("invalid.author", author)).willReturn(EMPTY_APP_MESSAGE);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
@@ -103,7 +98,7 @@ class AuthorsServiceImplUnitTest {
 	public void shouldThrowExceptionWhenAuthorForUpdateHasNullFields() {
 		var author = new Author(null, null);
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage("invalid.author", author)).willReturn(EMPTY_APP_MESSAGE);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
@@ -112,7 +107,7 @@ class AuthorsServiceImplUnitTest {
 	public void shouldThrowExceptionWhenAuthorForUpdateHasEmptyFields() {
 		var author = new Author(EMPTY_NAME, EMPTY_SURNAME);
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage("invalid.author", author)).willReturn(EMPTY_APP_MESSAGE);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
@@ -122,7 +117,7 @@ class AuthorsServiceImplUnitTest {
 	public void shouldThrowExceptionWhenAuthorForCreateHasNullFields() {
 		var author = new Author(null, null);
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage("invalid.author", author)).willReturn(EMPTY_APP_MESSAGE);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
 	}
 
@@ -131,21 +126,7 @@ class AuthorsServiceImplUnitTest {
 	public void shouldThrowExceptionWhenAuthorForCreateHasEmptyFields() {
 		var author = new Author(EMPTY_NAME, EMPTY_SURNAME);
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage("invalid.author", author)).willReturn(EMPTY_APP_MESSAGE);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
-	}
-
-	@Test
-	@DisplayName("should not throw exceptions when author for update is correct")
-	public void shouldNotThrowExceptionsWhenAuthorForUpdateIsCorrect() {
-		var author = new Author(FIRST_AUTHOR_ID, NAME, SURNAME);
-		given(fieldValidator.validate(author)).willReturn(true);
-		assertDoesNotThrow(() -> authorsService.updateAuthor(author));
-	}
-
-	@Test
-	@DisplayName("should not throw exceptions when author id for delete is correct")
-	public void shouldNotThrowExceptionsWhenAuthorIdForDeleteIsCorrect() {
-		assertDoesNotThrow(() -> authorsService.removeAuthor(FIRST_AUTHOR_ID));
 	}
 }

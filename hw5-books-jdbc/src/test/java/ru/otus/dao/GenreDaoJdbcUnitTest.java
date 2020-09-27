@@ -9,6 +9,7 @@ import ru.otus.domain.Genre;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("DAO for work this genres")
 @Import(GenreDaoJdbc.class)
 @JdbcTest
 class GenreDaoJdbcUnitTest {

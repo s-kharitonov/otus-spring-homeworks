@@ -9,6 +9,7 @@ import ru.otus.domain.Author;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("DAO for work this authors")
 @Import(AuthorsDaoJdbc.class)
 @JdbcTest
 class AuthorsDaoJdbcUnitTest {

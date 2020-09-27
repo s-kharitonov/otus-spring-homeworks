@@ -3,6 +3,7 @@ package ru.otus.services;
 import org.springframework.stereotype.Service;
 import ru.otus.dao.AuthorsDao;
 import ru.otus.domain.Author;
+import ru.otus.domain.Constants;
 import ru.otus.exceptions.AuthorsServiceException;
 import ru.otus.validators.FieldValidator;
 
@@ -55,7 +56,7 @@ public class AuthorsServiceImpl implements AuthorsService {
 	private void checkAuthorOrThrow(final Author author) {
 		if (Objects.isNull(author) || !fieldValidator.validate(author)) {
 			throw new AuthorsServiceException(
-					localizationService.localizeMessage("invalid.author", author)
+					localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)
 			);
 		}
 	}
