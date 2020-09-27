@@ -12,7 +12,7 @@ public interface AuthorsDao {
 
 	List<Author> findAllAuthors();
 
-	boolean removeAuthor(long id);
+	void removeAuthor(long id);
 
-	boolean updateAuthor(Author author);
+	void updateAuthor(Author author);
 }

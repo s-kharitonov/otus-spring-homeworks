@@ -80,34 +80,28 @@ public class AuthorsDaoJdbc implements AuthorsDao {
 	}
 
 	@Override
-	public boolean removeAuthor(final long id) {
+	public void removeAuthor(final long id) {
 		try {
-			final var result = jdbcOperations.update(
+			jdbcOperations.update(
 					"DELETE FROM AUTHORS WHERE AUTHOR_ID = :authorId",
 					Map.of("authorId", id)
 			);
-
-			return result > 0;
 		} catch (DataAccessException e) {
 			logger.error("error removing author by id: {}", id, e);
-			return false;
 		}
 	}
 
 	@Override
-	public boolean updateAuthor(final Author author) {
+	public void updateAuthor(final Author author) {
 		try {
-			final var result = jdbcOperations.update(
+			jdbcOperations.update(
 					"UPDATE AUTHORS A SET A.NAME = :name, A.SURNAME = :surname WHERE A.AUTHOR_ID = :authorId",
 					Map.of("authorId", author.getId(),
 							"name", author.getName(),
 							"surname", author.getSurname())
 			);
-
-			return result > 0;
 		} catch (DataAccessException e) {
 			logger.error("error updating author: {}", author, e);
-			return false;
 		}
 	}
 

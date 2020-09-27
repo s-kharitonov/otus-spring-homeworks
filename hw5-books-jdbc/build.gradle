@@ -15,6 +15,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'ch.qos.logback:logback-classic'
     implementation 'com.h2database:h2'
+    implementation 'org.hibernate.validator:hibernate-validator'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
