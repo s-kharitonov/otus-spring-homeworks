@@ -2,6 +2,9 @@ package ru.otus.services;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,11 +33,7 @@ class GenresServiceImplUnitTest {
 	private static final String GENRE_NAME = "Horror";
 	private static final long FIRST_GENRE_ID = 1L;
 	private static final String EMPTY_APP_MESSAGE = "";
-	private static final String EMPTY_NAME = "";
-	public static final int NAME_LENGTH_GREATER_THAN_MAX_VALUE = 300;
-	private static final String NAME_GREATER_THAN_MAX_VALUE = IntStream.range(0, NAME_LENGTH_GREATER_THAN_MAX_VALUE)
-			.mapToObj(String::valueOf)
-			.collect(Collectors.joining());
+	private static final int NAME_LENGTH_GREATER_THAN_MAX_LENGTH = 300;
 
 	@Configuration
 	@EnableConfigurationProperties(AppProperties.class)
@@ -77,30 +76,12 @@ class GenresServiceImplUnitTest {
 		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
 	}
 
-	@Test
-	@DisplayName("should throw GenresServiceException when genre for create has null name")
-	public void shouldThrowExceptionWhenGenreForCreateHasNullName() {
-		var genre = new Genre(null);
-
-		given(fieldValidator.validate(genre)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
-		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
-	}
-
-	@Test
-	@DisplayName("should throw GenresServiceException when genre for create has empty name")
-	public void shouldThrowExceptionWhenGenreForCreateHasEmptyName() {
-		var genre = new Genre(EMPTY_NAME);
-
-		given(fieldValidator.validate(genre)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
-		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
-	}
-
-	@Test
-	@DisplayName("should throw GenresServiceException when genre for create has name length greater than max value")
-	public void shouldThrowExceptionWhenGenreForCreateHasNameLengthGreaterThanMaxValue() {
-		var genre = new Genre(NAME_GREATER_THAN_MAX_VALUE);
+	@ParameterizedTest
+	@DisplayName("should throw GenresServiceException when genre for create has not valid name")
+	@NullAndEmptySource
+	@MethodSource(value = "createNameGreaterThanMaxLength")
+	public void shouldThrowExceptionWhenGenreForCreateHasNotValidName(final String name) {
+		var genre = new Genre(name);
 
 		given(fieldValidator.validate(genre)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
@@ -134,33 +115,21 @@ class GenresServiceImplUnitTest {
 		assertThrows(GenresServiceException.class, () -> genresService.updateGenre(genre));
 	}
 
-	@Test
-	@DisplayName("should throw GenresServiceException when genre for update has null name")
-	public void shouldThrowExceptionWhenGenreForUpdateHasNullName() {
-		var genre = new Genre(FIRST_GENRE_ID,null);
-
-		given(fieldValidator.validate(genre)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
-		assertThrows(GenresServiceException.class, () -> genresService.updateGenre(genre));
-	}
-
-	@Test
-	@DisplayName("should throw GenresServiceException when genre for update has empty name")
-	public void shouldThrowExceptionWhenGenreForUpdateHasEmptyName() {
-		var genre = new Genre(FIRST_GENRE_ID, EMPTY_NAME);
-
-		given(fieldValidator.validate(genre)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
-		assertThrows(GenresServiceException.class, () -> genresService.updateGenre(genre));
-	}
-
-	@Test
-	@DisplayName("should throw GenresServiceException when genre for update has name length greater than max value")
-	public void shouldThrowExceptionWhenGenreForUpdateHasNameLengthGreaterThanMaxValue() {
-		var genre = new Genre(FIRST_GENRE_ID, NAME_GREATER_THAN_MAX_VALUE);
+	@ParameterizedTest
+	@DisplayName("should throw GenresServiceException when genre for update has not valid name")
+	@NullAndEmptySource
+	@MethodSource(value = "createNameGreaterThanMaxLength")
+	public void shouldThrowExceptionWhenGenreForUpdateHasNotValidName(final String name) {
+		var genre = new Genre(name);
 
 		given(fieldValidator.validate(genre)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
+	}
+
+	private static String[] createNameGreaterThanMaxLength() {
+		return new String[]{IntStream.range(0, NAME_LENGTH_GREATER_THAN_MAX_LENGTH)
+				.mapToObj(String::valueOf)
+				.collect(Collectors.joining())};
 	}
 }

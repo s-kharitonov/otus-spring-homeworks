@@ -25,7 +25,7 @@ class BooksDaoJdbcUnitTest {
 	private static final String FIRST_GENRE_NAME = "Fantasy";
 	private static final String NEW_BOOK_NAME = "Harry Potter";
 	private static final Date NEW_BOOK_PUBLICATION_DATE = new Date();
-	private static final int NEW_BOOK_PRINT_LENGTH = 300;
+	private static final int NEW_BOOK_PRINT_LENGTH = 255;
 	private static final long FIRST_BOOK_ID = 1L;
 
 	@Autowired

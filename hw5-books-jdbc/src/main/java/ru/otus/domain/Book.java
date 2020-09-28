@@ -1,13 +1,24 @@
 package ru.otus.domain;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Book {
 	private Long id;
+	@NotNull
+	@NotEmpty
+	@Size(max = 255)
 	private String name;
+	@NotNull
 	private Date publicationDate;
+	@Min(value = 1)
 	private int printLength;
+	@NotNull
 	private Author author;
+	@NotNull
 	private Genre genre;
 
 	public Book(final long id, final String name, final Date publicationDate,

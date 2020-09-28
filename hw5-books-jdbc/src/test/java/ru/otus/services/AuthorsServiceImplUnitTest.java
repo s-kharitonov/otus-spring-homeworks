@@ -2,6 +2,9 @@ package ru.otus.services;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +20,8 @@ import ru.otus.validators.FieldValidator;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -28,9 +33,8 @@ class AuthorsServiceImplUnitTest {
 	private static final String SURNAME = "kharitonov";
 	private static final String NAME = "sergey";
 	private static final long FIRST_AUTHOR_ID = 1L;
-	private static final String EMPTY_NAME = "";
-	private static final String EMPTY_SURNAME = "";
 	private static final String EMPTY_APP_MESSAGE = "";
+	private static final int NAME_LENGTH_GREATER_THAN_MAX_LENGTH = 300;
 
 	@Import(AuthorsServiceImpl.class)
 	@Configuration
@@ -68,6 +72,28 @@ class AuthorsServiceImplUnitTest {
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
 	}
 
+	@ParameterizedTest
+	@NullAndEmptySource
+	@MethodSource("createStringGreaterThanMaxLength")
+	@DisplayName("should throw AuthorsServiceException when author for create has not valid name")
+	public void shouldThrowExceptionWhenAuthorForCreateHasNotValidName(final String name) {
+		var author = new Author(name, SURNAME);
+		given(fieldValidator.validate(author)).willReturn(false);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
+		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
+	}
+
+	@ParameterizedTest
+	@NullAndEmptySource
+	@MethodSource("createStringGreaterThanMaxLength")
+	@DisplayName("should throw AuthorsServiceException when author for create has not valid surname")
+	public void shouldThrowExceptionWhenAuthorForCreateHasNotValidSurname(final String surname) {
+		var author = new Author(NAME, surname);
+		given(fieldValidator.validate(author)).willReturn(false);
+		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
+		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
+	}
+
 	@Test
 	@DisplayName("should return author by id")
 	public void shouldReturnAuthorById() {
@@ -93,40 +119,31 @@ class AuthorsServiceImplUnitTest {
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
-	@Test
-	@DisplayName("should throw AuthorsServiceException when author for update has null fields")
-	public void shouldThrowExceptionWhenAuthorForUpdateHasNullFields() {
-		var author = new Author(null, null);
+	@ParameterizedTest
+	@NullAndEmptySource
+	@MethodSource("createStringGreaterThanMaxLength")
+	@DisplayName("should throw AuthorsServiceException when author for update has not valid name")
+	public void shouldThrowExceptionWhenAuthorForUpdateHasNotValidName(final String name) {
+		var author = new Author(name, SURNAME);
 		given(fieldValidator.validate(author)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
-	@Test
-	@DisplayName("should throw AuthorsServiceException when author for update has empty fields")
-	public void shouldThrowExceptionWhenAuthorForUpdateHasEmptyFields() {
-		var author = new Author(EMPTY_NAME, EMPTY_SURNAME);
+	@ParameterizedTest
+	@NullAndEmptySource
+	@MethodSource("createStringGreaterThanMaxLength")
+	@DisplayName("should throw AuthorsServiceException when author for update has not valid surname")
+	public void shouldThrowExceptionWhenAuthorForUpdateHasNotValidSurname(final String surname) {
+		var author = new Author(NAME, surname);
 		given(fieldValidator.validate(author)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
-
-	@Test
-	@DisplayName("should throw AuthorsServiceException when author for create has null fields")
-	public void shouldThrowExceptionWhenAuthorForCreateHasNullFields() {
-		var author = new Author(null, null);
-		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
-	}
-
-	@Test
-	@DisplayName("should throw AuthorsServiceException when author for create has empty fields")
-	public void shouldThrowExceptionWhenAuthorForCreateHasEmptyFields() {
-		var author = new Author(EMPTY_NAME, EMPTY_SURNAME);
-		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
+	private static String[] createStringGreaterThanMaxLength() {
+		return new String[]{IntStream.range(0, NAME_LENGTH_GREATER_THAN_MAX_LENGTH)
+				.mapToObj(String::valueOf)
+				.collect(Collectors.joining())};
 	}
 }
