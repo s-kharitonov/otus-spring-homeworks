@@ -12,7 +12,7 @@ public interface GenresDao {
 
 	List<Genre> findAllGenres();
 
-	void removeGenre(long id);
+	boolean removeGenre(long id);
 
-	void updateGenre(Genre genre);
+	boolean updateGenre(Genre genre);
 }

@@ -114,6 +114,13 @@ class GenresServiceImplUnitTest {
 	}
 
 	@Test
+	@DisplayName("should remove genre")
+	public void shouldRemoveGenre() {
+		given(genresDao.removeGenre(FIRST_GENRE_ID)).willReturn(true);
+		assertTrue(genresService.removeGenre(FIRST_GENRE_ID));
+	}
+
+	@Test
 	@DisplayName("should throw GenresServiceException when genre for update is null")
 	public void shouldThrowExceptionWhenGenreForUpdateIsNull() {
 		Genre genre = null;

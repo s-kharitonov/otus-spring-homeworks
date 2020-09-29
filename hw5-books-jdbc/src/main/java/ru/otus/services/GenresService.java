@@ -12,7 +12,7 @@ public interface GenresService {
 
 	List<Genre> getAllGenres();
 
-	void removeGenre(long id);
+	boolean removeGenre(long id);
 
-	void updateGenre(Genre genre);
+	boolean updateGenre(Genre genre);
 }

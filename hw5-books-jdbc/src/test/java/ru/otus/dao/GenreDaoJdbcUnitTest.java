@@ -42,7 +42,7 @@ class GenreDaoJdbcUnitTest {
 	@Test
 	@DisplayName("should remove genre from data.sql by id")
 	public void shouldRemoveGenreById() {
-		genresDao.removeGenre(FIRST_GENRE_ID);
+		assertTrue(genresDao.removeGenre(FIRST_GENRE_ID));
 		assertTrue(genresDao.findGenreById(FIRST_GENRE_ID).isEmpty());
 	}
 
@@ -52,7 +52,7 @@ class GenreDaoJdbcUnitTest {
 		var genre = genresDao.findGenreById(FIRST_GENRE_ID).orElseThrow();
 
 		genre.setName(NEW_GENRE);
-		genresDao.updateGenre(genre);
+		assertTrue(genresDao.updateGenre(genre));
 
 		var updatedGenre = genresDao.findGenreById(FIRST_GENRE_ID).orElseThrow();
 

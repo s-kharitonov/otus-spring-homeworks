@@ -79,26 +79,32 @@ public class GenreDaoJdbc implements GenresDao {
 	}
 
 	@Override
-	public void removeGenre(final long id) {
+	public boolean removeGenre(final long id) {
 		try {
-			jdbcOperations.update(
+			final int result = jdbcOperations.update(
 					"DELETE FROM GENRES WHERE GENRE_ID = :genreId",
 					Map.of("genreId", id)
 			);
+
+			return result > 0;
 		} catch (DataAccessException e) {
 			logger.error("error removing genre by id: {}", id, e);
+			return false;
 		}
 	}
 
 	@Override
-	public void updateGenre(final Genre genre) {
+	public boolean updateGenre(final Genre genre) {
 		try {
-			jdbcOperations.update(
+			final int result = jdbcOperations.update(
 					"UPDATE GENRES G SET G.NAME = :name WHERE G.GENRE_ID = :genreId",
 					Map.of("genreId", genre.getId(), "name", genre.getName())
 			);
+
+			return result > 0;
 		} catch (DataAccessException e) {
 			logger.error("error updating genre: {}", genre, e);
+			return false;
 		}
 	}
 

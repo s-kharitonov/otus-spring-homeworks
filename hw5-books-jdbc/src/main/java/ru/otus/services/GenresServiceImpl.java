@@ -43,14 +43,14 @@ public class GenresServiceImpl implements GenresService {
 	}
 
 	@Override
-	public void removeGenre(final long id) {
-		genresDao.removeGenre(id);
+	public boolean removeGenre(final long id) {
+		return genresDao.removeGenre(id);
 	}
 
 	@Override
-	public void updateGenre(final Genre genre) {
+	public boolean updateGenre(final Genre genre) {
 		checkGenreOrThrow(genre);
-		genresDao.updateGenre(genre);
+		return genresDao.updateGenre(genre);
 	}
 
 	private void checkGenreOrThrow(final Genre genre) {
