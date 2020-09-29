@@ -43,14 +43,14 @@ public class BooksServiceImpl implements BooksService {
 	}
 
 	@Override
-	public void removeBook(final long id) {
-		booksDao.removeBook(id);
+	public boolean removeBook(final long id) {
+		return booksDao.removeBook(id);
 	}
 
 	@Override
-	public void updateBook(final Book book) {
+	public boolean updateBook(final Book book) {
 		checkBookOrThrow(book);
-		booksDao.updateBook(book);
+		return booksDao.updateBook(book);
 	}
 
 	private void checkBookOrThrow(final Book book) {

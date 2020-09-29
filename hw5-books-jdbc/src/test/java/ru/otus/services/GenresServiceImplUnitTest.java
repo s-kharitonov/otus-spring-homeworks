@@ -57,7 +57,7 @@ class GenresServiceImplUnitTest {
 	@Test
 	@DisplayName("should save genre")
 	public void shouldSaveGenre() {
-		var genre = new Genre(GENRE_NAME);
+		var genre = new Genre.Builder().name(GENRE_NAME).build();
 
 		given(fieldValidator.validate(genre)).willReturn(true);
 		given(genresDao.saveGenre(genre)).willReturn(Optional.of(FIRST_GENRE_ID));
@@ -81,7 +81,7 @@ class GenresServiceImplUnitTest {
 	@NullAndEmptySource
 	@MethodSource(value = "createNameGreaterThanMaxLength")
 	public void shouldThrowExceptionWhenGenreForCreateHasNotValidName(final String name) {
-		var genre = new Genre(name);
+		var genre = new Genre.Builder().name(name).build();
 
 		given(fieldValidator.validate(genre)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
@@ -91,7 +91,10 @@ class GenresServiceImplUnitTest {
 	@Test
 	@DisplayName("should return genre by id")
 	public void shouldReturnGenreById() {
-		var genre = new Genre(FIRST_GENRE_ID, GENRE_NAME);
+		var genre = new Genre.Builder()
+				.id(FIRST_GENRE_ID)
+				.name(GENRE_NAME)
+				.build();
 
 		given(genresDao.findGenreById(FIRST_GENRE_ID)).willReturn(Optional.of(genre));
 		assertEquals(genre.getId(), genresService.getGenreById(FIRST_GENRE_ID).orElseThrow().getId());
@@ -100,7 +103,11 @@ class GenresServiceImplUnitTest {
 	@Test
 	@DisplayName("should return all genres")
 	public void shouldReturnAllGenres() {
-		var genres = List.of(new Genre(FIRST_GENRE_ID, GENRE_NAME));
+		var genre = new Genre.Builder()
+				.id(FIRST_GENRE_ID)
+				.name(GENRE_NAME)
+				.build();
+		var genres = List.of(genre);
 
 		given(genresDao.findAllGenres()).willReturn(genres);
 		assertFalse(genresService.getAllGenres().isEmpty());
@@ -120,7 +127,7 @@ class GenresServiceImplUnitTest {
 	@NullAndEmptySource
 	@MethodSource(value = "createNameGreaterThanMaxLength")
 	public void shouldThrowExceptionWhenGenreForUpdateHasNotValidName(final String name) {
-		var genre = new Genre(name);
+		var genre = new Genre.Builder().name(name).build();
 
 		given(fieldValidator.validate(genre)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);

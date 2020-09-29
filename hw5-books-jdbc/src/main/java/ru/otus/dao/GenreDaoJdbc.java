@@ -109,7 +109,7 @@ public class GenreDaoJdbc implements GenresDao {
 			final long id = rs.getLong("GENRE_ID");
 			final String name = rs.getString("NAME");
 
-			return new Genre(id, name);
+			return new Genre.Builder().id(id).name(name).build();
 		}
 	}
 }

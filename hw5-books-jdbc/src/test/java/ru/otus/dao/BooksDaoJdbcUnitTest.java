@@ -34,9 +34,22 @@ class BooksDaoJdbcUnitTest {
 	@Test
 	@DisplayName("should create book")
 	public void shouldCreateBook() {
-		var author = new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME, FIRST_AUTHOR_SURNAME);
-		var genre = new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME);
-		var book = new Book(NEW_BOOK_NAME, NEW_BOOK_PUBLICATION_DATE, NEW_BOOK_PRINT_LENGTH, author, genre);
+		var author = new Author.Builder()
+				.id(FIRST_AUTHOR_ID)
+				.name(FIRST_AUTHOR_NAME)
+				.surname(FIRST_AUTHOR_SURNAME)
+				.build();
+		var genre = new Genre.Builder()
+				.id(FIRST_GENRE_ID)
+				.name(FIRST_GENRE_NAME)
+				.build();
+		var book = new Book.Builder()
+				.name(NEW_BOOK_NAME)
+				.publicationDate(NEW_BOOK_PUBLICATION_DATE)
+				.printLength(NEW_BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		assertTrue(booksDao.saveBook(book).isPresent());
 	}
@@ -62,7 +75,7 @@ class BooksDaoJdbcUnitTest {
 	@Test
 	@DisplayName("should remove book from data.sql by id")
 	public void shouldRemoveBook() {
-		booksDao.removeBook(FIRST_BOOK_ID);
+		assertTrue(booksDao.removeBook(FIRST_BOOK_ID));
 		assertTrue(booksDao.findBookById(FIRST_BOOK_ID).isEmpty());
 	}
 
@@ -73,7 +86,8 @@ class BooksDaoJdbcUnitTest {
 
 		book.setName(NEW_BOOK_NAME);
 		book.setPrintLength(NEW_BOOK_PRINT_LENGTH);
-		booksDao.updateBook(book);
+
+		assertTrue(booksDao.updateBook(book));
 
 		var updatedBook = booksDao.findBookById(FIRST_BOOK_ID).orElseThrow();
 

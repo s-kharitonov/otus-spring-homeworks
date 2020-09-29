@@ -24,7 +24,10 @@ class AuthorsDaoJdbcUnitTest {
 	@Test
 	@DisplayName("should create default author and return author id")
 	public void shouldCreateAuthor() {
-		var author = new Author(NAME, SURNAME);
+		var author = new Author.Builder()
+				.name(NAME)
+				.surname(SURNAME)
+				.build();
 		assertTrue(authorsDao.saveAuthor(author).isPresent());
 	}
 

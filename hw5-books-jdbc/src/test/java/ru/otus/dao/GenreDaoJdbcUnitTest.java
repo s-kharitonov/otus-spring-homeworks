@@ -23,7 +23,7 @@ class GenreDaoJdbcUnitTest {
 	@Test
 	@DisplayName("should save genre")
 	public void shouldSaveGenre() {
-		var genre = new Genre(NEW_GENRE);
+		var genre = new Genre.Builder().name(NEW_GENRE).build();
 		assertTrue(genresDao.saveGenre(genre).isPresent());
 	}
 

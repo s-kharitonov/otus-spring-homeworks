@@ -57,7 +57,10 @@ class AuthorsServiceImplUnitTest {
 	@Test
 	@DisplayName("should create author")
 	public void shouldCreateAuthor() {
-		var author = new Author(NAME, SURNAME);
+		var author = new Author.Builder()
+				.name(NAME)
+				.surname(SURNAME)
+				.build();
 		given(fieldValidator.validate(author)).willReturn(true);
 		given(authorsDao.saveAuthor(author)).willReturn(Optional.of(FIRST_AUTHOR_ID));
 		var id = authorsService.createAuthor(author).orElseThrow();
@@ -77,7 +80,10 @@ class AuthorsServiceImplUnitTest {
 	@MethodSource("createStringGreaterThanMaxLength")
 	@DisplayName("should throw AuthorsServiceException when author for create has not valid name")
 	public void shouldThrowExceptionWhenAuthorForCreateHasNotValidName(final String name) {
-		var author = new Author(name, SURNAME);
+		var author = new Author.Builder()
+				.name(name)
+				.surname(SURNAME)
+				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
@@ -88,7 +94,10 @@ class AuthorsServiceImplUnitTest {
 	@MethodSource("createStringGreaterThanMaxLength")
 	@DisplayName("should throw AuthorsServiceException when author for create has not valid surname")
 	public void shouldThrowExceptionWhenAuthorForCreateHasNotValidSurname(final String surname) {
-		var author = new Author(NAME, surname);
+		var author = new Author.Builder()
+				.name(NAME)
+				.surname(surname)
+				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
@@ -97,7 +106,11 @@ class AuthorsServiceImplUnitTest {
 	@Test
 	@DisplayName("should return author by id")
 	public void shouldReturnAuthorById() {
-		var author = new Author(FIRST_AUTHOR_ID, NAME, SURNAME);
+		var author = new Author.Builder()
+				.id(FIRST_AUTHOR_ID)
+				.name(NAME)
+				.surname(SURNAME)
+				.build();
 		given(authorsDao.findAuthorById(FIRST_AUTHOR_ID)).willReturn(Optional.of(author));
 		var foundedAuthor = authorsService.getAuthorById(FIRST_AUTHOR_ID).orElseThrow();
 		assertEquals(author.getId(), foundedAuthor.getId());
@@ -106,7 +119,12 @@ class AuthorsServiceImplUnitTest {
 	@Test
 	@DisplayName("should return all authors")
 	public void shouldReturnAllAuthors() {
-		var authors = List.of(new Author(FIRST_AUTHOR_ID, NAME, SURNAME));
+		var author = new Author.Builder()
+				.id(FIRST_AUTHOR_ID)
+				.name(NAME)
+				.surname(SURNAME)
+				.build();
+		var authors = List.of(author);
 		given(authorsDao.findAllAuthors()).willReturn(authors);
 		assertFalse(authorsService.getAllAuthors().isEmpty());
 	}
@@ -124,7 +142,10 @@ class AuthorsServiceImplUnitTest {
 	@MethodSource("createStringGreaterThanMaxLength")
 	@DisplayName("should throw AuthorsServiceException when author for update has not valid name")
 	public void shouldThrowExceptionWhenAuthorForUpdateHasNotValidName(final String name) {
-		var author = new Author(name, SURNAME);
+		var author = new Author.Builder()
+				.name(name)
+				.surname(SURNAME)
+				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
@@ -135,7 +156,10 @@ class AuthorsServiceImplUnitTest {
 	@MethodSource("createStringGreaterThanMaxLength")
 	@DisplayName("should throw AuthorsServiceException when author for update has not valid surname")
 	public void shouldThrowExceptionWhenAuthorForUpdateHasNotValidSurname(final String surname) {
-		var author = new Author(NAME, surname);
+		var author = new Author.Builder()
+				.name(NAME)
+				.surname(surname)
+				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));

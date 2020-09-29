@@ -71,14 +71,27 @@ class BooksServiceImplUnitTest {
 
 	@BeforeEach
 	void setUp() {
-		this.genre = new Genre(GENRE_ID, GENRE_NAME);
-		this.author = new Author(AUTHOR_ID, AUTHOR_NAME, AUTHOR_SURNAME);
+		this.genre = new Genre.Builder()
+				.id(GENRE_ID)
+				.name(GENRE_NAME)
+				.build();
+		this.author = new Author.Builder()
+				.id(AUTHOR_ID)
+				.name(AUTHOR_NAME)
+				.surname(AUTHOR_SURNAME)
+				.build();
 	}
 
 	@Test
 	@DisplayName("should save book")
 	public void shouldSaveBook() {
-		var book = new Book(BOOK_NAME, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, author, genre);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(true);
 		given(booksDao.saveBook(book)).willReturn(Optional.of(BOOK_ID));
@@ -102,7 +115,13 @@ class BooksServiceImplUnitTest {
 	@NullAndEmptySource
 	@MethodSource(value = "createNameGreaterThanMaxLength")
 	public void shouldThrowExceptionWhenBookForCreateHasNotValidName(final String bookName) {
-		var book = new Book(bookName, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, author, genre);
+		var book = new Book.Builder()
+				.name(bookName)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -112,7 +131,13 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should throw BooksServiceException when book for create has not valid publication date")
 	public void shouldThrowExceptionWhenBookForCreateHasNotValidPublicationDate() {
-		var book = new Book(BOOK_NAME, null, BOOK_PRINT_LENGTH, author, genre);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(null)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -123,7 +148,13 @@ class BooksServiceImplUnitTest {
 	@DisplayName("should throw BooksServiceException when book for create has not valid publication date")
 	@ValueSource(ints = {0, -1})
 	public void shouldThrowExceptionWhenBookForCreateHasNotValidPrintLength(final int printLength) {
-		var book = new Book(BOOK_NAME, BOOK_PUBLICATION_DATE, printLength, author, genre);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(printLength)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -133,7 +164,13 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should throw BooksServiceException when book for create has not valid author")
 	public void shouldThrowExceptionWhenBookForCreateHasNotValidAuthor() {
-		var book = new Book(BOOK_NAME, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, null, genre);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(null)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -143,7 +180,13 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should throw BooksServiceException when book for create has not valid genre")
 	public void shouldThrowExceptionWhenBookForCreateHasNotValidGenre() {
-		var book = new Book(BOOK_NAME, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, author, null);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(null)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -153,7 +196,14 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should return book by id")
 	public void shouldReturnBookById() {
-		var book = new Book(BOOK_ID, BOOK_NAME, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, author, genre);
+		var book = new Book.Builder()
+				.id(BOOK_ID)
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(booksDao.findBookById(BOOK_ID)).willReturn(Optional.of(book));
 		assertEquals(BOOK_ID, booksService.getBookById(BOOK_ID).orElseThrow().getId());
@@ -162,10 +212,43 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should return all books")
 	public void shouldReturnAllBooks() {
-		var books = List.of(new Book(BOOK_ID, BOOK_NAME, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, author, genre));
+		var book = new Book.Builder()
+				.id(BOOK_ID)
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
+		var books = List.of(book);
 
 		given(booksDao.findAllBooks()).willReturn(books);
 		assertFalse(booksService.getAllBooks().isEmpty());
+	}
+
+	@Test
+	@DisplayName("should remove book")
+	public void shouldRemoveBook() {
+		given(booksDao.removeBook(BOOK_ID)).willReturn(true);
+		assertTrue(booksService.removeBook(BOOK_ID));
+	}
+
+	@Test
+	@DisplayName("should update book")
+	public void shouldUpdateBook() {
+		var book = new Book.Builder()
+				.id(BOOK_ID)
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
+
+		given(fieldValidator.validate(book)).willReturn(true);
+		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
+		given(booksDao.updateBook(book)).willReturn(true);
+		assertTrue(booksService.updateBook(book));
 	}
 
 	@Test
@@ -182,7 +265,13 @@ class BooksServiceImplUnitTest {
 	@NullAndEmptySource
 	@MethodSource(value = "createNameGreaterThanMaxLength")
 	public void shouldThrowExceptionWhenBookForUpdateHasNotValidName(final String bookName) {
-		var book = new Book(bookName, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, author, genre);
+		var book = new Book.Builder()
+				.name(bookName)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -192,7 +281,13 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should throw BooksServiceException when book for update has not valid publication date")
 	public void shouldThrowExceptionWhenBookForUpdateHasNotValidPublicationDate() {
-		var book = new Book(BOOK_NAME, null, BOOK_PRINT_LENGTH, author, genre);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(null)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -203,7 +298,13 @@ class BooksServiceImplUnitTest {
 	@DisplayName("should throw BooksServiceException when book for update has not valid publication date")
 	@ValueSource(ints = {0, -1})
 	public void shouldThrowExceptionWhenBookForUpdateHasNotValidPrintLength(final int printLength) {
-		var book = new Book(BOOK_NAME, BOOK_PUBLICATION_DATE, printLength, author, genre);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(printLength)
+				.author(author)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -213,7 +314,13 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should throw BooksServiceException when book for update has not valid author")
 	public void shouldThrowExceptionWhenBookForUpdateHasNotValidAuthor() {
-		var book = new Book(BOOK_NAME, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, null, genre);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(null)
+				.genre(genre)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
@@ -223,7 +330,13 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should throw BooksServiceException when book for update has not valid genre")
 	public void shouldThrowExceptionWhenBookForUpdateHasNotValidGenre() {
-		var book = new Book(BOOK_NAME, BOOK_PUBLICATION_DATE, BOOK_PRINT_LENGTH, author, null);
+		var book = new Book.Builder()
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(null)
+				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
 		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);

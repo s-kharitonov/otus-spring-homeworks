@@ -110,21 +110,23 @@ public class BooksDaoJdbc implements BooksDao {
 	}
 
 	@Override
-	public void removeBook(final long id) {
+	public boolean removeBook(final long id) {
 		try {
-			jdbcOperations.update(
+			final int result = jdbcOperations.update(
 					"DELETE FROM BOOKS WHERE BOOK_ID = :bookId",
 					Map.of("bookId", id)
 			);
+			return result > 0;
 		} catch (DataAccessException e) {
 			logger.error("error removing book by id: {}", id, e);
+			return false;
 		}
 	}
 
 	@Override
-	public void updateBook(final Book book) {
+	public boolean updateBook(final Book book) {
 		try {
-			jdbcOperations.update(
+			final int result = jdbcOperations.update(
 					"UPDATE BOOKS B SET B.NAME = :name, B.PRINT_LENGTH = :printLength," +
 							"B.PUBLICATION_DATE = :publicationDate WHERE B.BOOK_ID = :bookId",
 					Map.of("bookId", book.getId(),
@@ -132,8 +134,11 @@ public class BooksDaoJdbc implements BooksDao {
 							"printLength", book.getPrintLength(),
 							"publicationDate", book.getPublicationDate())
 			);
+
+			return result > 0;
 		} catch (DataAccessException e) {
 			logger.error("error updating book: {}", book, e);
+			return false;
 		}
 	}
 
@@ -150,10 +155,23 @@ public class BooksDaoJdbc implements BooksDao {
 			final String authorSurname = rs.getString("SURNAME");
 			final long genreId = rs.getLong("GENRE_ID");
 			final String genreName = rs.getString("GENRE_NAME");
-			final Author author = new Author(authorId, authorName, authorSurname);
-			final Genre genre = new Genre(genreId, genreName);
-
-			return new Book(bookId, bookName, publicationDate, printLength, author, genre);
+			final Author author = new Author.Builder()
+					.id(authorId)
+					.name(authorName)
+					.surname(authorSurname)
+					.build();
+			final Genre genre = new Genre.Builder()
+					.id(genreId)
+					.name(genreName)
+					.build();
+			return new Book.Builder()
+					.id(bookId)
+					.name(bookName)
+					.publicationDate(publicationDate)
+					.printLength(printLength)
+					.author(author)
+					.genre(genre)
+					.build();
 		}
 	}
 }

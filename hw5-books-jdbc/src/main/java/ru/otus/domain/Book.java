@@ -21,23 +21,16 @@ public class Book {
 	@NotNull
 	private Genre genre;
 
-	public Book(final long id, final String name, final Date publicationDate,
-				final int printLength, final Author author, final Genre genre) {
-		this.id = id;
-		this.name = name;
-		this.publicationDate = publicationDate;
-		this.printLength = printLength;
-		this.author = author;
-		this.genre = genre;
+	public Book() {
 	}
 
-	public Book(final String name, final Date publicationDate, final int printLength,
-				final Author author, final Genre genre) {
-		this.name = name;
-		this.publicationDate = publicationDate;
-		this.printLength = printLength;
-		this.author = author;
-		this.genre = genre;
+	private Book(final Builder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
+		this.publicationDate = builder.publicationDate;
+		this.printLength = builder.printLength;
+		this.author = builder.author;
+		this.genre = builder.genre;
 	}
 
 	public Long getId() {
@@ -98,5 +91,48 @@ public class Book {
 				", author=" + author +
 				", genre=" + genre +
 				'}';
+	}
+
+	public static class Builder {
+		private Long id;
+		private String name;
+		private Date publicationDate;
+		private int printLength;
+		private Author author;
+		private Genre genre;
+
+		public Builder id(final Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder name(final String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder publicationDate(final Date publicationDate) {
+			this.publicationDate = publicationDate;
+			return this;
+		}
+
+		public Builder printLength(final int printLength) {
+			this.printLength = printLength;
+			return this;
+		}
+
+		public Builder author(final Author author) {
+			this.author = author;
+			return this;
+		}
+
+		public Builder genre(final Genre genre) {
+			this.genre = genre;
+			return this;
+		}
+
+		public Book build() {
+			return new Book(this);
+		}
 	}
 }

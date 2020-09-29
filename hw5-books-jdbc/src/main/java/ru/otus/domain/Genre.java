@@ -11,13 +11,12 @@ public class Genre {
 	@Size(max = 255)
 	private String name;
 
-	public Genre(final String name) {
-		this.name = name;
+	public Genre() {
 	}
 
-	public Genre(final Long id, final String name) {
-		this.id = id;
-		this.name = name;
+	private Genre(final Builder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
 	}
 
 	public Long getId() {
@@ -42,5 +41,24 @@ public class Genre {
 				"id=" + id +
 				", name='" + name + '\'' +
 				'}';
+	}
+
+	public static class Builder {
+		private Long id;
+		private String name;
+
+		public Builder id(final Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder name(final String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Genre build() {
+			return new Genre(this);
+		}
 	}
 }

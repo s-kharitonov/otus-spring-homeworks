@@ -113,7 +113,11 @@ public class AuthorsDaoJdbc implements AuthorsDao {
 			final String name = rs.getString("NAME");
 			final String surname = rs.getString("SURNAME");
 
-			return new Author(id, name, surname);
+			return new Author.Builder()
+					.id(id)
+					.name(name)
+					.surname(surname)
+					.build();
 		}
 	}
 }

@@ -15,15 +15,13 @@ public class Author {
 	@Size(max = 255)
 	private String surname;
 
-	public Author(final String name, final String surname) {
-		this.name = name;
-		this.surname = surname;
+	public Author() {
 	}
 
-	public Author(final Long id, final String name, final String surname) {
-		this.id = id;
-		this.name = name;
-		this.surname = surname;
+	public Author(final Builder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
+		this.surname = builder.surname;
 	}
 
 	public Long getId() {
@@ -57,5 +55,30 @@ public class Author {
 				", name='" + name + '\'' +
 				", surname='" + surname + '\'' +
 				'}';
+	}
+
+	public static class Builder{
+		private Long id;
+		private String name;
+		private String surname;
+
+		public Builder id(final Long id){
+			this.id = id;
+			return this;
+		}
+
+		public Builder name(final String name){
+			this.name = name;
+			return this;
+		}
+
+		public Builder surname(final String surname){
+			this.surname = surname;
+			return this;
+		}
+
+		public Author build() {
+			return new Author(this);
+		}
 	}
 }
