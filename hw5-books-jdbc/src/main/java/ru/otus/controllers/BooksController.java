@@ -25,7 +25,7 @@ public class BooksController {
 		this.localizationService = localizationService;
 	}
 
-	@ShellMethod(value = "create book and get id", group = "books", key = {"c", "create"})
+	@ShellMethod(value = "create book and get id", group = "books", key = {"c-b", "create-book"})
 	public String createBook(@ShellOption(help = "enter book name") String name,
 							 @ShellOption(help = "enter book publication date in format: dd.MM.yyyy") Date publicationDate,
 							 @ShellOption(help = "enter book print length") int printLength,
@@ -46,21 +46,21 @@ public class BooksController {
 				.orElse(localizationService.localizeMessage(Constants.BOOK_UNSUCCESSFUL_CREATED_MSG_KEY, book));
 	}
 
-	@ShellMethod(value = "get book by id", group = "books", key = {"r", "read"})
+	@ShellMethod(value = "get book by id", group = "books", key = {"r-b", "read-book"})
 	public String getBookById(@ShellOption(help = "enter book id") long id) {
 		return booksService.getBookById(id)
 				.map(Book::toString)
 				.orElse(localizationService.localizeMessage(Constants.BOOK_NOT_FOUND_MSG_KEY, id));
 	}
 
-	@ShellMethod(value = "get all books", group = "books", key = {"r-a", "read-all"})
+	@ShellMethod(value = "get all books", group = "books", key = {"r-a-b", "read-all-books"})
 	public String getAllBooks() {
 		return booksService.getAllBooks().stream()
 				.map(Book::toString)
 				.collect(Collectors.joining(System.lineSeparator()));
 	}
 
-	@ShellMethod(value = "remove book by id", group = "books", key = { "d", "delete"})
+	@ShellMethod(value = "remove book by id", group = "books", key = { "d-b", "delete-book"})
 	public String removeBook(@ShellOption(help = "enter book id") long id) {
 		if (booksService.removeBook(id)) {
 			return localizationService.localizeMessage(Constants.BOOK_SUCCESSFUL_REMOVED_MSG_KEY, id);
@@ -69,7 +69,7 @@ public class BooksController {
 		}
 	}
 
-	@ShellMethod(value = "update book", group = "books", key = { "u", "update"})
+	@ShellMethod(value = "update book", group = "books", key = { "u-b", "update-book"})
 	public String updateBook(@ShellOption(help = "enter book id") long bookId,
 							 @ShellOption(help = "enter book name") String name,
 							 @ShellOption(help = "enter book publication date in format: dd.MM.yyyy") Date publicationDate,
