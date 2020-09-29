@@ -12,7 +12,7 @@ public interface AuthorsService {
 
 	List<Author> getAllAuthors();
 
-	void removeAuthor(long id);
+	boolean removeAuthor(long id);
 
-	void updateAuthor(Author author);
+	boolean updateAuthor(Author author);
 }

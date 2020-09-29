@@ -130,6 +130,13 @@ class AuthorsServiceImplUnitTest {
 	}
 
 	@Test
+	@DisplayName("should remove author")
+	public void shouldRemoveAuthor() {
+		given(authorsDao.removeAuthor(FIRST_AUTHOR_ID)).willReturn(true);
+		assertTrue(authorsService.removeAuthor(FIRST_AUTHOR_ID));
+	}
+
+	@Test
 	@DisplayName("should throw AuthorsServiceException when author for update is null")
 	public void shouldThrowExceptionWhenAuthorForUpdateIsNull() {
 		Author author = null;

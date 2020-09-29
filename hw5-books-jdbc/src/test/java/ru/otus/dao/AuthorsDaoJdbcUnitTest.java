@@ -46,7 +46,7 @@ class AuthorsDaoJdbcUnitTest {
 	@Test
 	@DisplayName("should remove author by default id")
 	public void shouldRemoveAuthorById() {
-		authorsDao.removeAuthor(FIRST_AUTHOR_ID);
+		assertTrue(authorsDao.removeAuthor(FIRST_AUTHOR_ID));
 		assertTrue(authorsDao.findAuthorById(FIRST_AUTHOR_ID).isEmpty());
 	}
 
@@ -57,7 +57,8 @@ class AuthorsDaoJdbcUnitTest {
 
 		author.setName(NAME);
 		author.setSurname(SURNAME);
-		authorsDao.updateAuthor(author);
+
+		assertTrue(authorsDao.updateAuthor(author));
 
 		var updatedAuthor = authorsDao.findAuthorById(FIRST_AUTHOR_ID).orElseThrow();
 

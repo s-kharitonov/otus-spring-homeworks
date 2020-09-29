@@ -43,14 +43,14 @@ public class AuthorsServiceImpl implements AuthorsService {
 	}
 
 	@Override
-	public void removeAuthor(final long id) {
-		authorsDao.removeAuthor(id);
+	public boolean removeAuthor(final long id) {
+		return authorsDao.removeAuthor(id);
 	}
 
 	@Override
-	public void updateAuthor(final Author author) {
+	public boolean updateAuthor(final Author author) {
 		checkAuthorOrThrow(author);
-		authorsDao.updateAuthor(author);
+		return authorsDao.updateAuthor(author);
 	}
 
 	private void checkAuthorOrThrow(final Author author) {
