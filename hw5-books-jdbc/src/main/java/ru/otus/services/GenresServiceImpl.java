@@ -2,7 +2,6 @@ package ru.otus.services;
 
 import org.springframework.stereotype.Service;
 import ru.otus.dao.GenresDao;
-import ru.otus.domain.Constants;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
 import ru.otus.validators.FieldValidator;
@@ -15,14 +14,11 @@ import java.util.Optional;
 public class GenresServiceImpl implements GenresService {
 
 	private final GenresDao genresDao;
-	private final LocalizationService localizationService;
 	private final FieldValidator fieldValidator;
 
 	public GenresServiceImpl(final GenresDao genresDao,
-							 final LocalizationService localizationService,
 							 final FieldValidator fieldValidator) {
 		this.genresDao = genresDao;
-		this.localizationService = localizationService;
 		this.fieldValidator = fieldValidator;
 	}
 
@@ -55,9 +51,7 @@ public class GenresServiceImpl implements GenresService {
 
 	private void checkGenreOrThrow(final Genre genre) {
 		if (Objects.isNull(genre) || !fieldValidator.validate(genre)) {
-			throw new GenresServiceException(
-					localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)
-			);
+			throw new GenresServiceException(String.format("genre: %s is invalid!", genre));
 		}
 	}
 }

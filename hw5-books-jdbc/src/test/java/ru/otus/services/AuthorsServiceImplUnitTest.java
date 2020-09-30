@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.dao.AuthorsDao;
 import ru.otus.domain.Author;
-import ru.otus.domain.Constants;
 import ru.otus.exceptions.AuthorsServiceException;
 import ru.otus.validators.FieldValidator;
 
@@ -33,7 +32,6 @@ class AuthorsServiceImplUnitTest {
 	private static final String SURNAME = "kharitonov";
 	private static final String NAME = "sergey";
 	private static final long FIRST_AUTHOR_ID = 1L;
-	private static final String EMPTY_APP_MESSAGE = "";
 	private static final int NAME_LENGTH_GREATER_THAN_MAX_LENGTH = 300;
 
 	@Import(AuthorsServiceImpl.class)
@@ -44,9 +42,6 @@ class AuthorsServiceImplUnitTest {
 
 	@MockBean
 	private AuthorsDao authorsDao;
-
-	@MockBean
-	private LocalizationService localizationService;
 
 	@MockBean
 	private FieldValidator fieldValidator;
@@ -71,7 +66,6 @@ class AuthorsServiceImplUnitTest {
 	@DisplayName("should throw AuthorsServiceException when author for create is null")
 	public void shouldThrowExceptionWhenAuthorForCreateIsNull() {
 		Author author = null;
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
 	}
 
@@ -85,7 +79,6 @@ class AuthorsServiceImplUnitTest {
 				.surname(SURNAME)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
 	}
 
@@ -99,7 +92,6 @@ class AuthorsServiceImplUnitTest {
 				.surname(surname)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
 	}
 
@@ -140,7 +132,6 @@ class AuthorsServiceImplUnitTest {
 	@DisplayName("should throw AuthorsServiceException when author for update is null")
 	public void shouldThrowExceptionWhenAuthorForUpdateIsNull() {
 		Author author = null;
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
@@ -154,7 +145,6 @@ class AuthorsServiceImplUnitTest {
 				.surname(SURNAME)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
@@ -168,7 +158,6 @@ class AuthorsServiceImplUnitTest {
 				.surname(surname)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_AUTHOR_MSG_KEY, author)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 

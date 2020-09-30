@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.dao.GenresDao;
-import ru.otus.domain.Constants;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
 import ru.otus.validators.FieldValidator;
@@ -46,9 +45,6 @@ class GenresServiceImplUnitTest {
 	private FieldValidator fieldValidator;
 
 	@MockBean
-	private LocalizationService localizationService;
-
-	@MockBean
 	private GenresDao genresDao;
 
 	@Autowired
@@ -71,8 +67,6 @@ class GenresServiceImplUnitTest {
 	@DisplayName("should throw GenresServiceException when genre for create is null")
 	public void shouldThrowExceptionWhenGenreForCreateIsNull() {
 		Genre genre = null;
-
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
 	}
 
@@ -84,7 +78,6 @@ class GenresServiceImplUnitTest {
 		var genre = new Genre.Builder().name(name).build();
 
 		given(fieldValidator.validate(genre)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
 	}
 
@@ -124,8 +117,6 @@ class GenresServiceImplUnitTest {
 	@DisplayName("should throw GenresServiceException when genre for update is null")
 	public void shouldThrowExceptionWhenGenreForUpdateIsNull() {
 		Genre genre = null;
-
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(GenresServiceException.class, () -> genresService.updateGenre(genre));
 	}
 
@@ -137,7 +128,6 @@ class GenresServiceImplUnitTest {
 		var genre = new Genre.Builder().name(name).build();
 
 		given(fieldValidator.validate(genre)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_GENRE_MSG_KEY, genre)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
 	}
 

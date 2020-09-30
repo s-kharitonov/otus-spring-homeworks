@@ -17,7 +17,6 @@ import ru.otus.configs.AppProperties;
 import ru.otus.dao.BooksDao;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
-import ru.otus.domain.Constants;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.BooksServiceException;
 import ru.otus.validators.FieldValidator;
@@ -56,9 +55,6 @@ class BooksServiceImplUnitTest {
 
 	@MockBean
 	private FieldValidator fieldValidator;
-
-	@MockBean
-	private LocalizationService localizationService;
 
 	@MockBean
 	private BooksDao booksDao;
@@ -105,8 +101,6 @@ class BooksServiceImplUnitTest {
 	@DisplayName("should throw BooksServiceException when book for create is null")
 	public void shouldThrowExceptionWhenBookForCreateIsNull() {
 		Book book = null;
-
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
 	}
 
@@ -124,7 +118,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
 	}
 
@@ -140,7 +133,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
 	}
 
@@ -157,7 +149,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
 	}
 
@@ -173,7 +164,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
 	}
 
@@ -189,7 +179,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
 	}
 
@@ -246,7 +235,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(true);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		given(booksDao.updateBook(book)).willReturn(true);
 		assertTrue(booksService.updateBook(book));
 	}
@@ -255,8 +243,6 @@ class BooksServiceImplUnitTest {
 	@DisplayName("should throw BooksServiceException when book for update is null")
 	public void shouldThrowExceptionWhenBookForUpdateIsNull() {
 		Book book = null;
-
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
 	}
 
@@ -274,7 +260,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
 	}
 
@@ -290,7 +275,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
 	}
 
@@ -307,7 +291,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
 	}
 
@@ -323,7 +306,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
 	}
 
@@ -339,7 +321,6 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		given(localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)).willReturn(EMPTY_APP_MESSAGE);
 		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
 	}
 

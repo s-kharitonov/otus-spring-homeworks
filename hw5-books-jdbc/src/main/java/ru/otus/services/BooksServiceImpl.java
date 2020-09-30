@@ -3,7 +3,6 @@ package ru.otus.services;
 import org.springframework.stereotype.Service;
 import ru.otus.dao.BooksDao;
 import ru.otus.domain.Book;
-import ru.otus.domain.Constants;
 import ru.otus.exceptions.BooksServiceException;
 import ru.otus.validators.FieldValidator;
 
@@ -15,14 +14,11 @@ import java.util.Optional;
 public class BooksServiceImpl implements BooksService {
 
 	private final BooksDao booksDao;
-	private final LocalizationService localizationService;
 	private final FieldValidator fieldValidator;
 
 	public BooksServiceImpl(final BooksDao booksDao,
-							final LocalizationService localizationService,
 							final FieldValidator fieldValidator) {
 		this.booksDao = booksDao;
-		this.localizationService = localizationService;
 		this.fieldValidator = fieldValidator;
 	}
 
@@ -55,9 +51,7 @@ public class BooksServiceImpl implements BooksService {
 
 	private void checkBookOrThrow(final Book book) {
 		if (Objects.isNull(book) || !fieldValidator.validate(book)) {
-			throw new BooksServiceException(
-					localizationService.localizeMessage(Constants.INVALID_BOOK_MSG_KEY, book)
-			);
+			throw new BooksServiceException(String.format("book: %s is invalid!", book));
 		}
 	}
 }
