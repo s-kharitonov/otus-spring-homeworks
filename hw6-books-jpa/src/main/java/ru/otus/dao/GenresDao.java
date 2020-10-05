@@ -13,6 +13,4 @@ public interface GenresDao {
 	List<Genre> findAllGenres();
 
 	boolean removeGenre(long id);
-
-	boolean updateGenre(Genre genre);
 }

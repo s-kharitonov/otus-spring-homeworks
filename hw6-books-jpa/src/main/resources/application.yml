@@ -10,5 +10,13 @@ spring:
   messages:
     encoding: UTF-8
     basename: i18n/messages
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
 application:
   locale: en

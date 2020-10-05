@@ -1,6 +1,7 @@
 package ru.otus.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dao.GenresDao;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
@@ -23,30 +24,35 @@ public class GenresServiceImpl implements GenresService {
 	}
 
 	@Override
+	@Transactional
 	public Optional<Long> saveGenre(final Genre genre) {
 		checkGenreOrThrow(genre);
 		return genresDao.saveGenre(genre);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Optional<Genre> getGenreById(final long id) {
 		return genresDao.findGenreById(id);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Genre> getAllGenres() {
 		return genresDao.findAllGenres();
 	}
 
 	@Override
+	@Transactional
 	public boolean removeGenre(final long id) {
 		return genresDao.removeGenre(id);
 	}
 
 	@Override
+	@Transactional
 	public boolean updateGenre(final Genre genre) {
 		checkGenreOrThrow(genre);
-		return genresDao.updateGenre(genre);
+		return genresDao.saveGenre(genre).isPresent();
 	}
 
 	private void checkGenreOrThrow(final Genre genre) {
