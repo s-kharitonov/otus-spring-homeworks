@@ -16,7 +16,7 @@ public class Genre {
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
-	@Column(name = "NAME", nullable = false)
+	@Column(name = "NAME", nullable = false, unique = true, length = 255)
 	private String name;
 
 	public Genre() {
