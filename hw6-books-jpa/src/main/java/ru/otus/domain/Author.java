@@ -27,7 +27,7 @@ public class Author {
 	public Author() {
 	}
 
-	public Author(final Builder builder) {
+	private Author(final Builder builder) {
 		this.id = builder.id;
 		this.name = builder.name;
 		this.surname = builder.surname;
