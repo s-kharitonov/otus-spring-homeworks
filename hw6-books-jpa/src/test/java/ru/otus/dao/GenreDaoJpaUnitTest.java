@@ -8,12 +8,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.domain.Genre;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("DAO for work this genres")
 @Import(GenreDaoJpa.class)
@@ -33,22 +31,29 @@ class GenreDaoJpaUnitTest {
 	@DisplayName("should save genre")
 	public void shouldSaveGenre() {
 		var genre = new Genre.Builder().name(NEW_GENRE).build();
-		assertTrue(genresDao.saveGenre(genre).isPresent());
+		var genreId = genresDao.saveGenre(genre).orElseThrow();
+
+		assertNotNull(genreId);
+
+		var savedGenre = em.find(Genre.class, genreId);
+
+		assertNotNull(savedGenre);
+		assertEquals(NEW_GENRE, savedGenre.getName());
 	}
 
 	@Test
 	@DisplayName("should return genre by id from data.sql")
 	public void shouldReturnGenreById() {
-		Optional<Genre> genre = genresDao.findGenreById(FIRST_GENRE_ID);
+		var genre = genresDao.findGenreById(FIRST_GENRE_ID).orElseThrow();
 		var expectedGenre = em.find(Genre.class, FIRST_GENRE_ID);
 
-		assertThat(genre).get().isEqualToComparingFieldByField(expectedGenre);
+		assertThat(genre).isEqualToComparingFieldByField(expectedGenre);
 	}
 
 	@Test
 	@DisplayName("should return all genres from data.sql")
 	public void shouldReturnAllGenres() {
-		List<Genre> genres = genresDao.findAllGenres();
+		var genres = genresDao.findAllGenres();
 		var expectedGenres = em.getEntityManager()
 				.createQuery("select g from Genre g", Genre.class)
 				.getResultList();
@@ -62,12 +67,12 @@ class GenreDaoJpaUnitTest {
 
 		em.detach(genreForRemove);
 
-		assertThat(genreForRemove).isNotNull();
+		assertNotNull(genreForRemove);
 		genresDao.removeGenre(FIRST_GENRE_ID);
 
 		var removedGenre = em.find(Genre.class, FIRST_GENRE_ID);
 
-		assertThat(removedGenre).isNull();
+		assertNull(removedGenre);
 	}
 
 	@Test
