@@ -1,6 +1,7 @@
 package ru.otus.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dao.AuthorsDao;
 import ru.otus.domain.Author;
 import ru.otus.exceptions.AuthorsServiceException;
@@ -23,27 +24,32 @@ public class AuthorsServiceImpl implements AuthorsService {
 	}
 
 	@Override
+	@Transactional
 	public Optional<Long> createAuthor(final Author author) {
 		checkAuthorOrThrow(author);
 		return authorsDao.saveAuthor(author);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Optional<Author> getAuthorById(final long id) {
 		return authorsDao.findAuthorById(id);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Author> getAllAuthors() {
 		return authorsDao.findAllAuthors();
 	}
 
 	@Override
+	@Transactional
 	public boolean removeAuthor(final long id) {
 		return authorsDao.removeAuthor(id);
 	}
 
 	@Override
+	@Transactional
 	public boolean updateAuthor(final Author author) {
 		checkAuthorOrThrow(author);
 		return authorsDao.saveAuthor(author).isPresent();
