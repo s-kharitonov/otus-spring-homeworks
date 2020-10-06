@@ -1,18 +1,27 @@
 package ru.otus.domain;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table(name = "AUTHORS")
 public class Author {
+	@Id
+	@Column(name = "AUTHOR_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_s")
+	@SequenceGenerator(name = "author_s", sequenceName = "AUTHORS_S", allocationSize = 1)
 	private Long id;
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
+	@Column(name = "NAME", nullable = false, length = 255)
 	private String name;
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
+	@Column(name = "SURNAME", nullable = false, length = 255)
 	private String surname;
 
 	public Author() {

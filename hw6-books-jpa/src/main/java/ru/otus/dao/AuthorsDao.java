@@ -13,6 +13,4 @@ public interface AuthorsDao {
 	List<Author> findAllAuthors();
 
 	boolean removeAuthor(long id);
-
-	boolean updateAuthor(Author author);
 }

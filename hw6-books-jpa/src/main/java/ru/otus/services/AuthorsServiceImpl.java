@@ -46,7 +46,7 @@ public class AuthorsServiceImpl implements AuthorsService {
 	@Override
 	public boolean updateAuthor(final Author author) {
 		checkAuthorOrThrow(author);
-		return authorsDao.updateAuthor(author);
+		return authorsDao.saveAuthor(author).isPresent();
 	}
 
 	private void checkAuthorOrThrow(final Author author) {
