@@ -25,7 +25,7 @@ public class GenresServiceImpl implements GenresService {
 
 	@Override
 	@Transactional
-	public Optional<Long> saveGenre(final Genre genre) {
+	public Genre saveGenre(final Genre genre) {
 		checkGenreOrThrow(genre);
 		return genresDao.saveGenre(genre);
 	}
@@ -46,13 +46,6 @@ public class GenresServiceImpl implements GenresService {
 	@Transactional
 	public boolean removeGenre(final long id) {
 		return genresDao.removeGenre(id);
-	}
-
-	@Override
-	@Transactional
-	public boolean updateGenre(final Genre genre) {
-		checkGenreOrThrow(genre);
-		return genresDao.saveGenre(genre).isPresent();
 	}
 
 	private void checkGenreOrThrow(final Genre genre) {

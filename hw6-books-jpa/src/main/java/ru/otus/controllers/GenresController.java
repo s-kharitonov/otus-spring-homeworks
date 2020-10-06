@@ -8,6 +8,7 @@ import ru.otus.domain.Genre;
 import ru.otus.services.GenresService;
 import ru.otus.services.LocalizationService;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ShellComponent
@@ -22,12 +23,15 @@ public class GenresController {
 		this.localizationService = localizationService;
 	}
 
-	@ShellMethod(value = "create genre and get id", group = "genres", key = {"c-g", "create-genre"})
+	@ShellMethod(value = "create genre", group = "genres", key = {"c-g", "create-genre"})
 	public String createGenre(@ShellOption(help = "enter genre name") String name) {
 		final var genre = new Genre.Builder().name(name).build();
-		return genresService.saveGenre(genre)
-				.map(String::valueOf)
-				.orElse(localizationService.localizeMessage(Constants.GENRE_UNSUCCESSFUL_CREATED_MSG_KEY, genre));
+
+		if (Objects.nonNull(genre.getId())) {
+			return String.valueOf(genre);
+		} else {
+			return localizationService.localizeMessage(Constants.GENRE_UNSUCCESSFUL_CREATED_MSG_KEY, genre);
+		}
 	}
 
 	@ShellMethod(value = "get genre by id", group = "genres", key = {"r-g", "read-genre"})
@@ -61,8 +65,8 @@ public class GenresController {
 				.name(name)
 				.build();
 
-		if (genresService.updateGenre(genre)) {
-			return localizationService.localizeMessage(Constants.GENRE_SUCCESSFUL_UPDATED_MSG_KEY, id);
+		if (Objects.nonNull(genre.getId())) {
+			return String.valueOf(genre);
 		} else {
 			return localizationService.localizeMessage(Constants.GENRE_UNSUCCESSFUL_UPDATED_MSG_KEY, id);
 		}

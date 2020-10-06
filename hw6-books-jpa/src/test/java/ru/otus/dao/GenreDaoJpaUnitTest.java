@@ -8,8 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.domain.Genre;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +29,7 @@ class GenreDaoJpaUnitTest {
 	@DisplayName("should save genre")
 	public void shouldSaveGenre() {
 		var genre = new Genre.Builder().name(NEW_GENRE).build();
-		var genreId = genresDao.saveGenre(genre).orElseThrow();
+		var genreId = genresDao.saveGenre(genre).getId();
 
 		assertNotNull(genreId);
 
@@ -90,8 +88,8 @@ class GenreDaoJpaUnitTest {
 	}
 
 	@Test
-	@DisplayName("should return empty value when genre for save is null")
-	public void shouldReturnEmptyValueWhenGenreForSaveIsNull() {
-		assertEquals(Optional.empty(), genresDao.saveGenre(null));
+	@DisplayName("should return null when genre for save is null")
+	public void shouldReturnNullWhenGenreForSaveIsNull() {
+		assertNull(genresDao.saveGenre(null));
 	}
 }

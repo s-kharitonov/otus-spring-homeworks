@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenresDao {
-	Optional<Long> saveGenre(Genre genre);
+	Genre saveGenre(Genre genre);
 
 	Optional<Genre> findGenreById(long id);
 

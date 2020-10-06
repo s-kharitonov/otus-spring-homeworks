@@ -56,9 +56,10 @@ class GenresServiceImplUnitTest {
 		var genre = new Genre.Builder().name(GENRE_NAME).build();
 
 		given(fieldValidator.validate(genre)).willReturn(true);
-		given(genresDao.saveGenre(genre)).willReturn(Optional.of(FIRST_GENRE_ID));
+		given(genresDao.saveGenre(genre)).willReturn(genre);
+		given(genre.getId()).willReturn(FIRST_GENRE_ID);
 
-		var genreId = genresService.saveGenre(genre).orElseThrow();
+		var genreId = genresService.saveGenre(genre).getId();
 
 		assertEquals(FIRST_GENRE_ID, genreId);
 	}
@@ -111,13 +112,6 @@ class GenresServiceImplUnitTest {
 	public void shouldRemoveGenre() {
 		given(genresDao.removeGenre(FIRST_GENRE_ID)).willReturn(true);
 		assertTrue(genresService.removeGenre(FIRST_GENRE_ID));
-	}
-
-	@Test
-	@DisplayName("should throw GenresServiceException when genre for update is null")
-	public void shouldThrowExceptionWhenGenreForUpdateIsNull() {
-		Genre genre = null;
-		assertThrows(GenresServiceException.class, () -> genresService.updateGenre(genre));
 	}
 
 	@ParameterizedTest

@@ -20,17 +20,17 @@ public class GenreDaoJpa implements GenresDao {
 	private EntityManager em;
 
 	@Override
-	public Optional<Long> saveGenre(final Genre genre) {
+	public Genre saveGenre(final Genre genre) {
 		try {
 			if (genre.getId() == null) {
 				em.persist(genre);
-				return Optional.ofNullable(genre.getId());
+				return genre;
 			}
 
-			return Optional.ofNullable(em.merge(genre).getId());
+			return em.merge(genre);
 		} catch (Exception e) {
 			logger.error("error creating genre: {}", genre, e);
-			return Optional.empty();
+			return genre;
 		}
 	}
 
