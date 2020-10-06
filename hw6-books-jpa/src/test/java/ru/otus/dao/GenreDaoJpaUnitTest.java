@@ -29,11 +29,11 @@ class GenreDaoJpaUnitTest {
 	@DisplayName("should save genre")
 	public void shouldSaveGenre() {
 		var genre = new Genre.Builder().name(NEW_GENRE).build();
-		var genreId = genresDao.saveGenre(genre).getId();
 
-		assertNotNull(genreId);
+		genresDao.saveGenre(genre);
+		assertNotNull(genre.getId());
 
-		var savedGenre = em.find(Genre.class, genreId);
+		var savedGenre = em.find(Genre.class, genre.getId());
 
 		assertNotNull(savedGenre);
 		assertEquals(NEW_GENRE, savedGenre.getName());
@@ -85,11 +85,5 @@ class GenreDaoJpaUnitTest {
 		var updatedGenre = em.find(Genre.class, FIRST_GENRE_ID);
 
 		assertEquals(NEW_GENRE, updatedGenre.getName());
-	}
-
-	@Test
-	@DisplayName("should return null when genre for save is null")
-	public void shouldReturnNullWhenGenreForSaveIsNull() {
-		assertNull(genresDao.saveGenre(null));
 	}
 }

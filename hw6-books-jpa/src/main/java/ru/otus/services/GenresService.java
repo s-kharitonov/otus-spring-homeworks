@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenresService {
-	Genre saveGenre(Genre genre);
+	void saveGenre(Genre genre);
 
 	Optional<Genre> getGenreById(long id);
 

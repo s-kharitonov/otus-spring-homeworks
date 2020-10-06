@@ -27,6 +27,8 @@ public class GenresController {
 	public String createGenre(@ShellOption(help = "enter genre name") String name) {
 		final var genre = new Genre.Builder().name(name).build();
 
+		genresService.saveGenre(genre);
+
 		if (Objects.nonNull(genre.getId())) {
 			return String.valueOf(genre);
 		} else {
@@ -64,6 +66,8 @@ public class GenresController {
 				.id(id)
 				.name(name)
 				.build();
+
+		genresService.saveGenre(genre);
 
 		if (Objects.nonNull(genre.getId())) {
 			return String.valueOf(genre);

@@ -51,20 +51,6 @@ class GenresServiceImplUnitTest {
 	private GenresService genresService;
 
 	@Test
-	@DisplayName("should save genre")
-	public void shouldSaveGenre() {
-		var genre = new Genre.Builder().name(GENRE_NAME).build();
-
-		given(fieldValidator.validate(genre)).willReturn(true);
-		given(genresDao.saveGenre(genre)).willReturn(genre);
-		given(genre.getId()).willReturn(FIRST_GENRE_ID);
-
-		var genreId = genresService.saveGenre(genre).getId();
-
-		assertEquals(FIRST_GENRE_ID, genreId);
-	}
-
-	@Test
 	@DisplayName("should throw GenresServiceException when genre for create is null")
 	public void shouldThrowExceptionWhenGenreForCreateIsNull() {
 		Genre genre = null;

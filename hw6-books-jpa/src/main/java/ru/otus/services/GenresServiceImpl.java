@@ -25,9 +25,9 @@ public class GenresServiceImpl implements GenresService {
 
 	@Override
 	@Transactional
-	public Genre saveGenre(final Genre genre) {
+	public void saveGenre(final Genre genre) {
 		checkGenreOrThrow(genre);
-		return genresDao.saveGenre(genre);
+		genresDao.saveGenre(genre);
 	}
 
 	@Override
