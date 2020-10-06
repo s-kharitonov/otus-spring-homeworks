@@ -20,7 +20,7 @@ public class GenreDaoJpa implements GenresDao {
 	private EntityManager em;
 
 	@Override
-	public void saveGenre(final Genre genre) {
+	public void save(final Genre genre) {
 		try {
 			if (genre.getId() == null) {
 				em.persist(genre);
@@ -34,12 +34,12 @@ public class GenreDaoJpa implements GenresDao {
 	}
 
 	@Override
-	public Optional<Genre> findGenreById(final long id) {
+	public Optional<Genre> findById(final long id) {
 		return Optional.ofNullable(em.find(Genre.class, id));
 	}
 
 	@Override
-	public List<Genre> findAllGenres() {
+	public List<Genre> findAll() {
 		try {
 			final var query = em.createQuery("select g from Genre g", Genre.class);
 			return query.getResultList();
@@ -50,7 +50,7 @@ public class GenreDaoJpa implements GenresDao {
 	}
 
 	@Override
-	public boolean removeGenre(final long id) {
+	public boolean removeById(final long id) {
 		try {
 			final var query = em.createQuery("delete from Genre g where g.id = :id");
 

@@ -25,27 +25,27 @@ public class GenresServiceImpl implements GenresService {
 
 	@Override
 	@Transactional
-	public void saveGenre(final Genre genre) {
+	public void save(final Genre genre) {
 		checkGenreOrThrow(genre);
-		genresDao.saveGenre(genre);
+		genresDao.save(genre);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<Genre> getGenreById(final long id) {
-		return genresDao.findGenreById(id);
+	public Optional<Genre> getById(final long id) {
+		return genresDao.findById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Genre> getAllGenres() {
-		return genresDao.findAllGenres();
+	public List<Genre> getAll() {
+		return genresDao.findAll();
 	}
 
 	@Override
 	@Transactional
-	public boolean removeGenre(final long id) {
-		return genresDao.removeGenre(id);
+	public boolean removeById(final long id) {
+		return genresDao.removeById(id);
 	}
 
 	private void checkGenreOrThrow(final Genre genre) {

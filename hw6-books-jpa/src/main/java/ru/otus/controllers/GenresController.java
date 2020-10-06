@@ -24,10 +24,10 @@ public class GenresController {
 	}
 
 	@ShellMethod(value = "create genre", group = "genres", key = {"c-g", "create-genre"})
-	public String createGenre(@ShellOption(help = "enter genre name") String name) {
+	public String create(@ShellOption(help = "enter genre name") String name) {
 		final var genre = new Genre.Builder().name(name).build();
 
-		genresService.saveGenre(genre);
+		genresService.save(genre);
 
 		if (Objects.nonNull(genre.getId())) {
 			return String.valueOf(genre);
@@ -37,22 +37,22 @@ public class GenresController {
 	}
 
 	@ShellMethod(value = "get genre by id", group = "genres", key = {"r-g", "read-genre"})
-	public String getGenreById(@ShellOption(help = "enter genre id") long id) {
-		return genresService.getGenreById(id)
+	public String getById(@ShellOption(help = "enter genre id") long id) {
+		return genresService.getById(id)
 				.map(Genre::toString)
 				.orElse(localizationService.localizeMessage(Constants.GENRE_NOT_FOUND_MSG_KEY, id));
 	}
 
 	@ShellMethod(value = "get all genres", group = "genres", key = {"r-a-g", "read-all-genres"})
-	public String getAllGenres() {
-		return genresService.getAllGenres().stream()
+	public String getAll() {
+		return genresService.getAll().stream()
 				.map(Genre::toString)
 				.collect(Collectors.joining(System.lineSeparator()));
 	}
 
 	@ShellMethod(value = "remove genre by id", group = "genres", key = { "d-g", "delete-genre"})
-	public String removeGenre(@ShellOption(help = "enter genre id") long id) {
-		if (genresService.removeGenre(id)) {
+	public String remove(@ShellOption(help = "enter genre id") long id) {
+		if (genresService.removeById(id)) {
 			return localizationService.localizeMessage(Constants.GENRE_SUCCESSFUL_REMOVED_MSG_KEY, id);
 		} else {
 			return localizationService.localizeMessage(Constants.GENRE_UNSUCCESSFUL_REMOVED_MSG_KEY, id);
@@ -60,19 +60,14 @@ public class GenresController {
 	}
 
 	@ShellMethod(value = "update genre", group = "genres", key = { "u-g", "update-genre"})
-	public String updateGenre(@ShellOption(help = "enter genre id") long id,
-							  @ShellOption(help = "enter genre name") String name) {
+	public String update(@ShellOption(help = "enter genre id") long id,
+						 @ShellOption(help = "enter genre name") String name) {
 		var genre = new Genre.Builder()
 				.id(id)
 				.name(name)
 				.build();
 
-		genresService.saveGenre(genre);
-
-		if (Objects.nonNull(genre.getId())) {
-			return String.valueOf(genre);
-		} else {
-			return localizationService.localizeMessage(Constants.GENRE_UNSUCCESSFUL_UPDATED_MSG_KEY, id);
-		}
+		genresService.save(genre);
+		return String.valueOf(genre);
 	}
 }

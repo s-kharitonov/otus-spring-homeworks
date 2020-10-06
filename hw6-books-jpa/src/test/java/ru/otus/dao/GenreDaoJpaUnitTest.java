@@ -30,19 +30,18 @@ class GenreDaoJpaUnitTest {
 	public void shouldSaveGenre() {
 		var genre = new Genre.Builder().name(NEW_GENRE).build();
 
-		genresDao.saveGenre(genre);
+		genresDao.save(genre);
 		assertNotNull(genre.getId());
 
 		var savedGenre = em.find(Genre.class, genre.getId());
 
-		assertNotNull(savedGenre);
-		assertEquals(NEW_GENRE, savedGenre.getName());
+		assertThat(savedGenre).isNotNull().isEqualToComparingFieldByField(genre);
 	}
 
 	@Test
 	@DisplayName("should return genre by id from data.sql")
 	public void shouldReturnGenreById() {
-		var genre = genresDao.findGenreById(FIRST_GENRE_ID).orElseThrow();
+		var genre = genresDao.findById(FIRST_GENRE_ID).orElseThrow();
 		var expectedGenre = em.find(Genre.class, FIRST_GENRE_ID);
 
 		assertThat(genre).isEqualToComparingFieldByField(expectedGenre);
@@ -51,7 +50,7 @@ class GenreDaoJpaUnitTest {
 	@Test
 	@DisplayName("should return all genres from data.sql")
 	public void shouldReturnAllGenres() {
-		var genres = genresDao.findAllGenres();
+		var genres = genresDao.findAll();
 		var expectedGenres = em.getEntityManager()
 				.createQuery("select g from Genre g", Genre.class)
 				.getResultList();
@@ -66,7 +65,7 @@ class GenreDaoJpaUnitTest {
 		em.detach(genreForRemove);
 
 		assertNotNull(genreForRemove);
-		genresDao.removeGenre(FIRST_GENRE_ID);
+		assertTrue(genresDao.removeById(FIRST_GENRE_ID));
 
 		var removedGenre = em.find(Genre.class, FIRST_GENRE_ID);
 
@@ -80,7 +79,7 @@ class GenreDaoJpaUnitTest {
 
 		genre.setName(NEW_GENRE);
 		em.detach(genre);
-		genresDao.saveGenre(genre);
+		genresDao.save(genre);
 
 		var updatedGenre = em.find(Genre.class, FIRST_GENRE_ID);
 

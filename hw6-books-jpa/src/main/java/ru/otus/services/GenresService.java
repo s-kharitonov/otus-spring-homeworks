@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenresService {
-	void saveGenre(Genre genre);
+	void save(Genre genre);
 
-	Optional<Genre> getGenreById(long id);
+	Optional<Genre> getById(long id);
 
-	List<Genre> getAllGenres();
+	List<Genre> getAll();
 
-	boolean removeGenre(long id);
+	boolean removeById(long id);
 }

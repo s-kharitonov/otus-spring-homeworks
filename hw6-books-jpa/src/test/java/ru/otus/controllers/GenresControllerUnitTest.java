@@ -50,26 +50,24 @@ class GenresControllerUnitTest {
 	@Test
 	@DisplayName("should call service for getting genre")
 	public void shouldCallServiceForGettingGenre() {
-		given(localizationService.localizeMessage(Constants.GENRE_NOT_FOUND_MSG_KEY, GENRE_ID))
-				.willReturn(EMPTY_APP_MESSAGE);
-		genresController.getGenreById(GENRE_ID);
-		inOrder.verify(genresService, times(1)).getGenreById(GENRE_ID);
+		genresController.getById(GENRE_ID);
+		inOrder.verify(genresService, times(1)).getById(GENRE_ID);
 	}
 
 	@Test
 	@DisplayName("should call service for getting all genres")
 	public void shouldCallServiceForGettingAllGenres() {
-		genresController.getAllGenres();
-		inOrder.verify(genresService, times(1)).getAllGenres();
+		genresController.getAll();
+		inOrder.verify(genresService, times(1)).getAll();
 	}
 
 	@Test
 	@DisplayName("should call service for remove genre")
 	public void shouldCallServiceForRemoveGenre() {
-		given(genresService.removeGenre(GENRE_ID)).willReturn(true);
+		given(genresService.removeById(GENRE_ID)).willReturn(true);
 		given(localizationService.localizeMessage(Constants.GENRE_SUCCESSFUL_REMOVED_MSG_KEY, GENRE_ID))
 				.willReturn(EMPTY_APP_MESSAGE);
-		genresController.removeGenre(GENRE_ID);
-		inOrder.verify(genresService, times(1)).removeGenre(GENRE_ID);
+		genresController.remove(GENRE_ID);
+		inOrder.verify(genresService, times(1)).removeById(GENRE_ID);
 	}
 }

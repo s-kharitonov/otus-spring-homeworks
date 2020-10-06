@@ -54,7 +54,7 @@ class GenresServiceImplUnitTest {
 	@DisplayName("should throw GenresServiceException when genre for create is null")
 	public void shouldThrowExceptionWhenGenreForCreateIsNull() {
 		Genre genre = null;
-		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
+		assertThrows(GenresServiceException.class, () -> genresService.save(genre));
 	}
 
 	@ParameterizedTest
@@ -65,7 +65,7 @@ class GenresServiceImplUnitTest {
 		var genre = new Genre.Builder().name(name).build();
 
 		given(fieldValidator.validate(genre)).willReturn(false);
-		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
+		assertThrows(GenresServiceException.class, () -> genresService.save(genre));
 	}
 
 	@Test
@@ -76,8 +76,8 @@ class GenresServiceImplUnitTest {
 				.name(GENRE_NAME)
 				.build();
 
-		given(genresDao.findGenreById(FIRST_GENRE_ID)).willReturn(Optional.of(genre));
-		assertEquals(genre.getId(), genresService.getGenreById(FIRST_GENRE_ID).orElseThrow().getId());
+		given(genresDao.findById(FIRST_GENRE_ID)).willReturn(Optional.of(genre));
+		assertEquals(genre.getId(), genresService.getById(FIRST_GENRE_ID).orElseThrow().getId());
 	}
 
 	@Test
@@ -89,15 +89,15 @@ class GenresServiceImplUnitTest {
 				.build();
 		var genres = List.of(genre);
 
-		given(genresDao.findAllGenres()).willReturn(genres);
-		assertFalse(genresService.getAllGenres().isEmpty());
+		given(genresDao.findAll()).willReturn(genres);
+		assertFalse(genresService.getAll().isEmpty());
 	}
 
 	@Test
 	@DisplayName("should remove genre")
 	public void shouldRemoveGenre() {
-		given(genresDao.removeGenre(FIRST_GENRE_ID)).willReturn(true);
-		assertTrue(genresService.removeGenre(FIRST_GENRE_ID));
+		given(genresDao.removeById(FIRST_GENRE_ID)).willReturn(true);
+		assertTrue(genresService.removeById(FIRST_GENRE_ID));
 	}
 
 	@ParameterizedTest
@@ -108,7 +108,7 @@ class GenresServiceImplUnitTest {
 		var genre = new Genre.Builder().name(name).build();
 
 		given(fieldValidator.validate(genre)).willReturn(false);
-		assertThrows(GenresServiceException.class, () -> genresService.saveGenre(genre));
+		assertThrows(GenresServiceException.class, () -> genresService.save(genre));
 	}
 
 	private static String[] createNameGreaterThanMaxLength() {
