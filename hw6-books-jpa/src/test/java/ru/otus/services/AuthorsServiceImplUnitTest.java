@@ -50,49 +50,36 @@ class AuthorsServiceImplUnitTest {
 	private AuthorsService authorsService;
 
 	@Test
-	@DisplayName("should create author")
-	public void shouldCreateAuthor() {
-		var author = new Author.Builder()
-				.name(NAME)
-				.surname(SURNAME)
-				.build();
-		given(fieldValidator.validate(author)).willReturn(true);
-		given(authorsDao.saveAuthor(author)).willReturn(Optional.of(FIRST_AUTHOR_ID));
-		var id = authorsService.createAuthor(author).orElseThrow();
-		assertEquals(FIRST_AUTHOR_ID, id);
-	}
-
-	@Test
-	@DisplayName("should throw AuthorsServiceException when author for create is null")
-	public void shouldThrowExceptionWhenAuthorForCreateIsNull() {
+	@DisplayName("should throw AuthorsServiceException when author for save is null")
+	public void shouldThrowExceptionWhenAuthorForSaveIsNull() {
 		Author author = null;
-		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
+		assertThrows(AuthorsServiceException.class, () -> authorsService.saveAuthor(author));
 	}
 
 	@ParameterizedTest
 	@NullAndEmptySource
 	@MethodSource("createStringGreaterThanMaxLength")
-	@DisplayName("should throw AuthorsServiceException when author for create has not valid name")
-	public void shouldThrowExceptionWhenAuthorForCreateHasNotValidName(final String name) {
+	@DisplayName("should throw AuthorsServiceException when author for save has not valid name")
+	public void shouldThrowExceptionWhenAuthorForSaveHasNotValidName(final String name) {
 		var author = new Author.Builder()
 				.name(name)
 				.surname(SURNAME)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
+		assertThrows(AuthorsServiceException.class, () -> authorsService.saveAuthor(author));
 	}
 
 	@ParameterizedTest
 	@NullAndEmptySource
 	@MethodSource("createStringGreaterThanMaxLength")
-	@DisplayName("should throw AuthorsServiceException when author for create has not valid surname")
-	public void shouldThrowExceptionWhenAuthorForCreateHasNotValidSurname(final String surname) {
+	@DisplayName("should throw AuthorsServiceException when author for save has not valid surname")
+	public void shouldThrowExceptionWhenAuthorForSaveHasNotValidSurname(final String surname) {
 		var author = new Author.Builder()
 				.name(NAME)
 				.surname(surname)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.createAuthor(author));
+		assertThrows(AuthorsServiceException.class, () -> authorsService.saveAuthor(author));
 	}
 
 	@Test
@@ -126,39 +113,6 @@ class AuthorsServiceImplUnitTest {
 	public void shouldRemoveAuthor() {
 		given(authorsDao.removeAuthor(FIRST_AUTHOR_ID)).willReturn(true);
 		assertTrue(authorsService.removeAuthor(FIRST_AUTHOR_ID));
-	}
-
-	@Test
-	@DisplayName("should throw AuthorsServiceException when author for update is null")
-	public void shouldThrowExceptionWhenAuthorForUpdateIsNull() {
-		Author author = null;
-		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
-	}
-
-	@ParameterizedTest
-	@NullAndEmptySource
-	@MethodSource("createStringGreaterThanMaxLength")
-	@DisplayName("should throw AuthorsServiceException when author for update has not valid name")
-	public void shouldThrowExceptionWhenAuthorForUpdateHasNotValidName(final String name) {
-		var author = new Author.Builder()
-				.name(name)
-				.surname(SURNAME)
-				.build();
-		given(fieldValidator.validate(author)).willReturn(false);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
-	}
-
-	@ParameterizedTest
-	@NullAndEmptySource
-	@MethodSource("createStringGreaterThanMaxLength")
-	@DisplayName("should throw AuthorsServiceException when author for update has not valid surname")
-	public void shouldThrowExceptionWhenAuthorForUpdateHasNotValidSurname(final String surname) {
-		var author = new Author.Builder()
-				.name(NAME)
-				.surname(surname)
-				.build();
-		given(fieldValidator.validate(author)).willReturn(false);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.updateAuthor(author));
 	}
 
 	private static String[] createStringGreaterThanMaxLength() {

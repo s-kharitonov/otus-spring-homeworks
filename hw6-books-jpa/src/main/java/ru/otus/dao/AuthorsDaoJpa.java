@@ -20,17 +20,15 @@ public class AuthorsDaoJpa implements AuthorsDao {
 	private EntityManager em;
 
 	@Override
-	public Optional<Long> saveAuthor(final Author author) {
+	public void saveAuthor(final Author author) {
 		try {
 			if (author.getId() == null) {
 				em.persist(author);
-				return Optional.ofNullable(author.getId());
+			} else {
+				em.merge(author);
 			}
-
-			return Optional.ofNullable(em.merge(author).getId());
 		} catch (Exception e) {
 			logger.error("error creating author: {}", author, e);
-			return Optional.empty();
 		}
 	}
 

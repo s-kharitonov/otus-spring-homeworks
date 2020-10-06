@@ -25,9 +25,9 @@ public class AuthorsServiceImpl implements AuthorsService {
 
 	@Override
 	@Transactional
-	public Optional<Long> createAuthor(final Author author) {
+	public void saveAuthor(final Author author) {
 		checkAuthorOrThrow(author);
-		return authorsDao.saveAuthor(author);
+		authorsDao.saveAuthor(author);
 	}
 
 	@Override
@@ -46,13 +46,6 @@ public class AuthorsServiceImpl implements AuthorsService {
 	@Transactional
 	public boolean removeAuthor(final long id) {
 		return authorsDao.removeAuthor(id);
-	}
-
-	@Override
-	@Transactional
-	public boolean updateAuthor(final Author author) {
-		checkAuthorOrThrow(author);
-		return authorsDao.saveAuthor(author).isPresent();
 	}
 
 	private void checkAuthorOrThrow(final Author author) {

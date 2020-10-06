@@ -8,8 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.domain.Author;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,11 +33,11 @@ class AuthorsDaoJpaUnitTest {
 				.name(NAME)
 				.surname(SURNAME)
 				.build();
-		var authorId = authorsDao.saveAuthor(author).orElseThrow();
 
-		assertNotNull(authorId);
+		authorsDao.saveAuthor(author);
+		assertNotNull(author.getId());
 
-		var savedAuthor = em.find(Author.class, authorId);
+		var savedAuthor = em.find(Author.class, author.getId());
 
 		assertNotNull(savedAuthor);
 		assertEquals(NAME, savedAuthor.getName());
@@ -95,11 +93,5 @@ class AuthorsDaoJpaUnitTest {
 
 		assertEquals(updatedAuthor.getName(), NAME);
 		assertEquals(updatedAuthor.getSurname(), SURNAME);
-	}
-
-	@Test
-	@DisplayName("should return empty value when author is null")
-	public void shouldReturnEmptyValueWhenAuthorIsNull() {
-		assertEquals(Optional.empty(), authorsDao.saveAuthor(null));
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorsDao {
-	Optional<Long> saveAuthor(Author author);
+	void saveAuthor(Author author);
 
 	Optional<Author> findAuthorById(long id);
 
