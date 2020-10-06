@@ -50,26 +50,24 @@ class AuthorsControllerUnitTest {
 	@Test
 	@DisplayName("should call service for getting author")
 	public void shouldCallServiceForGettingAuthor() {
-		given(localizationService.localizeMessage(Constants.AUTHOR_NOT_FOUND_MSG_KEY, AUTHOR_ID))
-				.willReturn(EMPTY_APP_MESSAGE);
-		authorsController.getAuthorById(AUTHOR_ID);
-		inOrder.verify(authorsService, times(1)).getAuthorById(AUTHOR_ID);
+		authorsController.getById(AUTHOR_ID);
+		inOrder.verify(authorsService, times(1)).getById(AUTHOR_ID);
 	}
 
 	@Test
 	@DisplayName("should call service for getting all authors")
 	public void shouldCallServiceForGettingAllAuthors() {
-		authorsController.getAllAuthors();
-		inOrder.verify(authorsService, times(1)).getAllAuthors();
+		authorsController.getAll();
+		inOrder.verify(authorsService, times(1)).getAll();
 	}
 
 	@Test
 	@DisplayName("should call service for remove author")
 	public void shouldCallServiceForRemoveAuthor() {
-		given(authorsService.removeAuthor(AUTHOR_ID)).willReturn(true);
+		given(authorsService.removeById(AUTHOR_ID)).willReturn(true);
 		given(localizationService.localizeMessage(Constants.AUTHOR_SUCCESSFUL_REMOVED_MSG_KEY, AUTHOR_ID))
 				.willReturn(EMPTY_APP_MESSAGE);
-		authorsController.removeAuthor(AUTHOR_ID);
-		inOrder.verify(authorsService, times(1)).removeAuthor(AUTHOR_ID);
+		authorsController.remove(AUTHOR_ID);
+		inOrder.verify(authorsService, times(1)).removeById(AUTHOR_ID);
 	}
 }

@@ -24,14 +24,14 @@ public class AuthorsController {
 	}
 
 	@ShellMethod(value = "create author and get id", group = "authors", key = {"c-a", "create-author"})
-	public String createAuthor(@ShellOption(help = "enter author name") String name,
-							   @ShellOption(help = "enter author surname") String surname) {
+	public String create(@ShellOption(help = "enter author name") String name,
+						 @ShellOption(help = "enter author surname") String surname) {
 		final var author = new Author.Builder()
 				.name(name)
 				.surname(surname)
 				.build();
 
-		authorsService.saveAuthor(author);
+		authorsService.save(author);
 
 		if (Objects.nonNull(author.getId())) {
 			return String.valueOf(author);
@@ -41,22 +41,22 @@ public class AuthorsController {
 	}
 
 	@ShellMethod(value = "get author by id", group = "authors", key = {"r-a", "read-author"})
-	public String getAuthorById(@ShellOption(help = "enter author id") long id) {
-		return authorsService.getAuthorById(id)
+	public String getById(@ShellOption(help = "enter author id") long id) {
+		return authorsService.getById(id)
 				.map(Author::toString)
 				.orElse(localizationService.localizeMessage(Constants.AUTHOR_NOT_FOUND_MSG_KEY, id));
 	}
 
 	@ShellMethod(value = "get all authors", group = "authors", key = {"r-a-a", "read-all-authors"})
-	public String getAllAuthors() {
-		return authorsService.getAllAuthors().stream()
+	public String getAll() {
+		return authorsService.getAll().stream()
 				.map(Author::toString)
 				.collect(Collectors.joining(System.lineSeparator()));
 	}
 
 	@ShellMethod(value = "remove author by id", group = "authors", key = { "d-a", "delete-author"})
-	public String removeAuthor(@ShellOption(help = "enter author id") long id) {
-		if (authorsService.removeAuthor(id)) {
+	public String remove(@ShellOption(help = "enter author id") long id) {
+		if (authorsService.removeById(id)) {
 			return localizationService.localizeMessage(Constants.AUTHOR_SUCCESSFUL_REMOVED_MSG_KEY, id);
 		} else {
 			return localizationService.localizeMessage(Constants.AUTHOR_UNSUCCESSFUL_REMOVED_MSG_KEY, id);
@@ -64,21 +64,16 @@ public class AuthorsController {
 	}
 
 	@ShellMethod(value = "update author", group = "authors", key = { "u-a", "update-author"})
-	public String updateAuthor(@ShellOption(help = "enter author id") long id,
-							   @ShellOption(help = "enter author name") String name,
-							   @ShellOption(help = "enter author surname") String surname) {
+	public String update(@ShellOption(help = "enter author id") long id,
+						 @ShellOption(help = "enter author name") String name,
+						 @ShellOption(help = "enter author surname") String surname) {
 		final var author = new Author.Builder()
 				.id(id)
 				.name(name)
 				.surname(surname)
 				.build();
 
-		authorsService.saveAuthor(author);
-
-		if (Objects.nonNull(author.getId())) {
-			return String.valueOf(author);
-		} else {
-			return localizationService.localizeMessage(Constants.AUTHOR_UNSUCCESSFUL_UPDATED_MSG_KEY, id);
-		}
+		authorsService.save(author);
+		return String.valueOf(author);
 	}
 }

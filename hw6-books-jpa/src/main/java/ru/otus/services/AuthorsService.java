@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorsService {
-	void saveAuthor(Author author);
+	void save(Author author);
 
-	Optional<Author> getAuthorById(long id);
+	Optional<Author> getById(long id);
 
-	List<Author> getAllAuthors();
+	List<Author> getAll();
 
-	boolean removeAuthor(long id);
+	boolean removeById(long id);
 }

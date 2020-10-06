@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Import;
 import ru.otus.domain.Author;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("DAO for work this authors")
 @Import(AuthorsDaoJpa.class)
@@ -34,20 +35,18 @@ class AuthorsDaoJpaUnitTest {
 				.surname(SURNAME)
 				.build();
 
-		authorsDao.saveAuthor(author);
+		authorsDao.save(author);
 		assertNotNull(author.getId());
 
 		var savedAuthor = em.find(Author.class, author.getId());
 
-		assertNotNull(savedAuthor);
-		assertEquals(NAME, savedAuthor.getName());
-		assertEquals(SURNAME, savedAuthor.getSurname());
+		assertThat(savedAuthor).isNotNull().isEqualToComparingFieldByField(author);
 	}
 
 	@Test
 	@DisplayName("should find author by id")
 	public void shouldFindAuthorById() {
-		var author = authorsDao.findAuthorById(FIRST_AUTHOR_ID).orElseThrow();
+		var author = authorsDao.findById(FIRST_AUTHOR_ID).orElseThrow();
 		var expectedAuthor  = em.find(Author.class, FIRST_AUTHOR_ID);
 
 		assertThat(author).isEqualToComparingFieldByField(expectedAuthor);
@@ -56,7 +55,7 @@ class AuthorsDaoJpaUnitTest {
 	@Test
 	@DisplayName("should find all authors from data.sql")
 	public void shouldFindAllAuthors() {
-		var authors = authorsDao.findAllAuthors();
+		var authors = authorsDao.findAll();
 		var expectedAuthors = em.getEntityManager()
 				.createQuery("select a from Author a", Author.class)
 				.getResultList();
@@ -71,7 +70,7 @@ class AuthorsDaoJpaUnitTest {
 
 		assertNotNull(authorForRemove);
 		em.detach(authorForRemove);
-		authorsDao.removeAuthor(FIRST_AUTHOR_ID);
+		authorsDao.remove(FIRST_AUTHOR_ID);
 
 		var removedAuthor = em.find(Author.class, FIRST_AUTHOR_ID);
 
@@ -87,11 +86,10 @@ class AuthorsDaoJpaUnitTest {
 		author.setName(NAME);
 		author.setSurname(SURNAME);
 		em.detach(author);
-		authorsDao.saveAuthor(author);
+		authorsDao.save(author);
 
 		var updatedAuthor = em.find(Author.class, FIRST_AUTHOR_ID);
 
-		assertEquals(updatedAuthor.getName(), NAME);
-		assertEquals(updatedAuthor.getSurname(), SURNAME);
+		assertThat(updatedAuthor).isNotNull().isEqualToComparingFieldByField(author);
 	}
 }

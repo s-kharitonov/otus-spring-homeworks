@@ -20,7 +20,7 @@ public class AuthorsDaoJpa implements AuthorsDao {
 	private EntityManager em;
 
 	@Override
-	public void saveAuthor(final Author author) {
+	public void save(final Author author) {
 		try {
 			if (author.getId() == null) {
 				em.persist(author);
@@ -33,12 +33,12 @@ public class AuthorsDaoJpa implements AuthorsDao {
 	}
 
 	@Override
-	public Optional<Author> findAuthorById(final long id) {
+	public Optional<Author> findById(final long id) {
 		return Optional.ofNullable(em.find(Author.class, id));
 	}
 
 	@Override
-	public List<Author> findAllAuthors() {
+	public List<Author> findAll() {
 		try {
 			final var query = em.createQuery("select a from Author a", Author.class);
 			return query.getResultList();
@@ -49,7 +49,7 @@ public class AuthorsDaoJpa implements AuthorsDao {
 	}
 
 	@Override
-	public boolean removeAuthor(final long id) {
+	public boolean remove(final long id) {
 		try {
 			final var query = em.createQuery("delete from Author a where a.id = :id");
 

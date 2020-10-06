@@ -53,7 +53,7 @@ class AuthorsServiceImplUnitTest {
 	@DisplayName("should throw AuthorsServiceException when author for save is null")
 	public void shouldThrowExceptionWhenAuthorForSaveIsNull() {
 		Author author = null;
-		assertThrows(AuthorsServiceException.class, () -> authorsService.saveAuthor(author));
+		assertThrows(AuthorsServiceException.class, () -> authorsService.save(author));
 	}
 
 	@ParameterizedTest
@@ -66,7 +66,7 @@ class AuthorsServiceImplUnitTest {
 				.surname(SURNAME)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.saveAuthor(author));
+		assertThrows(AuthorsServiceException.class, () -> authorsService.save(author));
 	}
 
 	@ParameterizedTest
@@ -79,7 +79,7 @@ class AuthorsServiceImplUnitTest {
 				.surname(surname)
 				.build();
 		given(fieldValidator.validate(author)).willReturn(false);
-		assertThrows(AuthorsServiceException.class, () -> authorsService.saveAuthor(author));
+		assertThrows(AuthorsServiceException.class, () -> authorsService.save(author));
 	}
 
 	@Test
@@ -90,8 +90,8 @@ class AuthorsServiceImplUnitTest {
 				.name(NAME)
 				.surname(SURNAME)
 				.build();
-		given(authorsDao.findAuthorById(FIRST_AUTHOR_ID)).willReturn(Optional.of(author));
-		var foundedAuthor = authorsService.getAuthorById(FIRST_AUTHOR_ID).orElseThrow();
+		given(authorsDao.findById(FIRST_AUTHOR_ID)).willReturn(Optional.of(author));
+		var foundedAuthor = authorsService.getById(FIRST_AUTHOR_ID).orElseThrow();
 		assertEquals(author.getId(), foundedAuthor.getId());
 	}
 
@@ -104,15 +104,15 @@ class AuthorsServiceImplUnitTest {
 				.surname(SURNAME)
 				.build();
 		var authors = List.of(author);
-		given(authorsDao.findAllAuthors()).willReturn(authors);
-		assertFalse(authorsService.getAllAuthors().isEmpty());
+		given(authorsDao.findAll()).willReturn(authors);
+		assertFalse(authorsService.getAll().isEmpty());
 	}
 
 	@Test
 	@DisplayName("should remove author")
 	public void shouldRemoveAuthor() {
-		given(authorsDao.removeAuthor(FIRST_AUTHOR_ID)).willReturn(true);
-		assertTrue(authorsService.removeAuthor(FIRST_AUTHOR_ID));
+		given(authorsDao.remove(FIRST_AUTHOR_ID)).willReturn(true);
+		assertTrue(authorsService.removeById(FIRST_AUTHOR_ID));
 	}
 
 	private static String[] createStringGreaterThanMaxLength() {

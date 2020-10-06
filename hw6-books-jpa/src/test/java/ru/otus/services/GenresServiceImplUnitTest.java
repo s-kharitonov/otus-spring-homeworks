@@ -31,7 +31,6 @@ class GenresServiceImplUnitTest {
 
 	private static final String GENRE_NAME = "Horror";
 	private static final long FIRST_GENRE_ID = 1L;
-	private static final String EMPTY_APP_MESSAGE = "";
 	private static final int NAME_LENGTH_GREATER_THAN_MAX_LENGTH = 300;
 
 	@Configuration

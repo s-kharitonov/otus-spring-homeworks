@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorsDao {
-	void saveAuthor(Author author);
+	void save(Author author);
 
-	Optional<Author> findAuthorById(long id);
+	Optional<Author> findById(long id);
 
-	List<Author> findAllAuthors();
+	List<Author> findAll();
 
-	boolean removeAuthor(long id);
+	boolean remove(long id);
 }

@@ -25,27 +25,27 @@ public class AuthorsServiceImpl implements AuthorsService {
 
 	@Override
 	@Transactional
-	public void saveAuthor(final Author author) {
+	public void save(final Author author) {
 		checkAuthorOrThrow(author);
-		authorsDao.saveAuthor(author);
+		authorsDao.save(author);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<Author> getAuthorById(final long id) {
-		return authorsDao.findAuthorById(id);
+	public Optional<Author> getById(final long id) {
+		return authorsDao.findById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Author> getAllAuthors() {
-		return authorsDao.findAllAuthors();
+	public List<Author> getAll() {
+		return authorsDao.findAll();
 	}
 
 	@Override
 	@Transactional
-	public boolean removeAuthor(final long id) {
-		return authorsDao.removeAuthor(id);
+	public boolean removeById(final long id) {
+		return authorsDao.remove(id);
 	}
 
 	private void checkAuthorOrThrow(final Author author) {
