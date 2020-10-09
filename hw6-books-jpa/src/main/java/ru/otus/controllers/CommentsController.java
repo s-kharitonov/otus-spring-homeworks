@@ -7,6 +7,7 @@ import ru.otus.domain.Comment;
 import ru.otus.domain.Constants;
 import ru.otus.services.CommentsService;
 import ru.otus.services.LocalizationService;
+import ru.otus.services.facades.BookCommentsFacade;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -16,11 +17,14 @@ public class CommentsController {
 
 	private final CommentsService commentsService;
 	private final LocalizationService localizationService;
+	private final BookCommentsFacade bookCommentsFacade;
 
 	public CommentsController(final CommentsService commentsService,
-							  final LocalizationService localizationService) {
+							  final LocalizationService localizationService,
+							  final BookCommentsFacade bookCommentsFacade) {
 		this.commentsService = commentsService;
 		this.localizationService = localizationService;
+		this.bookCommentsFacade = bookCommentsFacade;
 	}
 
 	@ShellMethod(value = "create comment", group = "comments", key = {"c-c", "create-comment"})
@@ -28,6 +32,20 @@ public class CommentsController {
 		var comment = new Comment.Builder().text(text).build();
 
 		commentsService.save(comment);
+
+		if (Objects.nonNull(comment.getId())) {
+			return String.valueOf(comment);
+		} else {
+			return localizationService.localizeMessage(Constants.COMMENT_UNSUCCESSFUL_CREATED_MSG_KEY, comment);
+		}
+	}
+
+	@ShellMethod(value = "create book comment", group = "comments", key = {"c-b-c", "create-book-comment"})
+	public String createBookComment(@ShellOption(help = "enter exist book id") long bookId,
+									@ShellOption(help = "enter comment") String text) {
+		var comment = new Comment.Builder().text(text).build();
+
+		bookCommentsFacade.save(bookId, comment);
 
 		if (Objects.nonNull(comment.getId())) {
 			return String.valueOf(comment);

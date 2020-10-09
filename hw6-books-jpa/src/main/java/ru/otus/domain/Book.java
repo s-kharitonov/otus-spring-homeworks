@@ -1,25 +1,48 @@
 package ru.otus.domain;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
+@Entity
+@Table(name = "BOOKS")
 public class Book {
+	@Id
+	@Column(name = "BOOK_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_s")
+	@SequenceGenerator(name = "book_s", sequenceName = "BOOKS_S", allocationSize = 1)
 	private Long id;
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
+	@Column(name = "NAME", nullable = false, unique = true, length = 255)
 	private String name;
 	@NotNull
+	@Column(name = "PUBLICATION_DATE", nullable = false)
 	private Date publicationDate;
 	@Min(value = 1)
+	@Column(name = "PRINT_LENGTH", nullable = false)
 	private int printLength;
 	@NotNull
+	@JoinColumn(name = "AUTHOR_ID", nullable = false)
+	@ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Author author;
 	@NotNull
+	@JoinColumn(name = "GENRE_ID", nullable = false)
+	@ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Genre genre;
+	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(targetEntity = Comment.class, fetch = FetchType.LAZY)
+	@JoinTable(name = "BOOKS_COMMENTS", joinColumns = @JoinColumn(name = "BOOK_ID"),
+			inverseJoinColumns = @JoinColumn(name = "COMMENT_ID"))
+	private List<Comment> comments;
 
 	public Book() {
 	}
@@ -31,6 +54,7 @@ public class Book {
 		this.printLength = builder.printLength;
 		this.author = builder.author;
 		this.genre = builder.genre;
+		this.comments = builder.comments;
 	}
 
 	public Long getId() {
@@ -81,6 +105,14 @@ public class Book {
 		this.genre = genre;
 	}
 
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(final List<Comment> comment) {
+		this.comments = comment;
+	}
+
 	@Override
 	public String toString() {
 		return "Book{" +
@@ -100,6 +132,7 @@ public class Book {
 		private int printLength;
 		private Author author;
 		private Genre genre;
+		private List<Comment> comments;
 
 		public Builder id(final Long id) {
 			this.id = id;
@@ -128,6 +161,11 @@ public class Book {
 
 		public Builder genre(final Genre genre) {
 			this.genre = genre;
+			return this;
+		}
+
+		public Builder comments(final List<Comment> comments) {
+			this.comments = comments;
 			return this;
 		}
 

@@ -27,7 +27,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -43,7 +45,6 @@ class BooksServiceImplUnitTest {
 	private static final Date BOOK_PUBLICATION_DATE = new Date();
 	private static final int BOOK_PRINT_LENGTH = 255;
 	private static final long BOOK_ID = 1L;
-	private static final String EMPTY_APP_MESSAGE = "";
 	private static final int NAME_LENGTH_GREATER_THAN_MAX_LENGTH = 300;
 
 	@Configuration
@@ -79,36 +80,17 @@ class BooksServiceImplUnitTest {
 	}
 
 	@Test
-	@DisplayName("should save book")
-	public void shouldSaveBook() {
-		var book = new Book.Builder()
-				.name(BOOK_NAME)
-				.publicationDate(BOOK_PUBLICATION_DATE)
-				.printLength(BOOK_PRINT_LENGTH)
-				.author(author)
-				.genre(genre)
-				.build();
-
-		given(fieldValidator.validate(book)).willReturn(true);
-		given(booksDao.saveBook(book)).willReturn(Optional.of(BOOK_ID));
-
-		var bookId = booksService.createBook(book).orElseThrow();
-
-		assertEquals(BOOK_ID, bookId);
-	}
-
-	@Test
-	@DisplayName("should throw BooksServiceException when book for create is null")
-	public void shouldThrowExceptionWhenBookForCreateIsNull() {
+	@DisplayName("should throw BooksServiceException when book for save is null")
+	public void shouldThrowExceptionWhenBookForSaveIsNull() {
 		Book book = null;
-		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
+		assertThrows(BooksServiceException.class, () -> booksService.save(book));
 	}
 
 	@ParameterizedTest
-	@DisplayName("should throw BooksServiceException when book for create has not valid name")
+	@DisplayName("should throw BooksServiceException when book for save has not valid name")
 	@NullAndEmptySource
 	@MethodSource(value = "createNameGreaterThanMaxLength")
-	public void shouldThrowExceptionWhenBookForCreateHasNotValidName(final String bookName) {
+	public void shouldThrowExceptionWhenBookForSaveHasNotValidName(final String bookName) {
 		var book = new Book.Builder()
 				.name(bookName)
 				.publicationDate(BOOK_PUBLICATION_DATE)
@@ -118,12 +100,12 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
+		assertThrows(BooksServiceException.class, () -> booksService.save(book));
 	}
 
 	@Test
-	@DisplayName("should throw BooksServiceException when book for create has not valid publication date")
-	public void shouldThrowExceptionWhenBookForCreateHasNotValidPublicationDate() {
+	@DisplayName("should throw BooksServiceException when book for save has not valid publication date")
+	public void shouldThrowExceptionWhenBookForSaveHasNotValidPublicationDate() {
 		var book = new Book.Builder()
 				.name(BOOK_NAME)
 				.publicationDate(null)
@@ -133,13 +115,13 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
+		assertThrows(BooksServiceException.class, () -> booksService.save(book));
 	}
 
 	@ParameterizedTest
-	@DisplayName("should throw BooksServiceException when book for create has not valid publication date")
+	@DisplayName("should throw BooksServiceException when book for save has not valid print length")
 	@ValueSource(ints = {0, -1})
-	public void shouldThrowExceptionWhenBookForCreateHasNotValidPrintLength(final int printLength) {
+	public void shouldThrowExceptionWhenBookForSaveHasNotValidPrintLength(final int printLength) {
 		var book = new Book.Builder()
 				.name(BOOK_NAME)
 				.publicationDate(BOOK_PUBLICATION_DATE)
@@ -149,12 +131,12 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
+		assertThrows(BooksServiceException.class, () -> booksService.save(book));
 	}
 
 	@Test
-	@DisplayName("should throw BooksServiceException when book for create has not valid author")
-	public void shouldThrowExceptionWhenBookForCreateHasNotValidAuthor() {
+	@DisplayName("should throw BooksServiceException when book for save has not valid author")
+	public void shouldThrowExceptionWhenBookForSaveHasNotValidAuthor() {
 		var book = new Book.Builder()
 				.name(BOOK_NAME)
 				.publicationDate(BOOK_PUBLICATION_DATE)
@@ -164,12 +146,12 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
+		assertThrows(BooksServiceException.class, () -> booksService.save(book));
 	}
 
 	@Test
-	@DisplayName("should throw BooksServiceException when book for create has not valid genre")
-	public void shouldThrowExceptionWhenBookForCreateHasNotValidGenre() {
+	@DisplayName("should throw BooksServiceException when book for save has not valid genre")
+	public void shouldThrowExceptionWhenBookForSaveHasNotValidGenre() {
 		var book = new Book.Builder()
 				.name(BOOK_NAME)
 				.publicationDate(BOOK_PUBLICATION_DATE)
@@ -179,7 +161,7 @@ class BooksServiceImplUnitTest {
 				.build();
 
 		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.createBook(book));
+		assertThrows(BooksServiceException.class, () -> booksService.save(book));
 	}
 
 	@Test
@@ -194,8 +176,8 @@ class BooksServiceImplUnitTest {
 				.genre(genre)
 				.build();
 
-		given(booksDao.findBookById(BOOK_ID)).willReturn(Optional.of(book));
-		assertEquals(BOOK_ID, booksService.getBookById(BOOK_ID).orElseThrow().getId());
+		given(booksDao.findById(BOOK_ID)).willReturn(Optional.of(book));
+		assertThat(booksService.getById(BOOK_ID)).get().isEqualToComparingFieldByField(book);
 	}
 
 	@Test
@@ -211,117 +193,15 @@ class BooksServiceImplUnitTest {
 				.build();
 		var books = List.of(book);
 
-		given(booksDao.findAllBooks()).willReturn(books);
-		assertFalse(booksService.getAllBooks().isEmpty());
+		given(booksDao.findAll()).willReturn(books);
+		assertThat(booksService.getAll()).isNotEmpty().containsOnlyOnceElementsOf(books);
 	}
 
 	@Test
-	@DisplayName("should remove book")
-	public void shouldRemoveBook() {
-		given(booksDao.removeBook(BOOK_ID)).willReturn(true);
-		assertTrue(booksService.removeBook(BOOK_ID));
-	}
-
-	@Test
-	@DisplayName("should update book")
-	public void shouldUpdateBook() {
-		var book = new Book.Builder()
-				.id(BOOK_ID)
-				.name(BOOK_NAME)
-				.publicationDate(BOOK_PUBLICATION_DATE)
-				.printLength(BOOK_PRINT_LENGTH)
-				.author(author)
-				.genre(genre)
-				.build();
-
-		given(fieldValidator.validate(book)).willReturn(true);
-		given(booksDao.updateBook(book)).willReturn(true);
-		assertTrue(booksService.updateBook(book));
-	}
-
-	@Test
-	@DisplayName("should throw BooksServiceException when book for update is null")
-	public void shouldThrowExceptionWhenBookForUpdateIsNull() {
-		Book book = null;
-		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
-	}
-
-	@ParameterizedTest
-	@DisplayName("should throw BooksServiceException when book for update has not valid name")
-	@NullAndEmptySource
-	@MethodSource(value = "createNameGreaterThanMaxLength")
-	public void shouldThrowExceptionWhenBookForUpdateHasNotValidName(final String bookName) {
-		var book = new Book.Builder()
-				.name(bookName)
-				.publicationDate(BOOK_PUBLICATION_DATE)
-				.printLength(BOOK_PRINT_LENGTH)
-				.author(author)
-				.genre(genre)
-				.build();
-
-		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
-	}
-
-	@Test
-	@DisplayName("should throw BooksServiceException when book for update has not valid publication date")
-	public void shouldThrowExceptionWhenBookForUpdateHasNotValidPublicationDate() {
-		var book = new Book.Builder()
-				.name(BOOK_NAME)
-				.publicationDate(null)
-				.printLength(BOOK_PRINT_LENGTH)
-				.author(author)
-				.genre(genre)
-				.build();
-
-		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
-	}
-
-	@ParameterizedTest
-	@DisplayName("should throw BooksServiceException when book for update has not valid publication date")
-	@ValueSource(ints = {0, -1})
-	public void shouldThrowExceptionWhenBookForUpdateHasNotValidPrintLength(final int printLength) {
-		var book = new Book.Builder()
-				.name(BOOK_NAME)
-				.publicationDate(BOOK_PUBLICATION_DATE)
-				.printLength(printLength)
-				.author(author)
-				.genre(genre)
-				.build();
-
-		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
-	}
-
-	@Test
-	@DisplayName("should throw BooksServiceException when book for update has not valid author")
-	public void shouldThrowExceptionWhenBookForUpdateHasNotValidAuthor() {
-		var book = new Book.Builder()
-				.name(BOOK_NAME)
-				.publicationDate(BOOK_PUBLICATION_DATE)
-				.printLength(BOOK_PRINT_LENGTH)
-				.author(null)
-				.genre(genre)
-				.build();
-
-		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
-	}
-
-	@Test
-	@DisplayName("should throw BooksServiceException when book for update has not valid genre")
-	public void shouldThrowExceptionWhenBookForUpdateHasNotValidGenre() {
-		var book = new Book.Builder()
-				.name(BOOK_NAME)
-				.publicationDate(BOOK_PUBLICATION_DATE)
-				.printLength(BOOK_PRINT_LENGTH)
-				.author(author)
-				.genre(null)
-				.build();
-
-		given(fieldValidator.validate(book)).willReturn(false);
-		assertThrows(BooksServiceException.class, () -> booksService.updateBook(book));
+	@DisplayName("should remove book by id")
+	public void shouldRemoveBookById() {
+		given(booksDao.removeById(BOOK_ID)).willReturn(true);
+		assertTrue(booksService.removeById(BOOK_ID));
 	}
 
 	private static String[] createNameGreaterThanMaxLength() {

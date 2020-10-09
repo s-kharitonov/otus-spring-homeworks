@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BooksService {
-	Optional<Long> createBook(Book book);
+	void save(Book book);
 
-	Optional<Book> getBookById(long id);
+	Optional<Book> getById(long id);
 
-	List<Book> getAllBooks();
+	List<Book> getAll();
 
-	boolean removeBook(long id);
-
-	boolean updateBook(Book book);
+	boolean removeById(long id);
 }

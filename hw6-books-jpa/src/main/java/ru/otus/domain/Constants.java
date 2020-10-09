@@ -1,8 +1,6 @@
 package ru.otus.domain;
 
 public final class Constants {
-	public static final String BOOK_SUCCESSFUL_UPDATED_MSG_KEY = "book.successful.updated";
-	public static final String BOOK_UNSUCCESSFUL_UPDATED_MSG_KEY = "book.unsuccessful.updated";
 	public static final String BOOK_SUCCESSFUL_REMOVED_MSG_KEY = "book.successful.removed";
 	public static final String BOOK_UNSUCCESSFUL_REMOVED_MSG_KEY = "book.unsuccessful.removed";
 	public static final String BOOK_UNSUCCESSFUL_CREATED_MSG_KEY = "book.unsuccessful.created";

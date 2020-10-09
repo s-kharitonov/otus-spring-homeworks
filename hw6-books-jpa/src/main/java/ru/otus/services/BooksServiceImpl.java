@@ -1,6 +1,7 @@
 package ru.otus.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dao.BooksDao;
 import ru.otus.domain.Book;
 import ru.otus.exceptions.BooksServiceException;
@@ -23,30 +24,28 @@ public class BooksServiceImpl implements BooksService {
 	}
 
 	@Override
-	public Optional<Long> createBook(final Book book) {
+	@Transactional
+	public void save(final Book book) {
 		checkBookOrThrow(book);
-		return booksDao.saveBook(book);
+		booksDao.save(book);
 	}
 
 	@Override
-	public Optional<Book> getBookById(final long id) {
-		return booksDao.findBookById(id);
+	@Transactional(readOnly = true)
+	public Optional<Book> getById(final long id) {
+		return booksDao.findById(id);
 	}
 
 	@Override
-	public List<Book> getAllBooks() {
-		return booksDao.findAllBooks();
+	@Transactional(readOnly = true)
+	public List<Book> getAll() {
+		return booksDao.findAll();
 	}
 
 	@Override
-	public boolean removeBook(final long id) {
-		return booksDao.removeBook(id);
-	}
-
-	@Override
-	public boolean updateBook(final Book book) {
-		checkBookOrThrow(book);
-		return booksDao.updateBook(book);
+	@Transactional
+	public boolean removeById(final long id) {
+		return booksDao.removeById(id);
 	}
 
 	private void checkBookOrThrow(final Book book) {
