@@ -15,6 +15,7 @@ import ru.otus.domain.Constants;
 import ru.otus.services.GenresService;
 import ru.otus.services.LocalizationService;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
@@ -25,6 +26,7 @@ class GenresControllerUnitTest {
 
 	private static final long GENRE_ID = 1L;
 	private static final String EMPTY_APP_MESSAGE = "";
+	public static final String NAME = "name";
 
 	@Configuration
 	@Import({GenresController.class})
@@ -45,6 +47,20 @@ class GenresControllerUnitTest {
 	@BeforeEach
 	void setUp() {
 		this.inOrder = inOrder(genresService);
+	}
+
+	@Test
+	@DisplayName("should call service for create genre")
+	public void shouldCallServiceForCreateGenre() {
+		genresController.create(NAME);
+		inOrder.verify(genresService, times(1)).save(any());
+	}
+
+	@Test
+	@DisplayName("should call service for update genre")
+	public void shouldCallServiceForUpdateGenre() {
+		genresController.update(GENRE_ID, NAME);
+		inOrder.verify(genresService, times(1)).save(any());
 	}
 
 	@Test

@@ -31,9 +31,9 @@ import static org.mockito.Mockito.times;
 @DisplayName("facade for work with books")
 class BooksFacadeImplUnitTest {
 
-	public static final long AUTHOR_ID = 1L;
-	public static final long GENRE_ID = 1L;
-	public static final long BOOK_ID = 1L;
+	private static final long AUTHOR_ID = 1L;
+	private static final long GENRE_ID = 1L;
+	private static final long BOOK_ID = 1L;
 
 	@Configuration
 	@Import(BooksFacadeImpl.class)

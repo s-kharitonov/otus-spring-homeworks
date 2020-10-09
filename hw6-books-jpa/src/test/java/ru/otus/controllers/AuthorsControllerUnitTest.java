@@ -15,6 +15,7 @@ import ru.otus.domain.Constants;
 import ru.otus.services.AuthorsService;
 import ru.otus.services.LocalizationService;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
@@ -25,6 +26,8 @@ class AuthorsControllerUnitTest {
 
 	private static final long AUTHOR_ID = 1L;
 	private static final String EMPTY_APP_MESSAGE = "";
+	private static final String SURNAME = "surname";
+	private static final String NAME = "name";
 
 	@Configuration
 	@Import({AuthorsController.class})
@@ -45,6 +48,20 @@ class AuthorsControllerUnitTest {
 	@BeforeEach
 	void setUp() {
 		this.inOrder = inOrder(authorsService);
+	}
+
+	@Test
+	@DisplayName("should call service for create author")
+	public void shouldCallServiceForCreateAuthor() {
+		authorsController.create(NAME, SURNAME);
+		inOrder.verify(authorsService, times(1)).save(any());
+	}
+
+	@Test
+	@DisplayName("should call service for update author")
+	public void shouldCallServiceForUpdateAuthor() {
+		authorsController.update(AUTHOR_ID, NAME, SURNAME);
+		inOrder.verify(authorsService, times(1)).save(any());
 	}
 
 	@Test
