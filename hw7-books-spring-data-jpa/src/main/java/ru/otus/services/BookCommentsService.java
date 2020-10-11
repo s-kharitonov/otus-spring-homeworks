@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookCommentsService {
-	void save(BookComment bookComment);
+	BookComment save(BookComment bookComment);
 
 	Optional<BookComment> getById(long id);
 
 	List<BookComment> getAll();
 
-	boolean removeById(long id);
+	void deleteById(long id);
 }

@@ -25,7 +25,7 @@ public class BookCommentsFacadeImpl implements BookCommentsFacade {
 
 	@Override
 	@Transactional
-	public Optional<Long> save(final BookCommentDto bookComment) {
+	public BookCommentDto save(final BookCommentDto bookComment) {
 		var book = booksService.getById(bookComment.getBook().getId()).orElseThrow();
 		var bookCommentForSave = new BookComment.Builder()
 				.id(bookComment.getId())
@@ -33,8 +33,7 @@ public class BookCommentsFacadeImpl implements BookCommentsFacade {
 				.text(bookComment.getText())
 				.build();
 
-		bookCommentsService.save(bookCommentForSave);
-		return Optional.ofNullable(bookCommentForSave.getId());
+		return new BookCommentDto(bookCommentsService.save(bookCommentForSave));
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class BookCommentsFacadeImpl implements BookCommentsFacade {
 
 	@Override
 	@Transactional
-	public boolean removeById(final long id) {
-		return bookCommentsService.removeById(id);
+	public void deleteById(final long id) {
+		bookCommentsService.deleteById(id);
 	}
 }

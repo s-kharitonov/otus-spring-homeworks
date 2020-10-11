@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.services.AuthorsService;
-import ru.otus.services.LocalizationService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
@@ -23,7 +22,6 @@ import static org.mockito.Mockito.times;
 class AuthorsControllerUnitTest {
 
 	private static final long AUTHOR_ID = 1L;
-	private static final String EMPTY_APP_MESSAGE = "";
 	private static final String SURNAME = "surname";
 	private static final String NAME = "name";
 
@@ -35,9 +33,6 @@ class AuthorsControllerUnitTest {
 
 	@MockBean
 	private AuthorsService authorsService;
-
-	@MockBean
-	private LocalizationService localizationService;
 
 	@Autowired
 	private AuthorsController authorsController;

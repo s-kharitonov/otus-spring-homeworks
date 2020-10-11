@@ -11,12 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.domain.Constants;
 import ru.otus.services.GenresService;
-import ru.otus.services.LocalizationService;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
 
@@ -25,7 +22,6 @@ import static org.mockito.Mockito.times;
 class GenresControllerUnitTest {
 
 	private static final long GENRE_ID = 1L;
-	private static final String EMPTY_APP_MESSAGE = "";
 	public static final String NAME = "name";
 
 	@Configuration
@@ -36,9 +32,6 @@ class GenresControllerUnitTest {
 
 	@MockBean
 	private GenresService genresService;
-
-	@MockBean
-	private LocalizationService localizationService;
 
 	@Autowired
 	private GenresController genresController;
@@ -80,8 +73,6 @@ class GenresControllerUnitTest {
 	@Test
 	@DisplayName("should call service for remove genre")
 	public void shouldCallServiceForRemoveGenre() {
-		given(localizationService.localizeMessage(Constants.GENRE_SUCCESSFUL_REMOVED_MSG_KEY, GENRE_ID))
-				.willReturn(EMPTY_APP_MESSAGE);
 		genresController.remove(GENRE_ID);
 		inOrder.verify(genresService, times(1)).deleteById(GENRE_ID);
 	}

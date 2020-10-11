@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.dao.BookCommentsDao;
+import ru.otus.dao.BookCommentsRepository;
 import ru.otus.domain.BookComment;
 import ru.otus.exceptions.BookCommentsServiceException;
 import ru.otus.validators.FieldValidator;
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -43,7 +43,7 @@ class BookCommentsServiceImplUnitTest {
 	}
 
 	@MockBean
-	private BookCommentsDao bookCommentsDao;
+	private BookCommentsRepository bookCommentsRepository;
 
 	@MockBean
 	private FieldValidator fieldValidator;
@@ -76,7 +76,7 @@ class BookCommentsServiceImplUnitTest {
 				.text(COMMENT)
 				.build();
 
-		given(bookCommentsDao.findById(COMMENT_ID)).willReturn(Optional.ofNullable(comment));
+		given(bookCommentsRepository.findById(COMMENT_ID)).willReturn(Optional.ofNullable(comment));
 		assertThat(bookCommentsService.getById(COMMENT_ID)).get().isEqualToComparingFieldByField(comment);
 	}
 
@@ -89,15 +89,14 @@ class BookCommentsServiceImplUnitTest {
 				.build();
 		var comments = List.of(comment);
 
-		given(bookCommentsDao.findAll()).willReturn(comments);
+		given(bookCommentsRepository.findAll()).willReturn(comments);
 		assertThat(bookCommentsService.getAll()).containsOnlyOnceElementsOf(comments);
 	}
 
 	@Test
 	@DisplayName("should remove comment by id")
-	public void shouldRemoveCommentById() {
-		given(bookCommentsDao.removeById(COMMENT_ID)).willReturn(true);
-		assertTrue(bookCommentsService.removeById(COMMENT_ID));
+	public void shouldRemoveCommentWithoutThrows() {
+		assertDoesNotThrow(() -> bookCommentsService.deleteById(COMMENT_ID));
 	}
 
 	private static String[] createTextWithLengthGreaterThanMaxValue() {

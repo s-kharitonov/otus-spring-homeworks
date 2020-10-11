@@ -4,9 +4,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.domain.Author;
-import ru.otus.domain.Constants;
 import ru.otus.services.AuthorsService;
-import ru.otus.services.LocalizationService;
 
 import java.util.stream.Collectors;
 
@@ -14,12 +12,9 @@ import java.util.stream.Collectors;
 public class AuthorsController {
 
 	private final AuthorsService authorsService;
-	private final LocalizationService localizationService;
 
-	public AuthorsController(final AuthorsService authorsService,
-							 final LocalizationService localizationService) {
+	public AuthorsController(final AuthorsService authorsService) {
 		this.authorsService = authorsService;
-		this.localizationService = localizationService;
 	}
 
 	@ShellMethod(value = "create author and get id", group = "authors", key = {"c-a", "create-author"})
@@ -35,9 +30,7 @@ public class AuthorsController {
 
 	@ShellMethod(value = "get author by id", group = "authors", key = {"r-a", "read-author"})
 	public String getById(@ShellOption(help = "enter author id") long id) {
-		return authorsService.getById(id)
-				.map(Author::toString)
-				.orElse(localizationService.localizeMessage(Constants.AUTHOR_NOT_FOUND_MSG_KEY, id));
+		return String.valueOf(authorsService.getById(id));
 	}
 
 	@ShellMethod(value = "get all authors", group = "authors", key = {"r-a-a", "read-all-authors"})

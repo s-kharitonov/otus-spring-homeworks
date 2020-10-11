@@ -2,7 +2,7 @@ package ru.otus.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.dao.BookCommentsDao;
+import ru.otus.dao.BookCommentsRepository;
 import ru.otus.domain.BookComment;
 import ru.otus.exceptions.BookCommentsServiceException;
 import ru.otus.validators.FieldValidator;
@@ -14,38 +14,38 @@ import java.util.Optional;
 @Service
 public class BookCommentsServiceImpl implements BookCommentsService {
 
-	private final BookCommentsDao bookCommentsDao;
+	private final BookCommentsRepository bookCommentsRepository;
 	private final FieldValidator fieldValidator;
 
-	public BookCommentsServiceImpl(final BookCommentsDao bookCommentsDao,
+	public BookCommentsServiceImpl(final BookCommentsRepository bookCommentsRepository,
 								   final FieldValidator fieldValidator) {
-		this.bookCommentsDao = bookCommentsDao;
+		this.bookCommentsRepository = bookCommentsRepository;
 		this.fieldValidator = fieldValidator;
 	}
 
 	@Override
 	@Transactional
-	public void save(final BookComment bookComment) {
+	public BookComment save(final BookComment bookComment) {
 		checkCommentOrThrow(bookComment);
-		bookCommentsDao.save(bookComment);
+		return bookCommentsRepository.save(bookComment);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<BookComment> getById(final long id) {
-		return bookCommentsDao.findById(id);
+		return bookCommentsRepository.findById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<BookComment> getAll() {
-		return bookCommentsDao.findAll();
+		return bookCommentsRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public boolean removeById(final long id) {
-		return bookCommentsDao.removeById(id);
+	public void deleteById(final long id) {
+		bookCommentsRepository.deleteById(id);
 	}
 
 	private void checkCommentOrThrow(final BookComment bookComment) {

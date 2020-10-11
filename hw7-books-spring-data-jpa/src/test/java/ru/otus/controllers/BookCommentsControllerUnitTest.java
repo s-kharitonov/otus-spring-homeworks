@@ -11,12 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.domain.Constants;
-import ru.otus.services.LocalizationService;
 import ru.otus.services.facades.BookCommentsFacade;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
 
@@ -26,7 +23,6 @@ class BookCommentsControllerUnitTest {
 
 	private static final long COMMENT_ID = 1L;
 	private static final long BOOK_ID = 1L;
-	private static final String EMPTY_APP_MESSAGE = "";
 	private static final String COMMENT_TEXT = "hello world!";
 
 	@Configuration
@@ -38,9 +34,6 @@ class BookCommentsControllerUnitTest {
 
 	@MockBean
 	private BookCommentsFacade bookCommentsFacade;
-
-	@MockBean
-	private LocalizationService localizationService;
 
 	@Autowired
 	private BookCommentsController bookCommentsController;
@@ -82,11 +75,7 @@ class BookCommentsControllerUnitTest {
 	@Test
 	@DisplayName("should call service for remove service")
 	public void shouldCallServiceForRemoveComment() {
-		given(bookCommentsFacade.removeById(COMMENT_ID)).willReturn(true);
-		given(localizationService.localizeMessage(Constants.COMMENT_SUCCESSFUL_REMOVED_MSG_KEY, COMMENT_ID))
-				.willReturn(EMPTY_APP_MESSAGE);
-
 		bookCommentsController.removeById(COMMENT_ID);
-		inOrder.verify(bookCommentsFacade, times(1)).removeById(COMMENT_ID);
+		inOrder.verify(bookCommentsFacade, times(1)).deleteById(COMMENT_ID);
 	}
 }

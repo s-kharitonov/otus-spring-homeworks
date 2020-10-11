@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.domain.Book;
+import ru.otus.domain.BookComment;
 import ru.otus.domain.dto.BookCommentDto;
 import ru.otus.domain.dto.BookDto;
 import ru.otus.services.BookCommentsService;
@@ -63,8 +64,13 @@ class BookCommentsFacadeImplUnitTest {
 				.text(COMMENT)
 				.book(book)
 				.build();
+		var expectedBook = new Book.Builder().id(BOOK_ID).build();
+		var expectedBookComment = new BookComment.Builder()
+				.book(expectedBook)
+				.build();
 
 		given(booksService.getById(BOOK_ID)).willReturn(Optional.of(new Book()));
+		given(bookCommentsService.save(any())).willReturn(expectedBookComment);
 		bookCommentsFacade.save(bookComment);
 
 		inOrder.verify(booksService, times(1)).getById(BOOK_ID);
@@ -88,7 +94,7 @@ class BookCommentsFacadeImplUnitTest {
 	@Test
 	@DisplayName("should call service for remove book comment by id")
 	public void shouldCallServiceForRemoveBookCommentById() {
-		bookCommentsFacade.removeById(BOOK_COMMENT_ID);
-		inOrder.verify(bookCommentsService, times(1)).removeById(BOOK_COMMENT_ID);
+		bookCommentsFacade.deleteById(BOOK_COMMENT_ID);
+		inOrder.verify(bookCommentsService, times(1)).deleteById(BOOK_COMMENT_ID);
 	}
 }
