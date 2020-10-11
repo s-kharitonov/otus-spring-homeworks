@@ -3,8 +3,6 @@ package ru.otus.domain.dto;
 import ru.otus.domain.Book;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class BookDto {
 	private final Long id;
@@ -13,7 +11,6 @@ public class BookDto {
 	private final int printLength;
 	private final AuthorDto author;
 	private final GenreDto genre;
-	private final List<CommentDto> comments;
 
 	public BookDto(final Book book) {
 		this.id = book.getId();
@@ -22,10 +19,6 @@ public class BookDto {
 		this.printLength = book.getPrintLength();
 		this.author = new AuthorDto(book.getAuthor());
 		this.genre = new GenreDto(book.getGenre());
-		this.comments = book.getComments()
-				.stream()
-				.map(CommentDto::new)
-				.collect(Collectors.toList());
 	}
 
 	private BookDto(final Builder builder) {
@@ -35,7 +28,6 @@ public class BookDto {
 		this.printLength = builder.printLength;
 		this.author = builder.author;
 		this.genre = builder.genre;
-		this.comments = builder.comments;
 	}
 
 	public Long getId() {
@@ -62,10 +54,6 @@ public class BookDto {
 		return genre;
 	}
 
-	public List<CommentDto> getComments() {
-		return comments;
-	}
-
 	@Override
 	public String toString() {
 		return "BookDto{" +
@@ -75,7 +63,6 @@ public class BookDto {
 				", printLength=" + printLength +
 				", author=" + author +
 				", genre=" + genre +
-				", comments=" + comments +
 				'}';
 	}
 
@@ -86,7 +73,6 @@ public class BookDto {
 		private int printLength;
 		private AuthorDto author;
 		private GenreDto genre;
-		private List<CommentDto> comments;
 
 		public Builder id(final Long id) {
 			this.id = id;
@@ -115,11 +101,6 @@ public class BookDto {
 
 		public Builder genre(final GenreDto genre) {
 			this.genre = genre;
-			return this;
-		}
-
-		public Builder comments(final List<CommentDto> comments) {
-			this.comments = comments;
 			return this;
 		}
 
