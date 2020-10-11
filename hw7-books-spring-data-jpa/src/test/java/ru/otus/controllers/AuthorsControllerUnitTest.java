@@ -11,12 +11,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.domain.Constants;
 import ru.otus.services.AuthorsService;
 import ru.otus.services.LocalizationService;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
 
@@ -81,10 +79,7 @@ class AuthorsControllerUnitTest {
 	@Test
 	@DisplayName("should call service for remove author")
 	public void shouldCallServiceForRemoveAuthor() {
-		given(authorsService.removeById(AUTHOR_ID)).willReturn(true);
-		given(localizationService.localizeMessage(Constants.AUTHOR_SUCCESSFUL_REMOVED_MSG_KEY, AUTHOR_ID))
-				.willReturn(EMPTY_APP_MESSAGE);
 		authorsController.remove(AUTHOR_ID);
-		inOrder.verify(authorsService, times(1)).removeById(AUTHOR_ID);
+		inOrder.verify(authorsService, times(1)).deleteById(AUTHOR_ID);
 	}
 }

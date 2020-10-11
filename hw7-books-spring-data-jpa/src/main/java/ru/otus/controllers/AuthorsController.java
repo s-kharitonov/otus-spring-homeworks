@@ -8,7 +8,6 @@ import ru.otus.domain.Constants;
 import ru.otus.services.AuthorsService;
 import ru.otus.services.LocalizationService;
 
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ShellComponent
@@ -31,13 +30,7 @@ public class AuthorsController {
 				.surname(surname)
 				.build();
 
-		authorsService.save(author);
-
-		if (Objects.nonNull(author.getId())) {
-			return String.valueOf(author);
-		} else {
-			return localizationService.localizeMessage(Constants.AUTHOR_UNSUCCESSFUL_CREATED_MSG_KEY, author);
-		}
+		return String.valueOf(authorsService.save(author));
 	}
 
 	@ShellMethod(value = "get author by id", group = "authors", key = {"r-a", "read-author"})
@@ -55,12 +48,8 @@ public class AuthorsController {
 	}
 
 	@ShellMethod(value = "remove author by id", group = "authors", key = { "d-a", "delete-author"})
-	public String remove(@ShellOption(help = "enter author id") long id) {
-		if (authorsService.removeById(id)) {
-			return localizationService.localizeMessage(Constants.AUTHOR_SUCCESSFUL_REMOVED_MSG_KEY, id);
-		} else {
-			return localizationService.localizeMessage(Constants.AUTHOR_UNSUCCESSFUL_REMOVED_MSG_KEY, id);
-		}
+	public void remove(@ShellOption(help = "enter author id") long id) {
+		authorsService.deleteById(id);
 	}
 
 	@ShellMethod(value = "update author", group = "authors", key = { "u-a", "update-author"})
@@ -73,7 +62,6 @@ public class AuthorsController {
 				.surname(surname)
 				.build();
 
-		authorsService.save(author);
-		return String.valueOf(author);
+		return String.valueOf(authorsService.save(author));
 	}
 }

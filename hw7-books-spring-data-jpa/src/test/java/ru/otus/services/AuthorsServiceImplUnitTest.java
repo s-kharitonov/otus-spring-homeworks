@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.dao.AuthorsDao;
+import ru.otus.dao.AuthorsRepository;
 import ru.otus.domain.Author;
 import ru.otus.exceptions.AuthorsServiceException;
 import ru.otus.validators.FieldValidator;
@@ -41,7 +41,7 @@ class AuthorsServiceImplUnitTest {
 	}
 
 	@MockBean
-	private AuthorsDao authorsDao;
+	private AuthorsRepository authorsRepository;
 
 	@MockBean
 	private FieldValidator fieldValidator;
@@ -90,7 +90,7 @@ class AuthorsServiceImplUnitTest {
 				.name(NAME)
 				.surname(SURNAME)
 				.build();
-		given(authorsDao.findById(FIRST_AUTHOR_ID)).willReturn(Optional.of(author));
+		given(authorsRepository.findById(FIRST_AUTHOR_ID)).willReturn(Optional.of(author));
 		var foundedAuthor = authorsService.getById(FIRST_AUTHOR_ID).orElseThrow();
 		assertEquals(author.getId(), foundedAuthor.getId());
 	}
@@ -104,15 +104,14 @@ class AuthorsServiceImplUnitTest {
 				.surname(SURNAME)
 				.build();
 		var authors = List.of(author);
-		given(authorsDao.findAll()).willReturn(authors);
+		given(authorsRepository.findAll()).willReturn(authors);
 		assertFalse(authorsService.getAll().isEmpty());
 	}
 
 	@Test
 	@DisplayName("should remove author")
-	public void shouldRemoveAuthor() {
-		given(authorsDao.remove(FIRST_AUTHOR_ID)).willReturn(true);
-		assertTrue(authorsService.removeById(FIRST_AUTHOR_ID));
+	public void shouldRemoveAuthorWithoutThrows() {
+		assertDoesNotThrow(() -> authorsService.deleteById(FIRST_AUTHOR_ID));
 	}
 
 	private static String[] createStringGreaterThanMaxLength() {
