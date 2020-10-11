@@ -1,16 +1,16 @@
 package ru.otus.dao;
 
-import ru.otus.domain.Comment;
+import ru.otus.domain.BookComment;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CommentsDao {
-	void save(Comment comment);
+	void save(BookComment bookComment);
 
-	Optional<Comment> findById(long id);
+	Optional<BookComment> findById(long id);
 
-	List<Comment> findAll();
+	List<BookComment> findAll();
 
 	boolean removeById(long id);
 }

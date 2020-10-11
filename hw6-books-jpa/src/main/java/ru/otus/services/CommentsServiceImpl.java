@@ -3,7 +3,7 @@ package ru.otus.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dao.CommentsDao;
-import ru.otus.domain.Comment;
+import ru.otus.domain.BookComment;
 import ru.otus.exceptions.CommentServiceException;
 import ru.otus.validators.FieldValidator;
 
@@ -25,20 +25,20 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	@Transactional
-	public void save(final Comment comment) {
-		checkCommentOrThrow(comment);
-		commentsDao.save(comment);
+	public void save(final BookComment bookComment) {
+		checkCommentOrThrow(bookComment);
+		commentsDao.save(bookComment);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<Comment> getById(final long id) {
+	public Optional<BookComment> getById(final long id) {
 		return commentsDao.findById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Comment> getAll() {
+	public List<BookComment> getAll() {
 		return commentsDao.findAll();
 	}
 
@@ -48,9 +48,9 @@ public class CommentsServiceImpl implements CommentsService {
 		return commentsDao.removeById(id);
 	}
 
-	private void checkCommentOrThrow(final Comment comment) {
-		if (Objects.isNull(comment) || !fieldValidator.validate(comment)) {
-			throw new CommentServiceException(String.format("comment: %s is invalid!", comment));
+	private void checkCommentOrThrow(final BookComment bookComment) {
+		if (Objects.isNull(bookComment) || !fieldValidator.validate(bookComment)) {
+			throw new CommentServiceException(String.format("comment: %s is invalid!", bookComment));
 		}
 	}
 }

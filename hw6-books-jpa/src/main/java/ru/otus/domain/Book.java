@@ -45,10 +45,10 @@ public class Book {
 	private Genre genre;
 
 	@Fetch(FetchMode.SUBSELECT)
-	@OneToMany(targetEntity = Comment.class, fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = BookComment.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "BOOKS_COMMENTS", joinColumns = @JoinColumn(name = "BOOK_ID"),
 			inverseJoinColumns = @JoinColumn(name = "COMMENT_ID"))
-	private List<Comment> comments;
+	private List<BookComment> bookComments;
 
 	public Book() {
 	}
@@ -60,7 +60,7 @@ public class Book {
 		this.printLength = builder.printLength;
 		this.author = builder.author;
 		this.genre = builder.genre;
-		this.comments = builder.comments;
+		this.bookComments = builder.bookComments;
 	}
 
 	public Long getId() {
@@ -111,12 +111,12 @@ public class Book {
 		this.genre = genre;
 	}
 
-	public List<Comment> getComments() {
-		return comments;
+	public List<BookComment> getComments() {
+		return bookComments;
 	}
 
-	public void setComments(final List<Comment> comment) {
-		this.comments = comment;
+	public void setComments(final List<BookComment> bookComment) {
+		this.bookComments = bookComment;
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class Book {
 		private int printLength;
 		private Author author;
 		private Genre genre;
-		private List<Comment> comments;
+		private List<BookComment> bookComments;
 
 		public Builder id(final Long id) {
 			this.id = id;
@@ -170,8 +170,8 @@ public class Book {
 			return this;
 		}
 
-		public Builder comments(final List<Comment> comments) {
-			this.comments = comments;
+		public Builder comments(final List<BookComment> bookComments) {
+			this.bookComments = bookComments;
 			return this;
 		}
 

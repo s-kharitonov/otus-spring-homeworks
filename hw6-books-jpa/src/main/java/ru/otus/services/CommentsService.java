@@ -1,16 +1,16 @@
 package ru.otus.services;
 
-import ru.otus.domain.Comment;
+import ru.otus.domain.BookComment;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CommentsService {
-	void save(Comment comment);
+	void save(BookComment bookComment);
 
-	Optional<Comment> getById(long id);
+	Optional<BookComment> getById(long id);
 
-	List<Comment> getAll();
+	List<BookComment> getAll();
 
 	boolean removeById(long id);
 }

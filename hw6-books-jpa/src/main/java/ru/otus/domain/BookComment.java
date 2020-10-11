@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "BOOKS_COMMENTS")
-public class Comment {
+public class BookComment {
 	@Id
 	@Column(name = "COMMENT_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_comment_s")
@@ -25,10 +25,10 @@ public class Comment {
 	@ManyToOne(targetEntity = Book.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Book book;
 
-	public Comment() {
+	public BookComment() {
 	}
 
-	private Comment(final Builder builder) {
+	private BookComment(final Builder builder) {
 		this.id = builder.id;
 		this.text = builder.text;
 		this.book = builder.book;
@@ -87,8 +87,8 @@ public class Comment {
 			return this;
 		}
 
-		public Comment build() {
-			return new Comment(this);
+		public BookComment build() {
+			return new BookComment(this);
 		}
 	}
 }

@@ -3,7 +3,7 @@ package ru.otus.controllers;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.domain.Comment;
+import ru.otus.domain.BookComment;
 import ru.otus.domain.Constants;
 import ru.otus.services.CommentsService;
 import ru.otus.services.LocalizationService;
@@ -25,7 +25,7 @@ public class CommentsController {
 
 	@ShellMethod(value = "create comment", group = "comments", key = {"c-c", "create-comment"})
 	public String create(@ShellOption(help = "enter comment") String text) {
-		var comment = new Comment.Builder().text(text).build();
+		var comment = new BookComment.Builder().text(text).build();
 
 		commentsService.save(comment);
 
@@ -39,7 +39,7 @@ public class CommentsController {
 	@ShellMethod(value = "update comment", group = "comments", key = {"u-c", "update-comment"})
 	public String update(@ShellOption(help = "enter comment id") long id,
 						 @ShellOption(help = "enter comment") String text) {
-		var comment = new Comment.Builder()
+		var comment = new BookComment.Builder()
 				.id(id)
 				.text(text)
 				.build();
@@ -59,7 +59,7 @@ public class CommentsController {
 	@ShellMethod(value = "get all comments", group = "comments", key = {"r-a-c", "read-all-comments"})
 	public String getAll() {
 		return commentsService.getAll().stream()
-				.map(Comment::toString)
+				.map(BookComment::toString)
 				.collect(Collectors.joining(System.lineSeparator()));
 	}
 

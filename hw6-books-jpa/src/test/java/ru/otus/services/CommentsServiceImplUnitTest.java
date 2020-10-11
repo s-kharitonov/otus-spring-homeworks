@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.dao.CommentsDao;
-import ru.otus.domain.Comment;
+import ru.otus.domain.BookComment;
 import ru.otus.exceptions.CommentServiceException;
 import ru.otus.validators.FieldValidator;
 
@@ -62,7 +62,7 @@ class CommentsServiceImplUnitTest {
 	@MethodSource(value = "createTextWithLengthGreaterThanMaxValue")
 	@DisplayName("should throw CommentsServiceException when comment for save has not valid text")
 	public void shouldThrowExceptionWhenCommentForSaveHasNotValidText(final String text) {
-		var comment = new Comment.Builder().text(text).build();
+		var comment = new BookComment.Builder().text(text).build();
 
 		given(fieldValidator.validate(comment)).willReturn(false);
 		assertThrows(CommentServiceException.class, () -> commentsService.save(comment));
@@ -71,7 +71,7 @@ class CommentsServiceImplUnitTest {
 	@Test
 	@DisplayName("should return comment by id")
 	public void shouldReturnCommentById() {
-		var comment = new Comment.Builder()
+		var comment = new BookComment.Builder()
 				.id(COMMENT_ID)
 				.text(COMMENT)
 				.build();
@@ -83,7 +83,7 @@ class CommentsServiceImplUnitTest {
 	@Test
 	@DisplayName("should return all comments")
 	public void shouldReturnAllComments() {
-		var comment = new Comment.Builder()
+		var comment = new BookComment.Builder()
 				.id(COMMENT_ID)
 				.text(COMMENT)
 				.build();
