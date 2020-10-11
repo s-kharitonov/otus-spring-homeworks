@@ -72,7 +72,7 @@ public class BookComment {
 		private String text;
 		private Book book;
 
-		public Builder id(long id) {
+		public Builder id(Long id) {
 			this.id = id;
 			return this;
 		}

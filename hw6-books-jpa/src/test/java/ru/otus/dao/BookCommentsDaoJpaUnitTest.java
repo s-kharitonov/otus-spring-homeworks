@@ -50,7 +50,7 @@ class BookCommentsDaoJpaUnitTest {
 
 		var updatedComment = em.find(BookComment.class, COMMENT_ID);
 
-		assertThat(comment).isEqualToComparingFieldByField(updatedComment);
+		assertThat(comment).isEqualToIgnoringGivenFields(updatedComment, "book");
 	}
 
 	@Test

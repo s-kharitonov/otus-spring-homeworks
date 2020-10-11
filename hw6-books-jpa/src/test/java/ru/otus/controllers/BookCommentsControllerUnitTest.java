@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.domain.Constants;
-import ru.otus.services.BookCommentsService;
 import ru.otus.services.LocalizationService;
+import ru.otus.services.facades.BookCommentsFacade;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -25,6 +25,7 @@ import static org.mockito.Mockito.times;
 class BookCommentsControllerUnitTest {
 
 	private static final long COMMENT_ID = 1L;
+	private static final long BOOK_ID = 1L;
 	private static final String EMPTY_APP_MESSAGE = "";
 	private static final String COMMENT_TEXT = "hello world!";
 
@@ -36,7 +37,7 @@ class BookCommentsControllerUnitTest {
 	}
 
 	@MockBean
-	private BookCommentsService bookCommentsService;
+	private BookCommentsFacade bookCommentsFacade;
 
 	@MockBean
 	private LocalizationService localizationService;
@@ -47,45 +48,45 @@ class BookCommentsControllerUnitTest {
 
 	@BeforeEach
 	void setUp() {
-		this.inOrder = inOrder(bookCommentsService);
+		this.inOrder = inOrder(bookCommentsFacade);
 	}
 
 	@Test
 	@DisplayName("should call service for create comment")
 	public void shouldCallServiceForCreateComment() {
-		bookCommentsController.create(COMMENT_TEXT);
-		inOrder.verify(bookCommentsService, times(1)).save(any());
+		bookCommentsController.create(COMMENT_TEXT, BOOK_ID);
+		inOrder.verify(bookCommentsFacade, times(1)).save(any());
 	}
 
 	@Test
 	@DisplayName("should call service for update comment")
 	public void shouldCallServiceForUpdateComment() {
 		bookCommentsController.update(COMMENT_ID, COMMENT_TEXT);
-		inOrder.verify(bookCommentsService, times(1)).save(any());
+		inOrder.verify(bookCommentsFacade, times(1)).save(any());
 	}
 
 	@Test
 	@DisplayName("should call service for getting comment by id")
 	public void shouldCallServiceForGettingCommentById() {
 		bookCommentsController.getById(COMMENT_ID);
-		inOrder.verify(bookCommentsService, times(1)).getById(COMMENT_ID);
+		inOrder.verify(bookCommentsFacade, times(1)).getById(COMMENT_ID);
 	}
 
 	@Test
 	@DisplayName("should call service for getting all comments")
 	public void shouldCallServiceForGettingAllComments() {
 		bookCommentsController.getAll();
-		inOrder.verify(bookCommentsService, times(1)).getAll();
+		inOrder.verify(bookCommentsFacade, times(1)).getAll();
 	}
 
 	@Test
 	@DisplayName("should call service for remove service")
 	public void shouldCallServiceForRemoveComment() {
-		given(bookCommentsService.removeById(COMMENT_ID)).willReturn(true);
+		given(bookCommentsFacade.removeById(COMMENT_ID)).willReturn(true);
 		given(localizationService.localizeMessage(Constants.COMMENT_SUCCESSFUL_REMOVED_MSG_KEY, COMMENT_ID))
 				.willReturn(EMPTY_APP_MESSAGE);
 
 		bookCommentsController.removeById(COMMENT_ID);
-		inOrder.verify(bookCommentsService, times(1)).removeById(COMMENT_ID);
+		inOrder.verify(bookCommentsFacade, times(1)).removeById(COMMENT_ID);
 	}
 }
