@@ -12,9 +12,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.dao.BookCommentsRepository;
 import ru.otus.domain.BookComment;
 import ru.otus.exceptions.BookCommentsServiceException;
+import ru.otus.repositories.BookCommentsRepository;
 import ru.otus.validators.FieldValidator;
 
 import java.util.List;

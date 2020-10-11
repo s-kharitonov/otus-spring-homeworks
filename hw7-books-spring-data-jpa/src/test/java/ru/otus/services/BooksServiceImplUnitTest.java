@@ -14,11 +14,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.dao.BooksDao;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.BooksServiceException;
+import ru.otus.repositories.BooksRepository;
 import ru.otus.validators.FieldValidator;
 
 import java.util.Date;
@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -58,7 +58,7 @@ class BooksServiceImplUnitTest {
 	private FieldValidator fieldValidator;
 
 	@MockBean
-	private BooksDao booksDao;
+	private BooksRepository booksRepository;
 
 	@Autowired
 	private BooksService booksService;
@@ -176,7 +176,7 @@ class BooksServiceImplUnitTest {
 				.genre(genre)
 				.build();
 
-		given(booksDao.findById(BOOK_ID)).willReturn(Optional.of(book));
+		given(booksRepository.findById(BOOK_ID)).willReturn(Optional.of(book));
 		assertThat(booksService.getById(BOOK_ID)).get().isEqualToComparingFieldByField(book);
 	}
 
@@ -193,15 +193,14 @@ class BooksServiceImplUnitTest {
 				.build();
 		var books = List.of(book);
 
-		given(booksDao.findAll()).willReturn(books);
+		given(booksRepository.findAll()).willReturn(books);
 		assertThat(booksService.getAll()).isNotEmpty().containsOnlyOnceElementsOf(books);
 	}
 
 	@Test
 	@DisplayName("should remove book by id")
-	public void shouldRemoveBookById() {
-		given(booksDao.removeById(BOOK_ID)).willReturn(true);
-		assertTrue(booksService.removeById(BOOK_ID));
+	public void shouldRemoveBookByIdWithoutThrows() {
+		assertDoesNotThrow(() -> booksService.deleteById(BOOK_ID));
 	}
 
 	private static String[] createNameGreaterThanMaxLength() {

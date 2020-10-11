@@ -2,9 +2,9 @@ package ru.otus.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.dao.GenresRepository;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
+import ru.otus.repositories.GenresRepository;
 import ru.otus.validators.FieldValidator;
 
 import java.util.List;

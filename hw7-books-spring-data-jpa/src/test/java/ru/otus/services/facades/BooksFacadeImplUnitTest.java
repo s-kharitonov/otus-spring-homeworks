@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.domain.Author;
+import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.domain.dto.AuthorDto;
 import ru.otus.domain.dto.BookDto;
@@ -70,8 +71,15 @@ class BooksFacadeImplUnitTest {
 				.genre(genre)
 				.author(author)
 				.build();
-		given(authorsService.getById(AUTHOR_ID)).willReturn(Optional.of(new Author()));
-		given(genresService.getById(GENRE_ID)).willReturn(Optional.of(new Genre()));
+		var expectedAuthor = new Author();
+		var expectedGenre = new Genre();
+		var expectedBook = new Book.Builder()
+				.author(expectedAuthor)
+				.genre(expectedGenre)
+				.build();
+		given(authorsService.getById(AUTHOR_ID)).willReturn(Optional.of(expectedAuthor));
+		given(genresService.getById(GENRE_ID)).willReturn(Optional.of(expectedGenre));
+		given(booksService.save(any())).willReturn(expectedBook);
 
 		booksFacade.save(book);
 
@@ -97,7 +105,7 @@ class BooksFacadeImplUnitTest {
 	@Test
 	@DisplayName("should call service for remove book by id")
 	public void shouldCallServiceForRemoveBookById() {
-		booksFacade.removeById(BOOK_ID);
-		inOrder.verify(booksService, times(1)).removeById(BOOK_ID);
+		booksFacade.deleteById(BOOK_ID);
+		inOrder.verify(booksService, times(1)).deleteById(BOOK_ID);
 	}
 }

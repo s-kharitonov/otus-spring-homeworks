@@ -29,7 +29,7 @@ public class BooksFacadeImpl implements BooksFacade {
 
 	@Override
 	@Transactional
-	public Optional<Long> save(final BookDto book) {
+	public BookDto save(final BookDto book) {
 		var author = authorsService.getById(book.getAuthor().getId()).orElseThrow();
 		var genre = genresService.getById(book.getGenre().getId()).orElseThrow();
 		var bookForSave = new Book.Builder()
@@ -41,9 +41,7 @@ public class BooksFacadeImpl implements BooksFacade {
 				.genre(genre)
 				.build();
 
-		booksService.save(bookForSave);
-
-		return Optional.ofNullable(bookForSave.getId());
+		return new BookDto(booksService.save(bookForSave));
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class BooksFacadeImpl implements BooksFacade {
 
 	@Override
 	@Transactional
-	public boolean removeById(final long id) {
-		return booksService.removeById(id);
+	public void deleteById(final long id) {
+		booksService.deleteById(id);
 	}
 }

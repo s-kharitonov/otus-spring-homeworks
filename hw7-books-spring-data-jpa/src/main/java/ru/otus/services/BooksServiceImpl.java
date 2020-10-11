@@ -2,9 +2,9 @@ package ru.otus.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.dao.BooksDao;
 import ru.otus.domain.Book;
 import ru.otus.exceptions.BooksServiceException;
+import ru.otus.repositories.BooksRepository;
 import ru.otus.validators.FieldValidator;
 
 import java.util.List;
@@ -14,38 +14,38 @@ import java.util.Optional;
 @Service
 public class BooksServiceImpl implements BooksService {
 
-	private final BooksDao booksDao;
+	private final BooksRepository booksRepository;
 	private final FieldValidator fieldValidator;
 
-	public BooksServiceImpl(final BooksDao booksDao,
+	public BooksServiceImpl(final BooksRepository booksRepository,
 							final FieldValidator fieldValidator) {
-		this.booksDao = booksDao;
+		this.booksRepository = booksRepository;
 		this.fieldValidator = fieldValidator;
 	}
 
 	@Override
 	@Transactional
-	public void save(final Book book) {
+	public Book save(final Book book) {
 		checkBookOrThrow(book);
-		booksDao.save(book);
+		return booksRepository.save(book);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<Book> getById(final long id) {
-		return booksDao.findById(id);
+		return booksRepository.findById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Book> getAll() {
-		return booksDao.findAll();
+		return booksRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public boolean removeById(final long id) {
-		return booksDao.removeById(id);
+	public void deleteById(final long id) {
+		booksRepository.deleteById(id);
 	}
 
 	private void checkBookOrThrow(final Book book) {

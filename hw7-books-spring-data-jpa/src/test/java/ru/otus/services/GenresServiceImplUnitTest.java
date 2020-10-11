@@ -12,9 +12,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.dao.GenresRepository;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
+import ru.otus.repositories.GenresRepository;
 import ru.otus.validators.FieldValidator;
 
 import java.util.List;

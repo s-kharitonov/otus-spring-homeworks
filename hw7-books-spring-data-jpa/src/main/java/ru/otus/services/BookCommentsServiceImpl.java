@@ -2,9 +2,9 @@ package ru.otus.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.dao.BookCommentsRepository;
 import ru.otus.domain.BookComment;
 import ru.otus.exceptions.BookCommentsServiceException;
+import ru.otus.repositories.BookCommentsRepository;
 import ru.otus.validators.FieldValidator;
 
 import java.util.List;
