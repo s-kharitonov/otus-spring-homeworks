@@ -11,10 +11,12 @@ public class BookComment {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_comment_s")
 	@SequenceGenerator(name = "book_comment_s", sequenceName = "BOOK_COMMENTS_S", allocationSize = 1)
 	private Long id;
+
 	@NotNull
 	@JoinColumn(name = "BOOK_ID", nullable = false)
 	@OneToOne(targetEntity = Book.class, cascade = CascadeType.ALL)
 	private Book book;
+
 	@NotNull
 	@JoinColumn(name = "COMMENT_ID", nullable = false)
 	@OneToOne(targetEntity = Comment.class, cascade = CascadeType.ALL)

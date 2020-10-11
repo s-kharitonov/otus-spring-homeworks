@@ -19,25 +19,30 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_s")
 	@SequenceGenerator(name = "book_s", sequenceName = "BOOKS_S", allocationSize = 1)
 	private Long id;
+
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
 	@Column(name = "NAME", nullable = false, unique = true, length = 255)
 	private String name;
+
 	@NotNull
 	@Column(name = "PUBLICATION_DATE", nullable = false)
 	private Date publicationDate;
 	@Min(value = 1)
 	@Column(name = "PRINT_LENGTH", nullable = false)
 	private int printLength;
+
 	@NotNull
 	@JoinColumn(name = "AUTHOR_ID", nullable = false)
 	@ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Author author;
+
 	@NotNull
 	@JoinColumn(name = "GENRE_ID", nullable = false)
 	@ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Genre genre;
+
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(targetEntity = Comment.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "BOOKS_COMMENTS", joinColumns = @JoinColumn(name = "BOOK_ID"),

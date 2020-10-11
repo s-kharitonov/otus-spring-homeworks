@@ -13,11 +13,13 @@ public class Author {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_s")
 	@SequenceGenerator(name = "author_s", sequenceName = "AUTHORS_S", allocationSize = 1)
 	private Long id;
+
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
 	@Column(name = "NAME", nullable = false, length = 255)
 	private String name;
+
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)

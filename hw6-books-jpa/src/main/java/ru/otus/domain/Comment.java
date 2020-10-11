@@ -13,6 +13,7 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_s")
 	@SequenceGenerator(name = "comment_s", sequenceName = "COMMENTS_S", allocationSize = 1)
 	private Long id;
+
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)

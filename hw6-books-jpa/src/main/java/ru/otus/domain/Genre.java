@@ -13,6 +13,7 @@ public class Genre {
 	@SequenceGenerator(name = "genres_s", sequenceName = "GENRES_S", allocationSize = 1)
 	@Column(name = "GENRE_ID")
 	private Long id;
+
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
