@@ -60,7 +60,7 @@ public class BookComment {
 
 	@Override
 	public String toString() {
-		return "Comment{" +
+		return "BookComment{" +
 				"id=" + id +
 				", text='" + text + '\'' +
 				", book=" + book +
