@@ -14,10 +14,8 @@ import ru.otus.configs.AppProperties;
 import ru.otus.domain.Constants;
 import ru.otus.services.CommentsService;
 import ru.otus.services.LocalizationService;
-import ru.otus.services.facades.BookCommentsFacade;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
@@ -29,7 +27,6 @@ class CommentsControllerUnitTest {
 	private static final long COMMENT_ID = 1L;
 	private static final String EMPTY_APP_MESSAGE = "";
 	private static final String COMMENT_TEXT = "hello world!";
-	private static final long BOOK_ID = 1L;
 
 	@Configuration
 	@Import(CommentsController.class)
@@ -37,9 +34,6 @@ class CommentsControllerUnitTest {
 	public static class CommentsControllerConfig {
 
 	}
-
-	@MockBean
-	private BookCommentsFacade bookCommentsFacade;
 
 	@MockBean
 	private CommentsService commentsService;
@@ -53,7 +47,7 @@ class CommentsControllerUnitTest {
 
 	@BeforeEach
 	void setUp() {
-		this.inOrder = inOrder(commentsService, bookCommentsFacade);
+		this.inOrder = inOrder(commentsService);
 	}
 
 	@Test
@@ -68,13 +62,6 @@ class CommentsControllerUnitTest {
 	public void shouldCallServiceForUpdateComment() {
 		commentsController.update(COMMENT_ID, COMMENT_TEXT);
 		inOrder.verify(commentsService, times(1)).save(any());
-	}
-
-	@Test
-	@DisplayName("should call service for create book comment")
-	public void shouldCallServiceForCreateBookComment() {
-		commentsController.createBookComment(BOOK_ID, COMMENT_TEXT);
-		inOrder.verify(bookCommentsFacade, times(1)).save(anyLong(), any());
 	}
 
 	@Test
