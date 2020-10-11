@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.dao.GenresDao;
+import ru.otus.dao.GenresRepository;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
 import ru.otus.validators.FieldValidator;
@@ -44,7 +44,7 @@ class GenresServiceImplUnitTest {
 	private FieldValidator fieldValidator;
 
 	@MockBean
-	private GenresDao genresDao;
+	private GenresRepository genresRepository;
 
 	@Autowired
 	private GenresService genresService;
@@ -75,7 +75,7 @@ class GenresServiceImplUnitTest {
 				.name(GENRE_NAME)
 				.build();
 
-		given(genresDao.findById(FIRST_GENRE_ID)).willReturn(Optional.of(genre));
+		given(genresRepository.findById(FIRST_GENRE_ID)).willReturn(Optional.of(genre));
 		assertEquals(genre.getId(), genresService.getById(FIRST_GENRE_ID).orElseThrow().getId());
 	}
 
@@ -88,15 +88,14 @@ class GenresServiceImplUnitTest {
 				.build();
 		var genres = List.of(genre);
 
-		given(genresDao.findAll()).willReturn(genres);
+		given(genresRepository.findAll()).willReturn(genres);
 		assertFalse(genresService.getAll().isEmpty());
 	}
 
 	@Test
 	@DisplayName("should remove genre")
-	public void shouldRemoveGenre() {
-		given(genresDao.removeById(FIRST_GENRE_ID)).willReturn(true);
-		assertTrue(genresService.removeById(FIRST_GENRE_ID));
+	public void shouldRemoveGenreWithoutThrows() {
+		assertDoesNotThrow(() -> genresService.deleteById(FIRST_GENRE_ID));
 	}
 
 	@ParameterizedTest

@@ -80,10 +80,9 @@ class GenresControllerUnitTest {
 	@Test
 	@DisplayName("should call service for remove genre")
 	public void shouldCallServiceForRemoveGenre() {
-		given(genresService.removeById(GENRE_ID)).willReturn(true);
 		given(localizationService.localizeMessage(Constants.GENRE_SUCCESSFUL_REMOVED_MSG_KEY, GENRE_ID))
 				.willReturn(EMPTY_APP_MESSAGE);
 		genresController.remove(GENRE_ID);
-		inOrder.verify(genresService, times(1)).removeById(GENRE_ID);
+		inOrder.verify(genresService, times(1)).deleteById(GENRE_ID);
 	}
 }

@@ -2,7 +2,7 @@ package ru.otus.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.dao.GenresDao;
+import ru.otus.dao.GenresRepository;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
 import ru.otus.validators.FieldValidator;
@@ -14,38 +14,38 @@ import java.util.Optional;
 @Service
 public class GenresServiceImpl implements GenresService {
 
-	private final GenresDao genresDao;
+	private final GenresRepository genresRepository;
 	private final FieldValidator fieldValidator;
 
-	public GenresServiceImpl(final GenresDao genresDao,
+	public GenresServiceImpl(final GenresRepository genresRepository,
 							 final FieldValidator fieldValidator) {
-		this.genresDao = genresDao;
+		this.genresRepository = genresRepository;
 		this.fieldValidator = fieldValidator;
 	}
 
 	@Override
 	@Transactional
-	public void save(final Genre genre) {
+	public Genre save(final Genre genre) {
 		checkGenreOrThrow(genre);
-		genresDao.save(genre);
+		return genresRepository.save(genre);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<Genre> getById(final long id) {
-		return genresDao.findById(id);
+		return genresRepository.findById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Genre> getAll() {
-		return genresDao.findAll();
+		return genresRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public boolean removeById(final long id) {
-		return genresDao.removeById(id);
+	public void deleteById(final long id) {
+		genresRepository.deleteById(id);
 	}
 
 	private void checkGenreOrThrow(final Genre genre) {
