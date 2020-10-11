@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
 import ru.otus.dao.BookCommentsDao;
 import ru.otus.domain.BookComment;
-import ru.otus.exceptions.CommentServiceException;
+import ru.otus.exceptions.BookCommentsServiceException;
 import ru.otus.validators.FieldValidator;
 
 import java.util.List;
@@ -52,20 +52,20 @@ class BookCommentsServiceImplUnitTest {
 	private BookCommentsService bookCommentsService;
 
 	@Test
-	@DisplayName("should throw CommentsServiceException when comment for save is null")
+	@DisplayName("should throw BookCommentsServiceException when comment for save is null")
 	public void shouldThrowExceptionWhenCommentForSaveIsNull() {
-		assertThrows(CommentServiceException.class, () -> bookCommentsService.save(null));
+		assertThrows(BookCommentsServiceException.class, () -> bookCommentsService.save(null));
 	}
 
 	@ParameterizedTest
 	@NullAndEmptySource
 	@MethodSource(value = "createTextWithLengthGreaterThanMaxValue")
-	@DisplayName("should throw CommentsServiceException when comment for save has not valid text")
+	@DisplayName("should throw BookCommentsServiceException when comment for save has not valid text")
 	public void shouldThrowExceptionWhenCommentForSaveHasNotValidText(final String text) {
 		var comment = new BookComment.Builder().text(text).build();
 
 		given(fieldValidator.validate(comment)).willReturn(false);
-		assertThrows(CommentServiceException.class, () -> bookCommentsService.save(comment));
+		assertThrows(BookCommentsServiceException.class, () -> bookCommentsService.save(comment));
 	}
 
 	@Test

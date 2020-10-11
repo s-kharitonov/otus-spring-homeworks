@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dao.BookCommentsDao;
 import ru.otus.domain.BookComment;
-import ru.otus.exceptions.CommentServiceException;
+import ru.otus.exceptions.BookCommentsServiceException;
 import ru.otus.validators.FieldValidator;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class BookCommentsServiceImpl implements BookCommentsService {
 
 	private void checkCommentOrThrow(final BookComment bookComment) {
 		if (Objects.isNull(bookComment) || !fieldValidator.validate(bookComment)) {
-			throw new CommentServiceException(String.format("comment: %s is invalid!", bookComment));
+			throw new BookCommentsServiceException(String.format("comment: %s is invalid!", bookComment));
 		}
 	}
 }
