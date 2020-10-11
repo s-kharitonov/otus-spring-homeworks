@@ -10,7 +10,9 @@ public class BookCommentDto {
 	public BookCommentDto(final BookComment bookComment) {
 		this.id = bookComment.getId();
 		this.text = bookComment.getText();
-		this.book = new BookDto(bookComment.getBook());
+		this.book = new BookDto.Builder()
+				.id(bookComment.getBook().getId())
+				.build();
 	}
 
 	private BookCommentDto(final Builder builder) {
