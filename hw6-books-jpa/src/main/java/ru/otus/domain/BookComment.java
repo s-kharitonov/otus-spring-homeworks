@@ -14,7 +14,7 @@ public class BookComment {
 
 	@NotNull
 	@JoinColumn(name = "BOOK_ID", nullable = false)
-	@OneToOne(targetEntity = Book.class, cascade = CascadeType.ALL)
+	@OneToOne(targetEntity = Book.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Book book;
 
 	@NotNull
