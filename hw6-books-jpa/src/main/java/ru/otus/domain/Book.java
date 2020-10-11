@@ -29,6 +29,7 @@ public class Book {
 	@NotNull
 	@Column(name = "PUBLICATION_DATE", nullable = false)
 	private Date publicationDate;
+
 	@Min(value = 1)
 	@Column(name = "PRINT_LENGTH", nullable = false)
 	private int printLength;
