@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.configs.AppProperties;
-import ru.otus.dao.CommentsDao;
+import ru.otus.dao.BookCommentsDao;
 import ru.otus.domain.BookComment;
 import ru.otus.exceptions.CommentServiceException;
 import ru.otus.validators.FieldValidator;
@@ -29,32 +29,32 @@ import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @DisplayName("service for work with comments")
-class CommentsServiceImplUnitTest {
+class BookCommentsServiceImplUnitTest {
 
 	private static final String COMMENT = "perfect book!";
 	private static final long COMMENT_ID = 1L;
 	private static final int NAME_LENGTH_GREATER_THAN_MAX_LENGTH = 300;
 
 	@Configuration
-	@Import(CommentsServiceImpl.class)
+	@Import(BookCommentsServiceImpl.class)
 	@EnableConfigurationProperties(AppProperties.class)
 	public static class CommentsServiceConfig {
 
 	}
 
 	@MockBean
-	private CommentsDao commentsDao;
+	private BookCommentsDao bookCommentsDao;
 
 	@MockBean
 	private FieldValidator fieldValidator;
 
 	@Autowired
-	private CommentsService commentsService;
+	private BookCommentsService bookCommentsService;
 
 	@Test
 	@DisplayName("should throw CommentsServiceException when comment for save is null")
 	public void shouldThrowExceptionWhenCommentForSaveIsNull() {
-		assertThrows(CommentServiceException.class, () -> commentsService.save(null));
+		assertThrows(CommentServiceException.class, () -> bookCommentsService.save(null));
 	}
 
 	@ParameterizedTest
@@ -65,7 +65,7 @@ class CommentsServiceImplUnitTest {
 		var comment = new BookComment.Builder().text(text).build();
 
 		given(fieldValidator.validate(comment)).willReturn(false);
-		assertThrows(CommentServiceException.class, () -> commentsService.save(comment));
+		assertThrows(CommentServiceException.class, () -> bookCommentsService.save(comment));
 	}
 
 	@Test
@@ -76,8 +76,8 @@ class CommentsServiceImplUnitTest {
 				.text(COMMENT)
 				.build();
 
-		given(commentsDao.findById(COMMENT_ID)).willReturn(Optional.ofNullable(comment));
-		assertThat(commentsService.getById(COMMENT_ID)).get().isEqualToComparingFieldByField(comment);
+		given(bookCommentsDao.findById(COMMENT_ID)).willReturn(Optional.ofNullable(comment));
+		assertThat(bookCommentsService.getById(COMMENT_ID)).get().isEqualToComparingFieldByField(comment);
 	}
 
 	@Test
@@ -89,15 +89,15 @@ class CommentsServiceImplUnitTest {
 				.build();
 		var comments = List.of(comment);
 
-		given(commentsDao.findAll()).willReturn(comments);
-		assertThat(commentsService.getAll()).containsOnlyOnceElementsOf(comments);
+		given(bookCommentsDao.findAll()).willReturn(comments);
+		assertThat(bookCommentsService.getAll()).containsOnlyOnceElementsOf(comments);
 	}
 
 	@Test
 	@DisplayName("should remove comment by id")
 	public void shouldRemoveCommentById() {
-		given(commentsDao.removeById(COMMENT_ID)).willReturn(true);
-		assertTrue(commentsService.removeById(COMMENT_ID));
+		given(bookCommentsDao.removeById(COMMENT_ID)).willReturn(true);
+		assertTrue(bookCommentsService.removeById(COMMENT_ID));
 	}
 
 	private static String[] createTextWithLengthGreaterThanMaxValue() {

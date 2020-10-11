@@ -13,9 +13,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Repository
-public class CommentsDaoJpa implements CommentsDao {
+public class BookCommentsDaoJpa implements BookCommentsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(CommentsDaoJpa.class);
+	private static final Logger logger = LoggerFactory.getLogger(BookCommentsDaoJpa.class);
 
 	@PersistenceContext
 	private EntityManager em;

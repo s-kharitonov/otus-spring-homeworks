@@ -12,16 +12,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(CommentsDaoJpa.class)
+@Import(BookCommentsDaoJpa.class)
 @DisplayName("DAO for work with comments")
-class CommentsDaoJpaUnitTest {
+class BookCommentsDaoJpaUnitTest {
 
 	private static final String COMMENT = "perfect book!";
 	private static final long COMMENT_ID = 1L;
 	private static final String NEW_COMMENT = "nice book!";
 
 	@Autowired
-	private CommentsDao commentsDao;
+	private BookCommentsDao bookCommentsDao;
 
 	@Autowired
 	private TestEntityManager em;
@@ -31,7 +31,7 @@ class CommentsDaoJpaUnitTest {
 	public void shouldSaveComment() {
 		var comment = new BookComment.Builder().text(COMMENT).build();
 
-		commentsDao.save(comment);
+		bookCommentsDao.save(comment);
 		assertNotNull(comment.getId());
 
 		var savedComment = em.find(BookComment.class, comment.getId());
@@ -46,7 +46,7 @@ class CommentsDaoJpaUnitTest {
 
 		comment.setText(NEW_COMMENT);
 		em.detach(comment);
-		commentsDao.save(comment);
+		bookCommentsDao.save(comment);
 
 		var updatedComment = em.find(BookComment.class, COMMENT_ID);
 
@@ -56,7 +56,7 @@ class CommentsDaoJpaUnitTest {
 	@Test
 	@DisplayName("should return comment by id")
 	public void shouldReturnCommentById() {
-		var comment = commentsDao.findById(COMMENT_ID).orElseThrow();
+		var comment = bookCommentsDao.findById(COMMENT_ID).orElseThrow();
 		var expectedComment = em.find(BookComment.class, COMMENT_ID);
 
 		assertThat(comment).isEqualToComparingFieldByField(expectedComment);
@@ -65,7 +65,7 @@ class CommentsDaoJpaUnitTest {
 	@Test
 	@DisplayName("should return all comments")
 	public void shouldReturnAllComments() {
-		var comments = commentsDao.findAll();
+		var comments = bookCommentsDao.findAll();
 		var expectedComments = em.getEntityManager()
 				.createQuery("select c from BookComment c", BookComment.class)
 				.getResultList();
@@ -80,7 +80,7 @@ class CommentsDaoJpaUnitTest {
 
 		assertNotNull(comment);
 		em.detach(comment);
-		assertTrue(commentsDao.removeById(COMMENT_ID));
+		assertTrue(bookCommentsDao.removeById(COMMENT_ID));
 
 		var removedComment = em.find(BookComment.class, COMMENT_ID);
 
