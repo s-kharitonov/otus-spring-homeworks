@@ -24,7 +24,7 @@ class BooksRepositoryUnitTest {
 	public void shouldReturnAllBooks() {
 		var books = booksRepository.findAll();
 		var expectedBooks = em.getEntityManager()
-				.createQuery("select b from Book b", Book.class)
+				.createQuery("select b from Book b join fetch b.author join fetch b.genre", Book.class)
 				.getResultList();
 
 		assertThat(books).containsOnlyOnceElementsOf(expectedBooks);
