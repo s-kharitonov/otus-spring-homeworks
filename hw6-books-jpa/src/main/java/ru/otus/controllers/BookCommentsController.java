@@ -23,7 +23,7 @@ public class BookCommentsController {
 		this.localizationService = localizationService;
 	}
 
-	@ShellMethod(value = "create comment and get id", group = "comments", key = {"c-c", "create-comment"})
+	@ShellMethod(value = "create comment and get id", group = "book comments", key = {"c-c", "create-comment"})
 	public String create(@ShellOption(help = "enter comment") String text,
 						 @ShellOption(help = "enter book id") long bookId) {
 		var book = new BookDto.Builder().id(bookId).build();
@@ -37,7 +37,7 @@ public class BookCommentsController {
 				.orElse(localizationService.localizeMessage(Constants.COMMENT_UNSUCCESSFUL_CREATED_MSG_KEY, comment));
 	}
 
-	@ShellMethod(value = "update comment", group = "comments", key = {"u-c", "update-comment"})
+	@ShellMethod(value = "update comment", group = "book comments", key = {"u-c", "update-comment"})
 	public String update(@ShellOption(help = "enter comment id") long id,
 						 @ShellOption(help = "enter comment") String text) {
 		var comment = new BookCommentDto.Builder()
@@ -50,21 +50,21 @@ public class BookCommentsController {
 		return String.valueOf(bookCommentsFacade.getById(id));
 	}
 
-	@ShellMethod(value = "get comment by id", group = "comments", key = {"r-c", "read-comment"})
+	@ShellMethod(value = "get comment by id", group = "book comments", key = {"r-c", "read-comment"})
 	public String getById(@ShellOption(help = "enter comment id") long id) {
 		return bookCommentsFacade.getById(id)
 				.map(String::valueOf)
 				.orElse(localizationService.localizeMessage(Constants.COMMENT_NOT_FOUND_MSG_KEY, id));
 	}
 
-	@ShellMethod(value = "get all comments", group = "comments", key = {"r-a-c", "read-all-comments"})
+	@ShellMethod(value = "get all comments", group = "book comments", key = {"r-a-c", "read-all-comments"})
 	public String getAll() {
 		return bookCommentsFacade.getAll().stream()
 				.map(String::valueOf)
 				.collect(Collectors.joining(System.lineSeparator()));
 	}
 
-	@ShellMethod(value = "remove comment by id", group = "comments", key = {"d-c", "delete-comment"})
+	@ShellMethod(value = "remove comment by id", group = "book comments", key = {"d-c", "delete-comment"})
 	public String removeById(@ShellOption(help = "delete comment by id") long id) {
 		if (bookCommentsFacade.removeById(id)) {
 			return localizationService.localizeMessage(Constants.COMMENT_SUCCESSFUL_REMOVED_MSG_KEY, id);
