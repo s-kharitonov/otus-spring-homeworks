@@ -37,13 +37,13 @@ public class BookCommentsFacadeImpl implements BookCommentsFacade {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<BookCommentDto> getById(final long id) {
 		return bookCommentsService.getById(id).map(BookCommentDto::new);
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<BookCommentDto> getAll() {
 		return bookCommentsService.getAll()
 				.stream()
