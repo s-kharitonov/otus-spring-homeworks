@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+    schema: schema.sql
+    data: data.sql
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+application:
+  locale: en
