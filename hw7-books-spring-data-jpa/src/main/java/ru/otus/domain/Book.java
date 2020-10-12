@@ -9,6 +9,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "BOOKS")
+@NamedEntityGraphs({
+		@NamedEntityGraph(name = "book.author", attributeNodes = @NamedAttributeNode("author")),
+		@NamedEntityGraph(name = "book.genre", attributeNodes = @NamedAttributeNode("genre"))
+})
 public class Book {
 	@Id
 	@Column(name = "BOOK_ID")
