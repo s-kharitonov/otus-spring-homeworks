@@ -13,3 +13,4 @@ student: Sergey Kharitonov
 |[hw5-books-jdbc](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw5-books-jdbc)|Цель: использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных.|
 |[hw6-books-jpa](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw6-books-jpa)|Цель: полноценно работать с JPA + Hibernate для подключения к реляционным БД посредством ORM-фреймворка.|
 |[hw7-books-spring-data-jpa](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw7-books-spring-data-jpa)|Цель: максимально просто писать слой репозиториев с применением современных подходов.|
+|[hw9-books-MVC](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw9-books-MVC)|Цель: разрабатывать полноценные классические Web-приложения.|
