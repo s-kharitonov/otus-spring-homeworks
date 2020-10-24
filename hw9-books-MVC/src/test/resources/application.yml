@@ -10,9 +10,6 @@ spring:
   messages:
     encoding: UTF-8
     basename: i18n/messages
-  shell:
-    interactive:
-      enabled: false
   jpa:
     generate-ddl: false
     hibernate:
