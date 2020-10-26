@@ -1,4 +1,4 @@
-package ru.otus.controllers;
+package ru.otus.controllers.api;
 
 import ru.otus.domain.dto.BookCommentDto;
 import ru.otus.domain.dto.BookDto;

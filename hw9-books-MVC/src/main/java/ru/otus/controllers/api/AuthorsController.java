@@ -1,4 +1,4 @@
-package ru.otus.controllers;
+package ru.otus.controllers.api;
 
 import ru.otus.domain.Author;
 import ru.otus.services.AuthorsService;

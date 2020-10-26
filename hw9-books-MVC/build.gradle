@@ -17,6 +17,7 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic'
     implementation 'com.h2database:h2'
     implementation 'org.hibernate.validator:hibernate-validator'
+    implementation 'com.google.code.gson:gson'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 

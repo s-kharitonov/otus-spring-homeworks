@@ -5,8 +5,8 @@ spring:
     password: password
     driver-class-name: org.h2.Driver
     initialization-mode: always
-    schema: schema.sql
-    data: data.sql
+    schema: classpath:schema.sql
+    data: classpath:data.sql
   messages:
     encoding: UTF-8
     basename: i18n/messages
