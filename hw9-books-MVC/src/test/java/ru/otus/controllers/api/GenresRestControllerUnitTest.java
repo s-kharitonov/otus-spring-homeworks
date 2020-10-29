@@ -12,11 +12,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.domain.Genre;
+import ru.otus.domain.dto.GenreDto;
 import ru.otus.services.GenresService;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -69,7 +71,7 @@ class GenresRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedGenre)));
+				.andExpect(content().json(gson.toJson(new GenreDto(expectedGenre))));
 
 		inOrder.verify(genresService, times(1)).save(any());
 	}
@@ -88,7 +90,7 @@ class GenresRestControllerUnitTest {
 
 		mvc.perform(requestBuilder).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedGenre)));
+				.andExpect(content().json(gson.toJson(new GenreDto(expectedGenre))));
 
 		inOrder.verify(genresService, times(1)).getById(GENRE_ID);
 	}
@@ -113,6 +115,9 @@ class GenresRestControllerUnitTest {
 				.name(GENRE_NAME)
 				.build();
 		var expectedGenres = List.of(genre);
+		var expectedGenresDto = expectedGenres.stream()
+				.map(GenreDto::new)
+				.collect(Collectors.toList());
 		var requestBuilder = get(GENRE_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON);
 
@@ -121,7 +126,7 @@ class GenresRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedGenres)));
+				.andExpect(content().json(gson.toJson(expectedGenresDto)));
 
 		inOrder.verify(genresService, times(1)).getAll();
 	}
