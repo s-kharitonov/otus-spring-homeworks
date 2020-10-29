@@ -33,7 +33,7 @@ class GenresRestControllerUnitTest {
 	private static final long GENRE_ID = 1L;
 	private static final String GENRE_NAME = "Horror";
 	private static final String GENRE_DOMAIN_URL = "/genre/";
-	public static final String GENRE_BY_ID_URL = GENRE_DOMAIN_URL + "{id}";
+	private static final String GENRE_BY_ID_URL = GENRE_DOMAIN_URL + "{id}";
 
 	@Autowired
 	private MockMvc mvc;
