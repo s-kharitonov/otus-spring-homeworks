@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Author;
+import ru.otus.domain.ErrorResponse;
 import ru.otus.domain.dto.AuthorDto;
+import ru.otus.exceptions.AuthorsServiceException;
 import ru.otus.exceptions.NotFoundException;
 import ru.otus.services.AuthorsService;
 
@@ -57,5 +59,11 @@ public class AuthorsRestController {
 	public ResponseEntity<?> update(@RequestBody Author author) {
 		authorsService.save(author);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@ExceptionHandler(AuthorsServiceException.class)
+	public ResponseEntity<ErrorResponse> serviceExceptionHandler(AuthorsServiceException e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
 	}
 }
