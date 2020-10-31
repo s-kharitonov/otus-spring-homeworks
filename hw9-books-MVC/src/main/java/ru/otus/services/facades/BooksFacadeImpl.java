@@ -3,7 +3,9 @@ package ru.otus.services.facades;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Book;
+import ru.otus.domain.BookCandidate;
 import ru.otus.domain.dto.BookDto;
+import ru.otus.exceptions.BooksServiceException;
 import ru.otus.services.AuthorsService;
 import ru.otus.services.BooksService;
 import ru.otus.services.GenresService;
@@ -29,14 +31,21 @@ public class BooksFacadeImpl implements BooksFacade {
 
 	@Override
 	@Transactional
-	public BookDto save(final BookDto book) {
-		var author = authorsService.getById(book.getAuthor().getId()).orElseThrow();
-		var genre = genresService.getById(book.getGenre().getId()).orElseThrow();
+	public BookDto create(final BookCandidate candidate) {
+		final long authorId = candidate.getAuthorId();
+		final long genreId = candidate.getGenreId();
+		var author = authorsService.getById(authorId)
+				.orElseThrow(() -> new BooksServiceException(
+						String.format("Author with id: %s, not found!", authorId)
+				));
+		var genre = genresService.getById(genreId)
+				.orElseThrow(() -> new BooksServiceException(
+						String.format("Genre with id: %s, not found!", genreId)
+				));
 		var bookForSave = new Book.Builder()
-				.id(book.getId())
-				.name(book.getName())
-				.publicationDate(book.getPublicationDate())
-				.printLength(book.getPrintLength())
+				.name(candidate.getName())
+				.publicationDate(candidate.getPublicationDate())
+				.printLength(candidate.getPrintLength())
 				.author(author)
 				.genre(genre)
 				.build();
@@ -63,5 +72,11 @@ public class BooksFacadeImpl implements BooksFacade {
 	@Transactional
 	public void deleteById(final long id) {
 		booksService.deleteById(id);
+	}
+
+	@Override
+	@Transactional
+	public void update(final Book book) {
+		booksService.save(book);
 	}
 }
