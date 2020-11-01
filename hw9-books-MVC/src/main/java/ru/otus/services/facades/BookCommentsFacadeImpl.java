@@ -3,7 +3,9 @@ package ru.otus.services.facades;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.BookComment;
+import ru.otus.domain.BookCommentCandidate;
 import ru.otus.domain.dto.BookCommentDto;
+import ru.otus.exceptions.BookCommentsServiceException;
 import ru.otus.services.BookCommentsService;
 import ru.otus.services.BooksService;
 
@@ -25,12 +27,15 @@ public class BookCommentsFacadeImpl implements BookCommentsFacade {
 
 	@Override
 	@Transactional
-	public BookCommentDto save(final BookCommentDto bookComment) {
-		var book = booksService.getById(bookComment.getBook().getId()).orElseThrow();
+	public BookCommentDto create(final BookCommentCandidate candidate) {
+		final long bookId = candidate.getBookId();
+		var book = booksService.getById(bookId)
+				.orElseThrow(() -> new BookCommentsServiceException(
+						String.format("Book with id: %s, not found!", bookId)
+				));
 		var bookCommentForSave = new BookComment.Builder()
-				.id(bookComment.getId())
 				.book(book)
-				.text(bookComment.getText())
+				.text(candidate.getText())
 				.build();
 
 		return new BookCommentDto(bookCommentsService.save(bookCommentForSave));
@@ -55,5 +60,11 @@ public class BookCommentsFacadeImpl implements BookCommentsFacade {
 	@Transactional
 	public void deleteById(final long id) {
 		bookCommentsService.deleteById(id);
+	}
+
+	@Override
+	@Transactional
+	public void update(final BookComment bookComment) {
+		bookCommentsService.save(bookComment);
 	}
 }

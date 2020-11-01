@@ -149,7 +149,7 @@ class BooksRestControllerUnitTest {
 
 	@Test
 	@DisplayName("should update book")
-	public void shouldCallServiceForUpdateBook() throws Exception {
+	public void shouldUpdateBook() throws Exception {
 		var requestBuilder = put(BOOK_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(gson.toJson(expectedBook));
