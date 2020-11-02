@@ -31,6 +31,10 @@ public class AuthorDto {
 		return surname;
 	}
 
+	public String getFullName() {
+		return name + " " + surname;
+	}
+
 	@Override
 	public String toString() {
 		return "AuthorDto{" +
