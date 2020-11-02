@@ -60,7 +60,7 @@ class BookCommentsRestControllerUnitTest {
 	void setUp() {
 		this.inOrder = inOrder(bookCommentsFacade);
 		this.gson = new GsonBuilder()
-				.setDateFormat("yyyy-MM-dd HH:mm:ss Z")
+				.setDateFormat(Constants.DEFAULT_DATE_PATTERN)
 				.create();
 		this.bookComment = new BookComment.Builder()
 				.id(BOOK_COMMENT_ID)

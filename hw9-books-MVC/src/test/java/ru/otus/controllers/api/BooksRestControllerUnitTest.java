@@ -11,10 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.otus.domain.Author;
-import ru.otus.domain.Book;
-import ru.otus.domain.BookCandidate;
-import ru.otus.domain.Genre;
+import ru.otus.domain.*;
 import ru.otus.domain.dto.BookDto;
 import ru.otus.services.facades.BooksFacade;
 
@@ -59,7 +56,7 @@ class BooksRestControllerUnitTest {
 	void setUp() {
 		this.inOrder = inOrder(booksFacade);
 		this.gson = new GsonBuilder()
-				.setDateFormat("yyyy-MM-dd HH:mm:ss Z")
+				.setDateFormat(Constants.DEFAULT_DATE_PATTERN)
 				.create();
 		this.expectedBook = new Book.Builder()
 				.id(BOOK_ID)
