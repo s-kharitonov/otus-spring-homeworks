@@ -1,5 +1,6 @@
 package ru.otus.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ru.otus.domain.Author;
 
 public class AuthorDto {
@@ -31,6 +32,7 @@ public class AuthorDto {
 		return surname;
 	}
 
+	@JsonIgnore
 	public String getFullName() {
 		return name + " " + surname;
 	}
