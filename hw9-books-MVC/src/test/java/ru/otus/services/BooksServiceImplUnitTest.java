@@ -200,6 +200,17 @@ class BooksServiceImplUnitTest {
 	@Test
 	@DisplayName("should remove book by id")
 	public void shouldRemoveBookByIdWithoutThrows() {
+		var expectedBook = new Book.Builder()
+				.id(BOOK_ID)
+				.name(BOOK_NAME)
+				.publicationDate(BOOK_PUBLICATION_DATE)
+				.printLength(BOOK_PRINT_LENGTH)
+				.author(author)
+				.genre(genre)
+				.build();
+
+		given(booksService.getById(BOOK_ID)).willReturn(Optional.of(expectedBook));
+
 		assertDoesNotThrow(() -> booksService.deleteById(BOOK_ID));
 	}
 
