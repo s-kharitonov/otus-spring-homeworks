@@ -1,5 +1,7 @@
 package ru.otus.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -28,6 +30,7 @@ public class Book {
 
 	@NotNull
 	@Column(name = "PUBLICATION_DATE", nullable = false)
+	@JsonFormat(pattern = Constants.DEFAULT_DATE_PATTERN)
 	private Date publicationDate;
 
 	@Min(value = 1)
@@ -36,12 +39,12 @@ public class Book {
 
 	@NotNull
 	@JoinColumn(name = "AUTHOR_ID", nullable = false)
-	@ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(targetEntity = Author.class, fetch = FetchType.EAGER)
 	private Author author;
 
 	@NotNull
 	@JoinColumn(name = "GENRE_ID", nullable = false)
-	@ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(targetEntity = Genre.class, fetch = FetchType.EAGER)
 	private Genre genre;
 
 	public Book() {

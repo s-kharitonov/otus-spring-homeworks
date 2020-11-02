@@ -1,9 +1,12 @@
 package ru.otus.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class BookCandidate {
 	private String name;
+	@JsonFormat(pattern = Constants.DEFAULT_DATE_PATTERN)
 	private Date publicationDate;
 	private int printLength;
 	private long authorId;

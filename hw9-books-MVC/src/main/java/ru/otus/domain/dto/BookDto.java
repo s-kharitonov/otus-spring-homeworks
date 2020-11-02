@@ -1,12 +1,15 @@
 package ru.otus.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ru.otus.domain.Book;
+import ru.otus.domain.Constants;
 
 import java.util.Date;
 
 public class BookDto {
 	private final Long id;
 	private final String name;
+	@JsonFormat(pattern = Constants.DEFAULT_DATE_PATTERN)
 	private final Date publicationDate;
 	private final int printLength;
 	private final AuthorDto author;
