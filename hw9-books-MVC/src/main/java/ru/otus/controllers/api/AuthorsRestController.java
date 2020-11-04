@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/author")
 public class AuthorsRestController {
 
 	private final AuthorsService authorsService;
@@ -23,13 +22,13 @@ public class AuthorsRestController {
 		this.authorsService = authorsService;
 	}
 
-	@PostMapping(value = "/")
+	@PostMapping(value = "/api/author/")
 	public ResponseEntity<AuthorDto> create(@RequestBody Author author) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new AuthorDto(authorsService.save(author)));
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/api/author/{id}")
 	public ResponseEntity<AuthorDto> getById(@PathVariable long id) {
 		return ResponseEntity.ok(
 				authorsService.getById(id)
@@ -40,7 +39,7 @@ public class AuthorsRestController {
 		);
 	}
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "/api/author/")
 	public ResponseEntity<List<AuthorDto>> getAll() {
 		return ResponseEntity.ok(
 				authorsService.getAll().stream()
@@ -49,13 +48,13 @@ public class AuthorsRestController {
 		);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/api/author/{id}")
 	public ResponseEntity<?> remove(@PathVariable long id) {
 		authorsService.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
-	@PutMapping(value = "/")
+	@PutMapping(value = "/api/author/")
 	public ResponseEntity<?> update(@RequestBody Author author) {
 		authorsService.save(author);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

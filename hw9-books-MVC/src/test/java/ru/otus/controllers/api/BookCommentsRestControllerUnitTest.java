@@ -43,7 +43,7 @@ class BookCommentsRestControllerUnitTest {
 	private static final String GENRE_NAME = "name";
 	private static final long BOOK_COMMENT_ID = 1L;
 	private static final String BOOK_COMMENT = "comment";
-	private static final String BOOK_COMMENT_DOMAIN_URL = "/book/comment/";
+	private static final String BOOK_COMMENT_DOMAIN_URL = "/api/book/comment/";
 	private static final String BOOK_COMMENT_BY_ID_URL = BOOK_COMMENT_DOMAIN_URL + "{id}";
 
 	@Autowired

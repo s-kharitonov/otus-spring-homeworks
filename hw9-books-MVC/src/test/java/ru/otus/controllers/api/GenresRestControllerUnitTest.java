@@ -34,7 +34,7 @@ class GenresRestControllerUnitTest {
 
 	private static final long GENRE_ID = 1L;
 	private static final String GENRE_NAME = "Horror";
-	private static final String GENRE_DOMAIN_URL = "/genre/";
+	private static final String GENRE_DOMAIN_URL = "/api/genre/";
 	private static final String GENRE_BY_ID_URL = GENRE_DOMAIN_URL + "{id}";
 
 	@Autowired

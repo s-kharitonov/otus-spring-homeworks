@@ -40,7 +40,7 @@ class BooksRestControllerUnitTest {
 	private static final long GENRE_ID = 1L;
 	private static final String AUTHOR_SURNAME = "surname";
 	private static final String GENRE_NAME = "name";
-	private static final String BOOK_DOMAIN_URL = "/book/";
+	private static final String BOOK_DOMAIN_URL = "/api/book/";
 	private static final String BOOK_BY_ID_URL = BOOK_DOMAIN_URL + "{id}";
 
 	@Autowired

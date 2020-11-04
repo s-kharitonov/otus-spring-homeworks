@@ -14,7 +14,6 @@ import ru.otus.services.facades.BooksFacade;
 import java.util.List;
 
 @RestController
-@RequestMapping("/book")
 public class BooksRestController {
 
 	private final BooksFacade booksFacade;
@@ -23,13 +22,13 @@ public class BooksRestController {
 		this.booksFacade = booksFacade;
 	}
 
-	@PostMapping(value = "/")
+	@PostMapping(value = "/api/book/")
 	public ResponseEntity<BookDto> create(@RequestBody BookCandidate candidate) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(booksFacade.create(candidate));
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/api/book/{id}")
 	public ResponseEntity<BookDto> getBookById(@PathVariable long id) {
 		return ResponseEntity.ok(
 				booksFacade.getById(id)
@@ -39,18 +38,18 @@ public class BooksRestController {
 		);
 	}
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "/api/book/")
 	public ResponseEntity<List<BookDto>> getAllBooks() {
 		return ResponseEntity.ok(booksFacade.getAll());
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/api/book/{id}")
 	public ResponseEntity<?> removeBook(@PathVariable long id) {
 		booksFacade.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping(value = "/")
+	@PutMapping(value = "/api/book/")
 	public ResponseEntity<?> update(@RequestBody Book book) {
 		booksFacade.update(book);
 		return ResponseEntity.noContent().build();

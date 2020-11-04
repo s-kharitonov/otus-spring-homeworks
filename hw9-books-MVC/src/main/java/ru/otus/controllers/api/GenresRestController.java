@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/genre")
 public class GenresRestController {
 
 	private final GenresService genresService;
@@ -23,13 +22,13 @@ public class GenresRestController {
 		this.genresService = genresService;
 	}
 
-	@PostMapping(value = "/")
+	@PostMapping(value = "/api/genre/")
 	public ResponseEntity<GenreDto> create(@RequestBody Genre genre) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new GenreDto(genresService.save(genre)));
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/api/genre/{id}")
 	public ResponseEntity<GenreDto> getById(@PathVariable long id) {
 		return ResponseEntity.ok(
 				genresService.getById(id)
@@ -39,7 +38,7 @@ public class GenresRestController {
 						)));
 	}
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "/api/genre/")
 	public ResponseEntity<List<GenreDto>> getAll() {
 		return ResponseEntity.ok(
 				genresService.getAll().stream()
@@ -47,13 +46,13 @@ public class GenresRestController {
 		);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/api/genre/{id}")
 	public ResponseEntity<?> delete(@PathVariable long id) {
 		genresService.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
-	@PutMapping(value = "/")
+	@PutMapping(value = "/api/genre/")
 	public ResponseEntity<?> update(@RequestBody Genre genre) {
 		genresService.save(genre);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

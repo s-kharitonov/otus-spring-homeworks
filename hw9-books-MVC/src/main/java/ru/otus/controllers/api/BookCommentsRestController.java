@@ -14,7 +14,6 @@ import ru.otus.services.facades.BookCommentsFacade;
 import java.util.List;
 
 @RestController
-@RequestMapping("/book/comment")
 public class BookCommentsRestController {
 
 	private final BookCommentsFacade bookCommentsFacade;
@@ -23,13 +22,13 @@ public class BookCommentsRestController {
 		this.bookCommentsFacade = bookCommentsFacade;
 	}
 
-	@PostMapping(value = "/")
+	@PostMapping(value = "/api/book/comment/")
 	public ResponseEntity<BookCommentDto> create(@RequestBody BookCommentCandidate candidate) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(bookCommentsFacade.create(candidate));
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/api/book/comment/{id}")
 	public ResponseEntity<BookCommentDto> getById(@PathVariable long id) {
 		return ResponseEntity.ok(
 				bookCommentsFacade.getById(id).orElseThrow(() -> new NotFoundException(
@@ -38,18 +37,18 @@ public class BookCommentsRestController {
 		);
 	}
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "/api/book/comment/")
 	public ResponseEntity<List<BookCommentDto>> getAll() {
 		return ResponseEntity.ok(bookCommentsFacade.getAll());
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/api/book/comment/{id}")
 	public ResponseEntity<?> deleteById(@PathVariable long id) {
 		bookCommentsFacade.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping(value = "/")
+	@PutMapping(value = "/api/book/comment/")
 	public ResponseEntity<?> update(@RequestBody BookComment bookComment) {
 		bookCommentsFacade.update(bookComment);
 		return ResponseEntity.noContent().build();

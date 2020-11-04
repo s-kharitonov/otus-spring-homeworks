@@ -125,7 +125,7 @@ window.onload = function () {
   }
 
   async function createBook(bookCandidate) {
-    return await fetch(path + '/book/', {
+    return await fetch(path + '/api/book/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -135,7 +135,7 @@ window.onload = function () {
   }
 
   async function updateBook(book) {
-    return await fetch(path + '/book/', {
+    return await fetch(path + '/api/book/', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -145,7 +145,7 @@ window.onload = function () {
   }
 
   async function getAllBooks() {
-    return await fetch(path + '/book/', {
+    return await fetch(path + '/api/book/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -154,7 +154,7 @@ window.onload = function () {
   }
 
   async function deleteBookById(id) {
-    return await fetch(path + '/book/' + id, {
+    return await fetch(path + '/api/book/' + id, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -163,7 +163,7 @@ window.onload = function () {
   }
 
   async function getBookById(id) {
-    return await fetch(path + '/book/' + id, {
+    return await fetch(path + '/api/book/' + id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'

@@ -34,7 +34,7 @@ class AuthorsRestControllerUnitTest {
 	private static final long AUTHOR_ID = 1L;
 	private static final String AUTHOR_SURNAME = "surname";
 	private static final String AUTHOR_NAME = "name";
-	private static final String AUTHOR_DOMAIN_URL = "/author/";
+	private static final String AUTHOR_DOMAIN_URL = "/api/author/";
 	private static final String AUTHOR_BY_ID_URL = AUTHOR_DOMAIN_URL + "{id}";
 
 	@Autowired
