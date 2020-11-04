@@ -8,12 +8,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import ru.otus.configs.AppProperties;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
@@ -49,7 +47,6 @@ class BooksServiceImplUnitTest {
 
 	@Configuration
 	@Import(BooksServiceImpl.class)
-	@EnableConfigurationProperties(AppProperties.class)
 	public static class BooksServiceConfig {
 
 	}

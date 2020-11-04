@@ -6,12 +6,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import ru.otus.configs.AppProperties;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
 import ru.otus.repositories.GenresRepository;
@@ -34,7 +32,6 @@ class GenresServiceImplUnitTest {
 	private static final int NAME_LENGTH_GREATER_THAN_MAX_LENGTH = 300;
 
 	@Configuration
-	@EnableConfigurationProperties(AppProperties.class)
 	@Import(GenresServiceImpl.class)
 	public static class GenresServiceConfig {
 

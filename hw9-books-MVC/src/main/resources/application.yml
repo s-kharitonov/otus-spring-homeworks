@@ -21,8 +21,6 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
-application:
-  locale: en
 server:
   port: 8080
   servlet:
