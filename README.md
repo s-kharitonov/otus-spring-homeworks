@@ -13,6 +13,6 @@ student: Sergey Kharitonov
 |[hw05-books-jdbc](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw05-books-jdbc)|Цель: использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных.|
 |[hw06-books-jpa](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw06-books-jpa)|Цель: полноценно работать с JPA + Hibernate для подключения к реляционным БД посредством ORM-фреймворка.|
 |[hw07-books-spring-data-jpa](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw07-books-spring-data-jpa)|Цель: максимально просто писать слой репозиториев с применением современных подходов.|
-|[hw08-spring-data-nosql](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw07-books-spring-data-jpa)|Цель: После выполнения ДЗ вы сможете использовать Spring Data MongoDB и саму MongoDB для разработки приложений с хранением данных в нереляционной БД.|
+|[hw08-spring-data-nosql](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw08-spring-data-nosql)|Цель: После выполнения ДЗ вы сможете использовать Spring Data MongoDB и саму MongoDB для разработки приложений с хранением данных в нереляционной БД.|
 |[hw09-books-MVC](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw09-books-MVC)|Цель: разрабатывать полноценные классические Web-приложения.|
 |[hw10-books-REST](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw10-books-REST)|Цель: использовать Spring MVC для разработки современных AJAX/SPA приложений c помощью Spring MVC.|
