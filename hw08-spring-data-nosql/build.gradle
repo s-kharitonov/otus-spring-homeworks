@@ -10,19 +10,20 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
-    implementation platform('com.github.cloudyrock.mongock:mongock-bom:LAST_RELEASE_VERSION_4')
+    implementation platform('com.github.cloudyrock.mongock:mongock-bom:4.1.17')
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.shell:spring-shell-starter'
-    implementation 'org.mongodb:mongodb-driver-sync'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'com.github.cloudyrock.mongock:mongock-spring-v5'
     implementation 'com.github.cloudyrock.mongock:mongodb-springdata-v3-driver'
     implementation 'ch.qos.logback:logback-classic'
     implementation 'org.hibernate.validator:hibernate-validator'
 
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
