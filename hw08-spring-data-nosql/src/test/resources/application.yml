@@ -5,5 +5,3 @@ spring:
   shell:
     interactive:
       enabled: false
-application:
-  locale: en
