@@ -1,7 +1,14 @@
 spring:
-  messages:
-    encoding: UTF-8
-    basename: i18n/messages
+  data:
+    mongodb:
+      port: 0
+      database: library-test
   shell:
     interactive:
       enabled: false
+logging:
+  level:
+    root: error
+mongock:
+  runner-type: initializingbean
+  change-logs-scan-package: ru.otus.changelogs
