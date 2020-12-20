@@ -8,6 +8,7 @@ import ru.otus.exeptions.BooksServiceException;
 import ru.otus.repositories.BooksRepository;
 import ru.otus.validators.FieldValidator;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,13 +28,14 @@ public class BooksServiceImpl implements BooksService{
 	@Override
 	@Transactional
 	public Book save(final Book book) {
-		checkBooksOrThrow(List.of(book));
+		checkBooksOrThrow(Collections.singletonList(book));
 		return booksRepository.save(book);
 	}
 
 	@Override
 	@Transactional
 	public List<Book> saveAll(final List<Book> books) {
+		checkBooksOrThrow(books);
 		return booksRepository.saveAll(books);
 	}
 
