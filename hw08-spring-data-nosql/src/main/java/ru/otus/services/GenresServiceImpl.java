@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Genre;
-import ru.otus.exeptions.GenresServiceException;
+import ru.otus.exсeptions.GenresServiceException;
 import ru.otus.repositories.GenresRepository;
 import ru.otus.validators.FieldValidator;
 

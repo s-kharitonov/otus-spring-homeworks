@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Book;
 import ru.otus.domain.BookCandidate;
-import ru.otus.exeptions.BooksServiceException;
+import ru.otus.exсeptions.BooksServiceException;
 import ru.otus.services.AuthorsService;
 import ru.otus.services.BooksService;
 import ru.otus.services.GenresService;

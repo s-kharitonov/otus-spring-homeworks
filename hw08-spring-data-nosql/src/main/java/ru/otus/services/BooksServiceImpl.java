@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Book;
-import ru.otus.exeptions.BooksServiceException;
+import ru.otus.exсeptions.BooksServiceException;
 import ru.otus.repositories.BooksRepository;
 import ru.otus.validators.FieldValidator;
 

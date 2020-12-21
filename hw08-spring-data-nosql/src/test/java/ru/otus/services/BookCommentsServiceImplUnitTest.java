@@ -15,7 +15,7 @@ import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.BookComment;
 import ru.otus.domain.Genre;
-import ru.otus.exeptions.BookCommentsServiceException;
+import ru.otus.exсeptions.BookCommentsServiceException;
 import ru.otus.repositories.BookCommentsRepository;
 import ru.otus.validators.FieldValidator;
 

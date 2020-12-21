@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
-import ru.otus.exeptions.BooksServiceException;
+import ru.otus.exсeptions.BooksServiceException;
 import ru.otus.repositories.BooksRepository;
 import ru.otus.validators.FieldValidator;
 

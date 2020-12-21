@@ -1,4 +1,4 @@
-package ru.otus.exeptions;
+package ru.otus.exсeptions;
 
 public class AuthorsServiceException extends RuntimeException {
 	public AuthorsServiceException(final String message) {

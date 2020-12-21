@@ -1,4 +1,4 @@
-package ru.otus.exeptions;
+package ru.otus.exсeptions;
 
 public class BooksServiceException extends RuntimeException{
 	public BooksServiceException(final String message) {

@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.domain.Genre;
-import ru.otus.exeptions.GenresServiceException;
+import ru.otus.exсeptions.GenresServiceException;
 import ru.otus.repositories.GenresRepository;
 import ru.otus.validators.FieldValidator;
 

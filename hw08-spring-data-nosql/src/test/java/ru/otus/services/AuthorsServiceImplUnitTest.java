@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import ru.otus.domain.Author;
-import ru.otus.exeptions.AuthorsServiceException;
+import ru.otus.exсeptions.AuthorsServiceException;
 import ru.otus.repositories.AuthorsRepository;
 import ru.otus.validators.FieldValidator;
 

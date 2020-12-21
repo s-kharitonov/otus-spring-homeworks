@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.BookComment;
-import ru.otus.exeptions.BookCommentsServiceException;
+import ru.otus.exсeptions.BookCommentsServiceException;
 import ru.otus.repositories.BookCommentsRepository;
 import ru.otus.validators.FieldValidator;
 
