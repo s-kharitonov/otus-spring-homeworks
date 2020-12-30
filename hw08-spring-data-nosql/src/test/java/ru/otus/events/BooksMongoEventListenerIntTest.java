@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @DisplayName("Mongo DB books event listener")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BooksMongoEventListenerIntTest {
 
 	private static final int PRINT_LENGTH = 500;
@@ -29,6 +28,7 @@ class BooksMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should update book in related comments after save books")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldUpdateBookInRelatedCommentsAfterSaveBooks() {
 		var books = booksService.getAll();
 

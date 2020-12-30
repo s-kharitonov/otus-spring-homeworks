@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @DisplayName("Mongo DB genre event listener")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GenreMongoEventListenerIntTest {
 
 	private static final String GENRE_NAME = "Horror";
@@ -27,6 +26,7 @@ class GenreMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should delete related books after delete genre")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldDeleteRelatedBooksAfterDeleteGenre() {
 		var genre = genresService.getAll().get(0);
 
@@ -46,6 +46,7 @@ class GenreMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should update genre in related books after save genre")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldUpdateAuthorInRelatedBooksAfterSave() {
 		var genre = genresService.getAll().get(0);
 

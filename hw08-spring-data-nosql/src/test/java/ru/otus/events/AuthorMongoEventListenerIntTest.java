@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @DisplayName("Mongo DB author event listener")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AuthorMongoEventListenerIntTest {
 
 	private static final String NAME = "sergey";
@@ -27,6 +26,7 @@ class AuthorMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should delete related books after delete author")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldDeleteRelatedBooksAfterDeleteAuthor() {
 		var author = authorsService.getAll().get(0);
 
@@ -46,6 +46,7 @@ class AuthorMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should update author in related books after save author")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldUpdateAuthorInRelatedBooksAfterSave() {
 		var author = authorsService.getAll().get(0);
 

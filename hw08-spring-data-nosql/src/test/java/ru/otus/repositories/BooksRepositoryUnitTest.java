@@ -16,7 +16,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 @DataMongoTest
 @DisplayName("mongo repository for books")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BooksRepositoryUnitTest {
 
 	private static final String AUTHOR_NAME = "Karen";
@@ -30,6 +29,7 @@ class BooksRepositoryUnitTest {
 
 	@Test
 	@DisplayName("should delete all books by author id")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldDeleteAllByAuthorId() {
 		var author = mongoTemplate.findOne(query(where("name").is(AUTHOR_NAME)), Author.class);
 
@@ -49,6 +49,7 @@ class BooksRepositoryUnitTest {
 
 	@Test
 	@DisplayName("should delete all books by genre id")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldDeleteAllByGenreId() {
 		var genre = mongoTemplate.findOne(query(where("name").is(GENRE_NAME)), Genre.class);
 

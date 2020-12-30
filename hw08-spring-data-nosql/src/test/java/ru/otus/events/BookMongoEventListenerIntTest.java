@@ -18,7 +18,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 @SpringBootTest
 @DisplayName("Mongo DB book event listener")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BookMongoEventListenerIntTest {
 
 	private static final String BOOK_NAME = "Architects of Memory";
@@ -35,6 +34,7 @@ class BookMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should delete related book comments after delete book by book id")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldDeleteRelatedBookCommentAfterDeleteBookByBookId() {
 		var book = mongoTemplate.findOne(query(where("name").is(BOOK_NAME)), Book.class);
 
@@ -54,6 +54,7 @@ class BookMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should delete related book comments after delete book by genre id")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldDeleteRelatedBookCommentAfterDeleteBookByGenreId() {
 		var book = mongoTemplate.findOne(query(where("name").is(BOOK_NAME)), Book.class);
 
@@ -74,6 +75,7 @@ class BookMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should delete related book comments after delete book by author id")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldDeleteRelatedBookCommentAfterDeleteBookByAuthorId() {
 		var book = mongoTemplate.findOne(query(where("name").is(BOOK_NAME)), Book.class);
 
@@ -94,6 +96,7 @@ class BookMongoEventListenerIntTest {
 
 	@Test
 	@DisplayName("should update book in related comments after save book")
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 	public void shouldUpdateBookInRelatedCommentsAfterSaveBook() {
 		var book = mongoTemplate.findOne(query(where("name").is(BOOK_NAME)), Book.class);
 
