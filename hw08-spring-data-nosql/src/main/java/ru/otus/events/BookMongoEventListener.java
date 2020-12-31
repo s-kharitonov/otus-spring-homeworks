@@ -1,43 +1,47 @@
 package ru.otus.events;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
 import org.springframework.stereotype.Component;
 import ru.otus.domain.Book;
+import ru.otus.exсeptions.NotFoundStrategy;
 import ru.otus.services.BookCommentsService;
+import ru.otus.strategies.DeleteCommentByBookStrategy;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 public class BookMongoEventListener extends AbstractMongoEventListener<Book> {
 
 	private final BookCommentsService bookCommentsService;
+	private final Map<String, DeleteCommentByBookStrategy> deleteStrategyByFieldName;
 
-	public BookMongoEventListener(final BookCommentsService bookCommentsService) {
+	public BookMongoEventListener(final BookCommentsService bookCommentsService,
+								  @Qualifier("deleteCommentByBookStrategy")
+								  final Map<String, DeleteCommentByBookStrategy> deleteStrategyByFieldName) {
 		this.bookCommentsService = bookCommentsService;
+		this.deleteStrategyByFieldName = deleteStrategyByFieldName;
 	}
 
 	@Override
 	public void onAfterDelete(final AfterDeleteEvent<Book> event) {
 		super.onAfterDelete(event);
-		final var source = event.getSource();
-		final var bookId = source.get("_id");
-		final var genreId = source.get("genre._id");
-		final var authorId = source.get("author._id");
+		final Set<Map.Entry<String, Object>> valueByFieldName = event.getSource().entrySet();
 
-		if (!Objects.isNull(bookId)) {
-			bookCommentsService.deleteByBookId(bookId.toString());
-			return;
-		}
+		for (Map.Entry<String, Object> valueByFieldNameEntry : valueByFieldName) {
+			final var key = valueByFieldNameEntry.getKey();
+			final var value = valueByFieldNameEntry.getValue();
+			final var strategy = deleteStrategyByFieldName.get(key);
 
-		if (!Objects.isNull(genreId)) {
-			bookCommentsService.deleteByGenreId(genreId.toString());
-			return;
-		}
+			if (Objects.isNull(strategy)) {
+				throw new NotFoundStrategy("strategy for delete book comments not found!");
+			}
 
-		if (!Objects.isNull(authorId)) {
-			bookCommentsService.deleteByAuthorId(authorId.toString());
+			strategy.delete(value.toString());
 		}
 	}
 
