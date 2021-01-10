@@ -1,49 +1,34 @@
 package ru.otus.events;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
 import org.springframework.stereotype.Component;
+import ru.otus.commands.DeleteEntityCommand;
 import ru.otus.domain.Genre;
-import ru.otus.exceptions.NotFoundStrategy;
 import ru.otus.repositories.BooksRepository;
-import ru.otus.strategies.DeleteBookByGenreStrategy;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 @Component
 public class GenreMongoEventListener extends AbstractMongoEventListener<Genre> {
 
 	private final BooksRepository booksRepository;
-	private final Map<String, DeleteBookByGenreStrategy> deleteStrategyByFieldName;
+	private final DeleteEntityCommand deleteEntityCommand;
 
 	public GenreMongoEventListener(final BooksRepository booksRepository,
-								   @Qualifier("deleteBookByGenreStrategy")
-								   final Map<String, DeleteBookByGenreStrategy> deleteStrategyByFieldName) {
+								   final DeleteEntityCommand deleteEntityCommand) {
 		this.booksRepository = booksRepository;
-		this.deleteStrategyByFieldName = deleteStrategyByFieldName;
+		this.deleteEntityCommand = deleteEntityCommand;
 	}
 
 	@Override
 	public void onAfterDelete(@Nonnull final AfterDeleteEvent<Genre> event) {
 		super.onAfterDelete(event);
-		final Set<Map.Entry<String, Object>> valueByFieldName = event.getSource().entrySet();
+		final var collectionName = event.getCollectionName();
+		final var source = event.getSource();
 
-		for (Map.Entry<String, Object> valueByFieldNameEntry : valueByFieldName) {
-			final var key = valueByFieldNameEntry.getKey();
-			final var value = valueByFieldNameEntry.getValue();
-			final var strategy = deleteStrategyByFieldName.get(key);
-
-			if (Objects.isNull(strategy)) {
-				throw new NotFoundStrategy("strategy for delete book not found!");
-			}
-
-			strategy.delete(value.toString());
-		}
+		deleteEntityCommand.delete(collectionName, source);
 	}
 
 	@Override

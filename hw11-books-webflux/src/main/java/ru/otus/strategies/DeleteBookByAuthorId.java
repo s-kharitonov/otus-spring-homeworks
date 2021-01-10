@@ -1,26 +1,24 @@
 package ru.otus.strategies;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.repositories.BooksRepository;
 
 @Component
-public class DeleteBookByAuthorId implements DeleteBookByAuthorStrategy{
+public class DeleteBookByAuthorId implements DeleteEntityStrategy {
 
-	private final BooksRepository booksRepository;
+	private final BooksRepository booksService;
 
 	public DeleteBookByAuthorId(final BooksRepository booksRepository) {
-		this.booksRepository = booksRepository;
+		this.booksService = booksRepository;
 	}
 
 	@Override
-	@Transactional
 	public void delete(final String id) {
-		booksRepository.deleteAllByAuthor_Id(id).subscribe();
+		booksService.deleteAllByAuthor_Id(id).subscribe();
 	}
 
 	@Override
-	public String getFieldName() {
-		return "_id";
+	public String getCollectionFieldName() {
+		return "AUTHORS._id";
 	}
 }

@@ -1,11 +1,10 @@
 package ru.otus.strategies;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.repositories.BookCommentsRepository;
 
 @Component
-public class DeleteCommentByBookGenreId implements DeleteCommentByBookStrategy {
+public class DeleteCommentByBookGenreId implements DeleteEntityStrategy {
 
 	private final BookCommentsRepository commentsRepository;
 
@@ -14,13 +13,12 @@ public class DeleteCommentByBookGenreId implements DeleteCommentByBookStrategy {
 	}
 
 	@Override
-	@Transactional
 	public void delete(final String id) {
 		commentsRepository.deleteAllByBook_Genre_Id(id).subscribe();
 	}
 
 	@Override
-	public String getFieldName() {
-		return "genre._id";
+	public String getCollectionFieldName() {
+		return "BOOKS.genre._id";
 	}
 }
