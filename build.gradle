@@ -15,7 +15,7 @@ allprojects {
     dependencyManagement {
         dependencies {
             imports {
-                mavenBom('org.springframework.boot:spring-boot-dependencies:2.2.6.RELEASE')
+                mavenBom('org.springframework.boot:spring-boot-dependencies:2.4.1')
             }
             dependency("com.opencsv:opencsv:${Versions.openCSV}")
             dependency("org.aspectj:aspectjweaver:${Versions.aspectJ}")
