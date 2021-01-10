@@ -18,8 +18,8 @@ window.onload = function () {
 
     if (response.ok) {
       content.then(authors => {
-        let html = authors.reduce((partHtml, author) => {
-          return partHtml + renderOption(author.fullName);
+        let html = authors.reduce((partHtml, author, index) => {
+          return partHtml + renderOption(author.id, author.fullName, index === 0);
         }, '');
         authorById = authors.reduce((obj, author) => {
           obj[author.id] = author
@@ -36,8 +36,8 @@ window.onload = function () {
 
     if (response.ok) {
       content.then(genres => {
-        let html = genres.reduce((partHtml, genre) => {
-          return partHtml + renderOption(genre.name);
+        let html = genres.reduce((partHtml, genre, index) => {
+          return partHtml + renderOption(genre.id, genre.name, index === 0);
         }, '');
         genreById = genres.reduce((obj, genre) => {
           obj[genre.id] = genre
@@ -220,8 +220,12 @@ window.onload = function () {
     });
   }
 
-  function renderOption(text) {
-    return `<option>${text}</option>`;
+  function renderOption(id, text, selected) {
+    if (selected) {
+      return `<option selected value="${id}">${text}</option>`;
+    } else {
+      return `<option value="${id}">${text}</option>`;
+    }
   }
 
   function renderAlert(message, classType, title) {
