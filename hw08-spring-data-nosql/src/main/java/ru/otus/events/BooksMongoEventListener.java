@@ -7,6 +7,7 @@ import ru.otus.domain.Book;
 import ru.otus.domain.BookComment;
 import ru.otus.services.BookCommentsService;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class BooksMongoEventListener extends AbstractMongoEventListener<List<Boo
 	}
 
 	@Override
-	public void onAfterSave(final AfterSaveEvent<List<Book>> event) {
+	public void onAfterSave(@Nonnull final AfterSaveEvent<List<Book>> event) {
 		super.onAfterSave(event);
 		final var books = event.getSource();
 		final var booksIds = books.stream()

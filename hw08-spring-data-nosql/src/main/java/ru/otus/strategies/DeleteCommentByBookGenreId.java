@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.otus.services.BookCommentsService;
 
 @Component
-public class DeleteCommentByBookGenreId implements DeleteCommentByBookStrategy {
+public class DeleteCommentByBookGenreId implements DeleteEntityStrategy {
 
 	private final BookCommentsService bookCommentsService;
 
@@ -18,7 +18,7 @@ public class DeleteCommentByBookGenreId implements DeleteCommentByBookStrategy {
 	}
 
 	@Override
-	public String getFieldName() {
-		return "genre._id";
+	public String getCollectionFieldName() {
+		return "BOOKS.genre._id";
 	}
 }
