@@ -2,9 +2,7 @@ package ru.otus.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.otus.strategies.DeleteBookByAuthorStrategy;
-import ru.otus.strategies.DeleteBookByGenreStrategy;
-import ru.otus.strategies.DeleteCommentByBookStrategy;
+import ru.otus.strategies.DeleteEntityStrategy;
 
 import java.util.List;
 import java.util.Map;
@@ -16,20 +14,8 @@ import static java.util.stream.Collectors.toMap;
 public class AppConfig {
 
 	@Bean
-	public Map<String, DeleteCommentByBookStrategy> deleteCommentByBookStrategy(final List<DeleteCommentByBookStrategy> strategies) {
+	public Map<String, DeleteEntityStrategy> deleteEntityStrategies(final List<DeleteEntityStrategy> strategies) {
 		return strategies.stream()
-				.collect(toMap(DeleteCommentByBookStrategy::getFieldName, Function.identity()));
-	}
-
-	@Bean
-	public Map<String, DeleteBookByAuthorStrategy> deleteBookByAuthorStrategy(final List<DeleteBookByAuthorStrategy> strategies) {
-		return strategies.stream()
-				.collect(toMap(DeleteBookByAuthorStrategy::getFieldName, Function.identity()));
-	}
-
-	@Bean
-	public Map<String, DeleteBookByGenreStrategy> deleteBookByGenreStrategy(final List<DeleteBookByGenreStrategy> strategies) {
-		return strategies.stream()
-				.collect(toMap(DeleteBookByGenreStrategy::getFieldName, Function.identity()));
+				.collect(toMap(DeleteEntityStrategy::getCollectionFieldName, Function.identity()));
 	}
 }

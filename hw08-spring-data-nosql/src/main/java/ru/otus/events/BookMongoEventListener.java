@@ -1,52 +1,38 @@
 package ru.otus.events;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
 import org.springframework.stereotype.Component;
+import ru.otus.commands.DeleteEntityCommand;
 import ru.otus.domain.Book;
-import ru.otus.exсeptions.NotFoundStrategy;
 import ru.otus.services.BookCommentsService;
-import ru.otus.strategies.DeleteCommentByBookStrategy;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import javax.annotation.Nonnull;
 
 @Component
 public class BookMongoEventListener extends AbstractMongoEventListener<Book> {
 
 	private final BookCommentsService bookCommentsService;
-	private final Map<String, DeleteCommentByBookStrategy> deleteStrategyByFieldName;
+	private final DeleteEntityCommand deleteEntityCommand;
 
 	public BookMongoEventListener(final BookCommentsService bookCommentsService,
-								  @Qualifier("deleteCommentByBookStrategy")
-								  final Map<String, DeleteCommentByBookStrategy> deleteStrategyByFieldName) {
+								  final DeleteEntityCommand deleteEntityCommand) {
 		this.bookCommentsService = bookCommentsService;
-		this.deleteStrategyByFieldName = deleteStrategyByFieldName;
+		this.deleteEntityCommand = deleteEntityCommand;
 	}
 
 	@Override
-	public void onAfterDelete(final AfterDeleteEvent<Book> event) {
+	public void onAfterDelete(@Nonnull final AfterDeleteEvent<Book> event) {
 		super.onAfterDelete(event);
-		final Set<Map.Entry<String, Object>> valueByFieldName = event.getSource().entrySet();
+		final var collectionName = event.getCollectionName();
+		final var source = event.getSource();
 
-		for (Map.Entry<String, Object> valueByFieldNameEntry : valueByFieldName) {
-			final var key = valueByFieldNameEntry.getKey();
-			final var value = valueByFieldNameEntry.getValue();
-			final var strategy = deleteStrategyByFieldName.get(key);
-
-			if (Objects.isNull(strategy)) {
-				throw new NotFoundStrategy("strategy for delete book comments not found!");
-			}
-
-			strategy.delete(value.toString());
-		}
+		deleteEntityCommand.delete(collectionName, source);
 	}
 
 	@Override
-	public void onAfterSave(final AfterSaveEvent<Book> event) {
+	public void onAfterSave(@Nonnull final AfterSaveEvent<Book> event) {
 		super.onAfterSave(event);
 		final var book = event.getSource();
 		final var bookId = book.getId();
