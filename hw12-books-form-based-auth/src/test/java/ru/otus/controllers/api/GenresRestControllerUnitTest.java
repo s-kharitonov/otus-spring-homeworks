@@ -1,7 +1,6 @@
 package ru.otus.controllers.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,12 +49,12 @@ class GenresRestControllerUnitTest {
 
 	private InOrder inOrder;
 
-	private Gson gson;
+	@Autowired
+	private ObjectMapper mapper;
 
 	@BeforeEach
 	void setUp() {
 		this.inOrder = inOrder(genresService);
-		this.gson = new GsonBuilder().create();
 	}
 
 	@Test
@@ -71,14 +70,14 @@ class GenresRestControllerUnitTest {
 				.build();
 		var requestBuilder = post(GENRE_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(genreForCreate));
+				.content(mapper.writeValueAsString(genreForCreate));
 
 		given(genresService.save(any())).willReturn(expectedGenre);
 
 		mvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(new GenreDto(expectedGenre))));
+				.andExpect(content().json(mapper.writeValueAsString(new GenreDto(expectedGenre))));
 
 		inOrder.verify(genresService, times(1)).save(any());
 	}
@@ -98,7 +97,7 @@ class GenresRestControllerUnitTest {
 
 		mvc.perform(requestBuilder).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(new GenreDto(expectedGenre))));
+				.andExpect(content().json(mapper.writeValueAsString(new GenreDto(expectedGenre))));
 
 		inOrder.verify(genresService, times(1)).getById(GENRE_ID);
 	}
@@ -136,7 +135,7 @@ class GenresRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedGenresDto)));
+				.andExpect(content().json(mapper.writeValueAsString(expectedGenresDto)));
 
 		inOrder.verify(genresService, times(1)).getAll();
 	}
@@ -154,7 +153,7 @@ class GenresRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedGenres)));
+				.andExpect(content().json(mapper.writeValueAsString(expectedGenres)));
 
 		inOrder.verify(genresService, times(1)).getAll();
 	}
@@ -182,7 +181,7 @@ class GenresRestControllerUnitTest {
 				.build();
 		var requestBuilder = put(GENRE_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(genreForUpdate));
+				.content(mapper.writeValueAsString(genreForUpdate));
 
 		mvc.perform(requestBuilder)
 				.andExpect(status().isNoContent());

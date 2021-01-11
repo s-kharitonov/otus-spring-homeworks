@@ -1,7 +1,6 @@
 package ru.otus.controllers.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.otus.domain.*;
+import ru.otus.domain.Author;
+import ru.otus.domain.Book;
+import ru.otus.domain.BookCandidate;
+import ru.otus.domain.Genre;
 import ru.otus.domain.dto.BookDto;
 import ru.otus.services.facades.BooksFacade;
 
@@ -56,16 +58,14 @@ class BooksRestControllerUnitTest {
 
 	private InOrder inOrder;
 
-	private Gson gson;
+	@Autowired
+	private ObjectMapper mapper;
 
 	private Book expectedBook;
 
 	@BeforeEach
 	void setUp() {
 		this.inOrder = inOrder(booksFacade);
-		this.gson = new GsonBuilder()
-				.setDateFormat(Constants.DEFAULT_DATE_PATTERN)
-				.create();
 		this.expectedBook = new Book.Builder()
 				.id(BOOK_ID)
 				.name(BOOK_NAME)
@@ -84,14 +84,14 @@ class BooksRestControllerUnitTest {
 		var bookDto = new BookDto(expectedBook);
 		var requestBuilder = post(BOOK_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(candidate));
+				.content(mapper.writeValueAsString(candidate));
 
 		given(booksFacade.create(any())).willReturn(bookDto);
 
 		mvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(bookDto)));
+				.andExpect(content().json(mapper.writeValueAsString(bookDto)));
 
 		inOrder.verify(booksFacade, times(1)).create(any());
 	}
@@ -108,7 +108,7 @@ class BooksRestControllerUnitTest {
 
 		mvc.perform(requestBuilder).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(bookDto)));
+				.andExpect(content().json(mapper.writeValueAsString(bookDto)));
 
 		inOrder.verify(booksFacade, times(1)).getById(BOOK_ID);
 	}
@@ -140,7 +140,7 @@ class BooksRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedBooks)));
+				.andExpect(content().json(mapper.writeValueAsString(expectedBooks)));
 
 		inOrder.verify(booksFacade, times(1)).getAll();
 	}
@@ -163,7 +163,7 @@ class BooksRestControllerUnitTest {
 	public void shouldUpdateBook() throws Exception {
 		var requestBuilder = put(BOOK_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(expectedBook));
+				.content(mapper.writeValueAsString(expectedBook));
 
 		mvc.perform(requestBuilder)
 				.andExpect(status().isNoContent());

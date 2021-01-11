@@ -1,7 +1,6 @@
 package ru.otus.controllers.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,16 +58,14 @@ class BookCommentsRestControllerUnitTest {
 
 	private InOrder inOrder;
 
-	private Gson gson;
+	@Autowired
+	private ObjectMapper mapper;
 
 	private BookComment bookComment;
 
 	@BeforeEach
 	void setUp() {
 		this.inOrder = inOrder(bookCommentsFacade);
-		this.gson = new GsonBuilder()
-				.setDateFormat(Constants.DEFAULT_DATE_PATTERN)
-				.create();
 		this.bookComment = new BookComment.Builder()
 				.id(BOOK_COMMENT_ID)
 				.book(buildBook())
@@ -85,14 +82,14 @@ class BookCommentsRestControllerUnitTest {
 		var requestBuilder = post(BOOK_COMMENT_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.characterEncoding(StandardCharsets.UTF_8.name())
-				.content(gson.toJson(candidate));
+				.content(mapper.writeValueAsString(candidate));
 
 		given(bookCommentsFacade.create(any())).willReturn(expectedComment);
 
 		mvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedComment)));
+				.andExpect(content().json(mapper.writeValueAsString(expectedComment)));
 
 		inOrder.verify(bookCommentsFacade, times(1)).create(any());
 	}
@@ -110,7 +107,7 @@ class BookCommentsRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedComment)));
+				.andExpect(content().json(mapper.writeValueAsString(expectedComment)));
 
 		inOrder.verify(bookCommentsFacade, times(1)).getById(BOOK_COMMENT_ID);
 	}
@@ -144,7 +141,7 @@ class BookCommentsRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedComments)));
+				.andExpect(content().json(mapper.writeValueAsString(expectedComments)));
 
 		inOrder.verify(bookCommentsFacade, times(1)).getAll();
 	}
@@ -168,7 +165,7 @@ class BookCommentsRestControllerUnitTest {
 		var requestBuilder = put(BOOK_COMMENT_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.characterEncoding(StandardCharsets.UTF_8.name())
-				.content(gson.toJson(bookComment));
+				.content(mapper.writeValueAsString(bookComment));
 
 		mvc.perform(requestBuilder).andExpect(status().isNoContent());
 

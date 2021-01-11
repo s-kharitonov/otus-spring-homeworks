@@ -1,7 +1,6 @@
 package ru.otus.controllers.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,12 +49,12 @@ class AuthorsRestControllerUnitTest {
 
 	private InOrder inOrder;
 
-	private Gson gson;
+	@Autowired
+	private ObjectMapper mapper;
 
 	@BeforeEach
 	void setUp() {
 		this.inOrder = inOrder(authorsService);
-		this.gson = new GsonBuilder().create();
 	}
 
 	@Test
@@ -73,14 +72,14 @@ class AuthorsRestControllerUnitTest {
 				.build();
 		var requestBuilder = post(AUTHOR_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(authorForCreate));
+				.content(mapper.writeValueAsString(authorForCreate));
 
 		given(authorsService.save(any())).willReturn(expectedAuthor);
 
 		mvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(new AuthorDto(expectedAuthor))));
+				.andExpect(content().json(mapper.writeValueAsString(new AuthorDto(expectedAuthor))));
 
 		inOrder.verify(authorsService, times(1)).save(any());
 	}
@@ -102,7 +101,7 @@ class AuthorsRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(new AuthorDto(expectedAuthor))));
+				.andExpect(content().json(mapper.writeValueAsString(new AuthorDto(expectedAuthor))));
 
 		inOrder.verify(authorsService, times(1)).getById(AUTHOR_ID);
 	}
@@ -142,7 +141,7 @@ class AuthorsRestControllerUnitTest {
 		mvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(gson.toJson(expectedAuthorsDto)));
+				.andExpect(content().json(mapper.writeValueAsString(expectedAuthorsDto)));
 
 		inOrder.verify(authorsService, times(1)).getAll();
 	}
@@ -170,7 +169,7 @@ class AuthorsRestControllerUnitTest {
 				.build();
 		var requestBuilder = put(AUTHOR_DOMAIN_URL)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(authorForUpdate));
+				.content(mapper.writeValueAsString(authorForUpdate));
 
 		mvc.perform(requestBuilder).andExpect(status().isNoContent());
 
