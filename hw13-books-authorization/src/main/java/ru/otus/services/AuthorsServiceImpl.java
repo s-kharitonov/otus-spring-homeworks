@@ -1,8 +1,10 @@
 package ru.otus.services;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Author;
+import ru.otus.domain.Constants;
 import ru.otus.exceptions.AuthorsServiceException;
 import ru.otus.repositories.AuthorsRepository;
 import ru.otus.validators.FieldValidator;
@@ -25,6 +27,7 @@ public class AuthorsServiceImpl implements AuthorsService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public Author save(final Author author) {
 		checkAuthorOrThrow(author);
 		return authorsRepository.save(author);
@@ -44,6 +47,7 @@ public class AuthorsServiceImpl implements AuthorsService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public void deleteById(final long id) {
 		authorsRepository.deleteById(id);
 	}

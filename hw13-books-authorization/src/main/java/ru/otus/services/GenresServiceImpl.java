@@ -1,7 +1,9 @@
 package ru.otus.services;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.domain.Constants;
 import ru.otus.domain.Genre;
 import ru.otus.exceptions.GenresServiceException;
 import ru.otus.repositories.GenresRepository;
@@ -25,6 +27,7 @@ public class GenresServiceImpl implements GenresService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public Genre save(final Genre genre) {
 		checkGenreOrThrow(genre);
 		return genresRepository.save(genre);
@@ -44,6 +47,7 @@ public class GenresServiceImpl implements GenresService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public void deleteById(final long id) {
 		genresRepository.deleteById(id);
 	}

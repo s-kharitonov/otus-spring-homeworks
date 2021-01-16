@@ -1,8 +1,10 @@
 package ru.otus.services;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.BookComment;
+import ru.otus.domain.Constants;
 import ru.otus.exceptions.BookCommentsServiceException;
 import ru.otus.repositories.BookCommentsRepository;
 import ru.otus.validators.FieldValidator;
@@ -25,6 +27,7 @@ public class BookCommentsServiceImpl implements BookCommentsService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public BookComment save(final BookComment bookComment) {
 		checkCommentOrThrow(bookComment);
 		return bookCommentsRepository.save(bookComment);
@@ -44,6 +47,7 @@ public class BookCommentsServiceImpl implements BookCommentsService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public void deleteById(final long id) {
 		bookCommentsRepository.deleteById(id);
 	}

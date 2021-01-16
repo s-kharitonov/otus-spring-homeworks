@@ -1,8 +1,10 @@
 package ru.otus.services;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Book;
+import ru.otus.domain.Constants;
 import ru.otus.exceptions.BooksServiceException;
 import ru.otus.repositories.BooksRepository;
 import ru.otus.validators.FieldValidator;
@@ -25,6 +27,7 @@ public class BooksServiceImpl implements BooksService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public Book save(final Book book) {
 		checkBookOrThrow(book);
 		return booksRepository.save(book);
@@ -44,6 +47,7 @@ public class BooksServiceImpl implements BooksService {
 
 	@Override
 	@Transactional
+	@Secured(Constants.ROLE_ADMIN)
 	public void deleteById(final long id) {
 		var book = getById(id).orElseThrow(() -> new BooksServiceException(
 				String.format("book with id: %s is not found!", id)
