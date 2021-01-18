@@ -18,3 +18,4 @@ student: Sergey Kharitonov
 |[hw10-books-REST](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw10-books-REST)|Цель: использовать Spring MVC для разработки современных AJAX/SPA приложений c помощью Spring MVC.|
 |[hw11-books-webflux](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw11-books-webflux)|Цель: разрабатывать Responsive и Resilent приложения на реактивном стеке Spring c помощью Spring Web Flux и Reactive Spring Data Repositories.|
 |[hw12-books-form-based-auth](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw12-books-form-based-auth)|Цель: защитить Web-приложение аутентифкацией и простой авторизацией.|
+|[hw13-books-authorization](https://github.com/skharitonov95/otus-spring-homeworks/tree/master/hw13-books-authorization)|Цель: научиться защищать приложение с помощью полноценной авторизации и разграничением прав доступа.|
