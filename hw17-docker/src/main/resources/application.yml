@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: library
+  webflux:
+    base-path: /
+logging:
+  level:
+    root: info
+mongock:
+  change-logs-scan-package: ru.otus.changelogs
+server:
+  port: 8080

@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      port: 0
+      database: library-test
+  webflux:
+    base-path: /
+logging:
+  level:
+    root: error
+mongock:
+  change-logs-scan-package: ru.otus.changelogs
+server:
+  port: 8080
