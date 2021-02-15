@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  mongo:
+    image: 'mongo:4.4'
+    restart: always
+    hostname: library-db
+    ports:
+      - '27017:27017'
+    networks:
+      - nw
+  library-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    privileged: true
+    restart: always
+    environment:
+      - DB_HOST=library-db
+      - DB_PORT=27017
+      - DB_NAME=library
+    ports:
+      - '8080:8080'
+    networks:
+      - nw
+networks:
+  nw:
