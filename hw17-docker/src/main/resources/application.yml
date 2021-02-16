@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      host: ${DB_HOST}
+      port: ${DB_PORT}
+      database: ${DB_NAME}
+  webflux:
+    base-path: /
+logging:
+  level:
+    root: info
+mongock:
+  change-logs-scan-package: ru.otus.changelogs
